@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Major
+    public partial class Majors
     {
-        public Major()
+        public Majors()
         {
-            Topic = new HashSet<Topic>();
+            Topics = new HashSet<Topics>();
         }
 
         public Guid MajorId { get; set; }
@@ -15,6 +15,6 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
         public Guid CreatedBy { get; set; }
 
-        public virtual ICollection<Topic> Topic { get; set; }
+        public virtual ICollection<Topics> Topics { get; set; }
     }
 }

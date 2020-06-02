@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class UserSharing
+    public partial class UserSharings
     {
-        public UserSharing()
+        public UserSharings()
         {
-            Comment = new HashSet<Comment>();
+            Comments = new HashSet<Comments>();
         }
 
         public Guid UserSharingId { get; set; }
@@ -17,8 +17,8 @@ namespace Data.Entities
         public bool IsAttended { get; set; }
         public Guid CreatedBy { get; set; }
 
-        public virtual Sharing Sharing { get; set; }
-        public virtual User User { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
+        public virtual Sharings Sharing { get; set; }
+        public virtual Users User { get; set; }
+        public virtual ICollection<Comments> Comments { get; set; }
     }
 }

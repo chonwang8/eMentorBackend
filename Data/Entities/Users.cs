@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class User
+    public partial class Users
     {
-        public User()
+        public Users()
         {
-            UserChannel = new HashSet<UserChannel>();
-            UserSharing = new HashSet<UserSharing>();
+            UserChannels = new HashSet<UserChannels>();
+            UserSharings = new HashSet<UserSharings>();
         }
 
         public Guid UserId { get; set; }
@@ -23,7 +23,7 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
         public Guid CreatedBy { get; set; }
 
-        public virtual ICollection<UserChannel> UserChannel { get; set; }
-        public virtual ICollection<UserSharing> UserSharing { get; set; }
+        public virtual ICollection<UserChannels> UserChannels { get; set; }
+        public virtual ICollection<UserSharings> UserSharings { get; set; }
     }
 }

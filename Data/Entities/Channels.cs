@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Channel
+    public partial class Channels
     {
-        public Channel()
+        public Channels()
         {
-            UserChannel = new HashSet<UserChannel>();
+            UserChannels = new HashSet<UserChannels>();
         }
 
         public Guid ChannelId { get; set; }
@@ -15,6 +15,6 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
         public Guid CreatedBy { get; set; }
 
-        public virtual ICollection<UserChannel> UserChannel { get; set; }
+        public virtual ICollection<UserChannels> UserChannels { get; set; }
     }
 }

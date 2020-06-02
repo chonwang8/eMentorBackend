@@ -25,8 +25,8 @@ namespace Domain.Services
 
         public string Login(UserLoginModel user)
         {
-            User loggedUser = _uow
-                .GetRepository<User>()
+            Users loggedUser = _uow
+                .GetRepository<Users>()
                 .GetAll()
                 .SingleOrDefault(u => u.Email == user.Email);
             if (loggedUser == null)
@@ -46,7 +46,7 @@ namespace Domain.Services
                 return "Register failed";
             }
 
-            User newUser = new User
+            Users newUser = new Users
             {
                 UserId = Guid.NewGuid(),
                 Email = user.Email,
@@ -57,7 +57,7 @@ namespace Domain.Services
                 YearOfBirth = user.YearOfBirth,
                 AvatarUrl = null
             };
-            _uow.GetRepository<User>().Insert(newUser);
+            _uow.GetRepository<Users>().Insert(newUser);
             _uow.Commit();
 
             return "Success";

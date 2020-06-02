@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Sharing
+    public partial class Sharings
     {
-        public Sharing()
+        public Sharings()
         {
-            UserSharing = new HashSet<UserSharing>();
+            UserSharings = new HashSet<UserSharings>();
         }
 
         public Guid SharingId { get; set; }
@@ -20,7 +20,7 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
         public Guid CreatedBy { get; set; }
 
-        public virtual Topic Topic { get; set; }
-        public virtual ICollection<UserSharing> UserSharing { get; set; }
+        public virtual Topics Topic { get; set; }
+        public virtual ICollection<UserSharings> UserSharings { get; set; }
     }
 }
