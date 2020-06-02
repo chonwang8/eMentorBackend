@@ -1,4 +1,5 @@
-﻿using Data.Repositories.Interfaces;
+﻿using Data.Entities;
+using Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ namespace Data.Repositories
         private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;
 
-        public BaseRepository()
+        public BaseRepository(eMentorContext context)
         {
+            _context = context;
             _dbSet = _context.Set<T>();
         }
 

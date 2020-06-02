@@ -4,12 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Data.Entities;
 using Data.UnitOfWork;
 using Data.UnitOfWork.Interfaces;
+using Domain.Services;
+using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,10 +37,16 @@ namespace eMentor
 
             #region Dependency
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUserService, UserService>();
             #endregion
 
             #region DbConnection
             string ConnectionString = Configuration.GetConnectionString("DB");
+            #endregion
+
+            #region Entity Framework Core
+            services.AddDbContext<eMentorContext>(options =>
+                options.UseSqlServer(ConnectionString));
             #endregion
 
             #region Swagger
@@ -45,7 +55,7 @@ namespace eMentor
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Challenge API",
+                    Title = "eMentor API",
                     Version = "v1",
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -89,6 +99,14 @@ namespace eMentor
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SWD391 V1");
+                c.RoutePrefix = "";
+            });
 
             app.UseAuthorization();
 
