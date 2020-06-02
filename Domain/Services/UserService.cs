@@ -29,19 +29,18 @@ namespace Domain.Services
                 .GetRepository<Users>()
                 .GetAll()
                 .SingleOrDefault(u => u.Email == user.Email);
-            if (loggedUser == null)
+            if (loggedUser != null)
             {
-                return "Incorrect Email or Password";
-            } else if (loggedUser.Password != user.Password)
-            {
-                return "Incorrect Email or Password";
+                if (loggedUser.Password != user.Password)
+                    return "Incorrect Password";
+                return "Email does not exist ! Please Register !";
             }
             return "Logged in";
         }
 
         public string Register(UserRegisterModel user)
         {
-            if(user == null)
+            if (user == null)
             {
                 return "Register failed";
             }
