@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Users
+    public partial class User
     {
-        public Users()
+        public User()
         {
-            UserChannels = new HashSet<UserChannels>();
-            UserSharings = new HashSet<UserSharings>();
+            Mentee = new HashSet<Mentee>();
+            Mentor = new HashSet<Mentor>();
         }
 
         public Guid UserId { get; set; }
@@ -17,13 +17,12 @@ namespace Data.Entities
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
-        public bool IsMentor { get; set; }
         public string AvatarUrl { get; set; }
-        public int Balance { get; set; }
+        public double? Balance { get; set; }
+        public string Description { get; set; }
         public bool IsDisable { get; set; }
-        public Guid CreatedBy { get; set; }
 
-        public virtual ICollection<UserChannels> UserChannels { get; set; }
-        public virtual ICollection<UserSharings> UserSharings { get; set; }
+        public virtual ICollection<Mentee> Mentee { get; set; }
+        public virtual ICollection<Mentor> Mentor { get; set; }
     }
 }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Admins
+    public partial class Admin
     {
         public Guid AdminId { get; set; }
-        public string Email { get; set; }
+        public string AdminUsername { get; set; }
         public string Password { get; set; }
     }
 }
