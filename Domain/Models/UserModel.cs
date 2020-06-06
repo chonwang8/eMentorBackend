@@ -6,14 +6,15 @@ namespace Domain.Models
 {
     public class UserModel
     {
+        public Guid UserId { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
-        public bool IsMentor { get; set; }
         public string AvatarUrl { get; set; }
-        public int Balance { get; set; }
+        public double? Balance { get; set; }
+        public string Description { get; set; }
         public bool IsDisable { get; set; }
     }
 

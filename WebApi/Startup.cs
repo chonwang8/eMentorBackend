@@ -38,6 +38,7 @@ namespace eMentor
             #region Dependency
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IMajorService, MajorService>();
             #endregion
 
             #region DbConnection
@@ -53,10 +54,10 @@ namespace eMentor
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v4", new OpenApiInfo
                 {
                     Title = "eMentor API",
-                    Version = "v1",
+                    Version = "v4",
                 });
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -96,7 +97,7 @@ namespace eMentor
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();  
 
             app.UseRouting();
 
@@ -104,7 +105,7 @@ namespace eMentor
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SWD391 V1");
+                c.SwaggerEndpoint("/swagger/v4/swagger.json", "SWD391 V4");
                 c.RoutePrefix = "";
             });
 
