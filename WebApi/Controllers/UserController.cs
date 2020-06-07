@@ -6,6 +6,7 @@ using Domain.Models;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
 
 namespace WebApi.Controllers
 {
@@ -17,6 +18,13 @@ namespace WebApi.Controllers
         public UserController(IUserService service)
         {
             _service = service;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            
+            return new string[] { "hom nay", "deadline" };
         }
 
         [HttpPost("register")]
