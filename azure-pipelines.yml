@@ -22,6 +22,16 @@ steps:
   inputs:
     command: 'build'
 
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: publish
+#     publishWebProjects: True
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#     zipAfterPublish: True
+
+# - task: DotNetCoreCLI@2
+#   displayName: 'publish artifacts'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
@@ -29,5 +39,8 @@ steps:
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
-- task: DotNetCoreCLI@2
-  displayName: 'publish artifacts'
+# this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'API'
