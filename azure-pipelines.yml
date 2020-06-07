@@ -38,7 +38,7 @@ steps:
 #     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 #     zipAfterPublish: True
 
-- task:
+- task: DotNetCoreCLI@2
   displayName: 'dotnet publish --configuration $(buildConfiguration) --ouput $(Build.ArtifactStagingDiretory)'
   inputs:
     command: publish
