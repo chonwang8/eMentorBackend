@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             
-            return new string[] { "hom nay", "deadline" };
+            return new string[] { "toi nay", "deadline" };
         }
 
         [HttpPost("register")]
