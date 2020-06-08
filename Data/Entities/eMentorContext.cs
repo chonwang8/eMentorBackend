@@ -289,11 +289,6 @@ namespace Data.Entities
 
                 entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasColumnName("password")
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.Phone)
                     .IsRequired()
                     .HasColumnName("phone")
