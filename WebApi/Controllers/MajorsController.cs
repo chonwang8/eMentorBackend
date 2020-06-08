@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/majors")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MajorsController : ControllerBase
     {
@@ -18,18 +18,17 @@ namespace WebApi.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public IActionResult GetAllMajor()
-        {
-            return Ok(_service.GetAllMajor());
-        }
-
-        [HttpGet("group")]
+        [HttpGet("topics")]
         public IActionResult GetTopicGroupByMajor()
         {
             return Ok(_service.GetTopicGroupByMajor());
         }
 
+        [HttpGet]
+        public IActionResult GetAllMajor()
+        {
+            return Ok(_service.GetAllMajor());
+        }
         
         [HttpPost]
         public IActionResult GetMajorById(Guid MajorId)
