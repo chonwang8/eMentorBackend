@@ -1,7 +1,7 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.Models;
 using Domain.Services.Interfaces;
+using Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace Domain.Services
         #endregion Classes and Constructor
 
 
-        public string Login(UserLoginModel user)
+        public string Login(UserLoginViewModel user)
         {
             User loggedUser = _uow
                 .GetRepository<User>()
@@ -31,14 +31,12 @@ namespace Domain.Services
                 .SingleOrDefault(u => u.Email == user.Email);
             if (loggedUser != null)
             {
-                if (loggedUser.Password != user.Password)
-                    return "Incorrect Password";
                 return "Email does not exist ! Please Register !";
             }
             return "Logged in";
         }
 
-        public string Register(UserRegisterModel user)
+        public string Register(UserRegisterViewModel user)
         {
             if (user == null)
             {
@@ -49,7 +47,6 @@ namespace Domain.Services
             {
                 UserId = Guid.NewGuid(),
                 Email = user.Email,
-                Password = user.Password,
                 Fullname = user.Fullname,
                 Phone = user.Phone,
                 YearOfBirth = user.YearOfBirth,
