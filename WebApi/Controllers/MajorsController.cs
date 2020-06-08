@@ -23,5 +23,21 @@ namespace WebApi.Controllers
         {
             return Ok(_service.GetTopicGroupByMajor());
         }
+
+        [HttpGet]
+        public IActionResult GetAllMajor()
+        {
+            return Ok(_service.GetAllMajor());
+        }
+        
+        [HttpPost]
+        public IActionResult GetMajorById(Guid MajorId)
+        {
+            if(GetMajorById(MajorId) == null)
+            {
+                return NotFound("Not found Major for this ID");
+            }
+            return Ok(_service.GetMajorById(MajorId));
+        }
     }
 }

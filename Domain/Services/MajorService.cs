@@ -5,6 +5,7 @@ using Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace Domain.Services
@@ -22,11 +23,41 @@ namespace Domain.Services
 
         #endregion Classes and Constructor
 
+        public List<GetMajorViewModel> GetAllMajor()
+        {
+            List<GetMajorViewModel> result = new List<GetMajorViewModel>();
+            IEnumerable<Major> majors = _uow.GetRepository<Major>().GetAll();
+            foreach (var major in majors)
+            {
+                result.Add(new GetMajorViewModel
+                {
+                    MajorId = major.MajorId,
+                    MajorName = major.MajorName
+                });
+            }
+            return result;
+        }
+
+        public GetMajorViewModel GetMajorById(Guid MajorId)
+        {
+            Major major = _uow.GetRepository<Major>().Get(MajorId);
+            if (major != null)
+            {
+                GetMajorViewModel result = new GetMajorViewModel
+                {
+                    MajorId = major.MajorId,
+                    MajorName = major.MajorName
+                };
+                return result;
+            }
+            return null;
+        }
+
         public List<GetTopicGroupByMajorViewModel> GetTopicGroupByMajor()
         {
             List<GetTopicGroupByMajorViewModel> result = new List<GetTopicGroupByMajorViewModel>();
             IEnumerable<Major> majors = _uow.GetRepository<Major>().GetAll().Include(t => t.Topic);
-            foreach(var major in majors)
+            foreach (var major in majors)
             {
                 List<GetTopic> topics = new List<GetTopic>();
                 foreach (var topic in major.Topic)
