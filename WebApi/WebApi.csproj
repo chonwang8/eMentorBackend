@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\piimt\source\repos\eMentor_V4\eMentor\WebApi\WebApi.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\piimt\source\repos\eMentor_V5\eMentorBackend\WebApi\WebApi.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
 

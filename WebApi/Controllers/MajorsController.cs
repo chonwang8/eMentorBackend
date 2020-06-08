@@ -18,7 +18,7 @@ namespace WebApi.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("topics")]
         public IActionResult GetTopicGroupByMajor()
         {
             return Ok(_service.GetTopicGroupByMajor());
