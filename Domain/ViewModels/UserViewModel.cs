@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class UserModel
+    public class UserViewModel
     {
         public Guid UserId { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
@@ -18,13 +17,13 @@ namespace Domain.Models
         public bool IsDisable { get; set; }
     }
 
-    public class UserLoginModel
+    public class UserLoginViewModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
-    public class UserRegisterModel
+    public class UserRegisterViewModel
     {
         public string Email { get; set; }
         public string Password { get; set; }

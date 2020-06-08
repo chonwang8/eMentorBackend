@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class ChannelModel
+    public class ChannelViewModel
     {
         public Guid ChannelId { get; set; }
         public Guid TopicId { get; set; }

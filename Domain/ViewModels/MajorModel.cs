@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class MajorModel
+    public class MajorViewModel
     {
         public Guid MajorId { get; set; }
         public string MajorName { get; set; }
         public Guid CreatedBy { get; set; }
-        public ICollection<TopicModel> Topic { get; set; }
+        public ICollection<TopicViewModel> Topic { get; set; }
     }
 }

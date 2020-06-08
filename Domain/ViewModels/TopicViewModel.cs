@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class TopicModel
+    public class TopicViewModel
     {
         public Guid TopicId { get; set; }
         public string TopicName { get; set; }
         public Guid MajorId { get; set; }
         public Guid CreatedBy { get; set; }
-
-        public virtual ICollection<ChannelModel> Channel { get; set; }
     }
 }

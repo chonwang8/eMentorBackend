@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.Models;
+using Domain.ViewModels;
 using Domain.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Domain.Services
         #endregion Classes and Constructor
 
 
-        public string Login(UserLoginModel user)
+        public string Login(UserLoginViewModel user)
         {
             User loggedUser = _uow
                 .GetRepository<User>()
@@ -38,7 +38,7 @@ namespace Domain.Services
             return "Logged in";
         }
 
-        public string Register(UserRegisterModel user)
+        public string Register(UserRegisterViewModel user)
         {
             if (user == null)
             {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class MentorModel
+    public class MentorViewModel
     {
         public Guid MentorId { get; set; }
         public Guid UserId { get; set; }
