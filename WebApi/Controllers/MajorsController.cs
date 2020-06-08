@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/majors")]
     [ApiController]
     public class MajorsController : ControllerBase
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/channels")]
     [ApiController]
     public class ChannelsController : ControllerBase
     {
