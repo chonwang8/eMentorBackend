@@ -2,33 +2,37 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.Models
+namespace Domain.ViewModels
 {
-    public class UserModel
+    public class UserViewModel
     {
+        public Guid UserId { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
-        public bool IsMentor { get; set; }
         public string AvatarUrl { get; set; }
-        public int Balance { get; set; }
-        public bool IsDisable { get; set; }
+        public double? Balance { get; set; }
+        public string Description { get; set; }
     }
-
-    public class UserLoginModel
+    public class UserLoginViewModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
     }
 
-    public class UserRegisterModel
+    public class UserRegisterViewModel
     {
         public string Email { get; set; }
         public string Password { get; set; }
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
+    }
+
+    public class UserStatusViewModel
+    {
+        public Guid UserId { get; set; }
+        public bool IsDisable { get; set; }
     }
 }
