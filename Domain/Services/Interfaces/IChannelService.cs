@@ -10,5 +10,7 @@ namespace Domain.Services.Interfaces
         public List<GetChannelViewModel> GetAllChannel();
 
         public GetChannelViewModel GetChannelById(Guid ChannelId);
+
+        public List<GetChannelByTopicIdViewModel> GetChannelByTopicId(List<Guid> TopicIds);
     }
 }

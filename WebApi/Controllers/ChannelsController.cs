@@ -24,14 +24,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetChannelById(Guid ChannelId)
+        public IActionResult GetChannelByTopicId(List<Guid> TopicId)
         {
-            if (GetChannelById(ChannelId) == null)
-            {
-                return NotFound("Not found Channel for this ID");
-            }
-            return Ok(_service.GetChannelById(ChannelId));
+            return Ok(_service.GetChannelByTopicId(TopicId));
         }
     }
-}
 }
