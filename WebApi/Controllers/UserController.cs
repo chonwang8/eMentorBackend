@@ -31,7 +31,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         public IActionResult GetById(string userId)
         {
             if (userId == null)

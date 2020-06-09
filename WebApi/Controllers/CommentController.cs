@@ -24,10 +24,10 @@ namespace WebApi.Controllers
             return Ok(_service.GetAllComment());
         }
 
-        [HttpPost]
+        [HttpGet("{CommentId}")]
         public IActionResult GetCommentById(Guid CommentId)
         {
-            if (GetCommentById(CommentId) == null)
+            if (_service.GetCommentById(CommentId) == null)
             {
                 return NotFound("Not found Comment for this ID");
             }

@@ -33,8 +33,8 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(string topicId)
+        [HttpGet("{topicId}")]
+        public IActionResult Get( string topicId)
         {
             if (topicId == null)
             {

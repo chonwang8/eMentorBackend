@@ -23,14 +23,14 @@ namespace WebApi.Controllers
             return Ok(_service.GetAllChannel());
         }
 
-        [HttpPost]
-        public IActionResult GetChannelById(Guid ChannelId)
+        [HttpGet("{channelId}")]
+        public IActionResult GetChannelById(Guid channelId)
         {
-            if (GetChannelById(ChannelId) == null)
+            if (_service.GetChannelById(channelId) == null)
             {
                 return NotFound("Not found Channel for this ID");
             }
-            return Ok(_service.GetChannelById(ChannelId));
+            return Ok(_service.GetChannelById(channelId));
         }
     }
 }
