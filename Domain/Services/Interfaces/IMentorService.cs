@@ -11,7 +11,7 @@ namespace Domain.Services.Interfaces
         public IEnumerable<MentorViewModel> GetById(string mentorId);
         public int Insert(MentorViewModel mentor);
         public int Update(MentorViewModel mentor);
-        public int Disable(string mentorId, bool status);
+        public int ChangeStatus(string mentorId, bool status);
         public int Delete(string mentorId);
     }
 }

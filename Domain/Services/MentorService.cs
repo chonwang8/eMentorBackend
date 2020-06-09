@@ -154,7 +154,7 @@ namespace Domain.Services
         }
 
 
-        public int Disable(string mentorId, bool status)
+        public int ChangeStatus(string mentorId, bool status)
         {
             int result = 0;
             Guid guid = new Guid(mentorId);
