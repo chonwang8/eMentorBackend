@@ -29,11 +29,11 @@ namespace WebApi.Controllers
         {
             return Ok(_service.GetAllMajor());
         }
-        
-        [HttpPost]
+
+        [HttpGet("{MajorId}")]
         public IActionResult GetMajorById(Guid MajorId)
         {
-            if(GetMajorById(MajorId) == null)
+            if(_service.GetMajorById(MajorId) == null)
             {
                 return NotFound("Not found Major for this ID");
             }
