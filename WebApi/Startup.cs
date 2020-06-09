@@ -44,7 +44,7 @@ namespace eMentor
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("DB");
+            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
             #endregion
 
             #region Entity Framework Core
