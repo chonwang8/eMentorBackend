@@ -42,6 +42,7 @@ namespace eMentor
             services.AddTransient<IChannelService, ChannelService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<ISubcriptionService, SubscriptionService>();
             #endregion
 
             #region DbConnection

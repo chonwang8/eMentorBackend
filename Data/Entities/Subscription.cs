@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Subcription
+    public partial class Subscription
     {
-        public Subcription()
+        public Subscription()
         {
             Enroll = new HashSet<Enroll>();
         }
