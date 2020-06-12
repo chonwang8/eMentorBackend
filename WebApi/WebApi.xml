@@ -4,5 +4,80 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="M:WebApi.Controllers.UserController.GetAll">
+            <summary>
+            View list of users
+            </summary>
+            <returns>List of users</returns>
+            <response code="200">List of challenge</response>
+            <response code="400">Not have enough infomation</response>
+            <response code="401">Unauthorize</response>
+            <response code="403">Forbidden from resource</response>
+            <response code="404">Empty challenge list</response>
+            <response code="500">Internal Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetById(System.String)">
+            <summary>
+            Return User with matching Id
+            </summary>
+            <returns>User with matching Id</returns>
+            <response code="200">User found with matching Id</response>
+            <response code="400">Invalid input</response>
+            <response code="404">User with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Insert(Domain.ViewModels.UserViewModel)">
+            <summary>
+            Insert a user into database
+            </summary>
+            <returns>Query status</returns>
+            <response code="200">User successfully inserted</response>
+            <response code="400">Invalid input</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Update(Domain.ViewModels.UserViewModel)">
+            <summary>
+            Update an existing user
+            </summary>
+            <returns>Query status</returns>
+            <response code="200">User successfully updated</response>
+            <response code="400">Invalid input</response>
+            <response code="404">User with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Disable(Domain.ViewModels.UserStatusViewModel)">
+            <summary>
+            Disable a user
+            </summary>
+            <returns>Query status</returns>
+            <response code="200">Disabled user with matching Id</response>
+            <response code="400">Invalid input</response>
+            <response code="404">User with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.Delete(System.String)">
+            <summary>
+            Delete a user from database
+            </summary>
+            <returns>Query status</returns>
+            <response code="200">User was deleted from database</response>
+            <response code="400">Invalid input</response>
+            <response code="404">User with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.RegisterController.Register(Domain.ViewModels.UserRegisterViewModel)">
+            <summary>
+            Register a user to database
+            </summary>
+            <returns>Registered the user</returns>
+            <response code="200">Success</response>
+        </member>
+        <member name="M:WebApi.Controllers.LoginController.Login(Domain.ViewModels.UserLoginViewModel)">
+            <summary>
+            Login
+            </summary>
+            <returns>User with matching Id</returns>
+            <response code="200">Success</response>
+        </member>
     </members>
 </doc>
