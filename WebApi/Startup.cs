@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Data.Entities;
 using Data.UnitOfWork;
 using Data.UnitOfWork.Interfaces;
+using Domain.Helper.AdminFunctions;
+using Domain.Helper.AdminFunctions.Interfaces;
 using Domain.Helper.DataObjects;
 using Domain.Services;
 using Domain.Services.Interfaces;
@@ -54,10 +56,12 @@ namespace eMentor
             services.AddTransient<IChannelService, ChannelService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITopicService, TopicService>();
+
+            services.AddTransient<IAdminLogic, AdminLogic>();
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
             #endregion
 
 

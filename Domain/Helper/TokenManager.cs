@@ -19,7 +19,7 @@ namespace Domain.Helper
             appSetting = options.Value;
         }
 
-        public string CreateAccessToken(UserViewModel userViewModel)
+        public string CreateAccessToken(AdminViewModel adminViewModel)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSetting.Secret);
@@ -28,14 +28,17 @@ namespace Domain.Helper
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim("user_id", userViewModel.UserId.ToString())
+                    new Claim("admin_id", adminViewModel.AdminId.ToString()),
+                    new Claim("admin_username", adminViewModel.AdminUsername)
                 }),
                 Expires = DateTime.Now.AddMinutes(45),
                 Issuer = null,
                 Audience = null,
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key), 
+                    SecurityAlgorithms.HmacSha256Signature),
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
