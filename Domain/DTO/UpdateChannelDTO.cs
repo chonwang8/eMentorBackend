@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.DTO
 {
-    public class UpdateChannelModel
+    public class UpdateChannelDTO
     {
         public Guid ChannelId { get; set; }
         public Guid TopicId { get; set; }

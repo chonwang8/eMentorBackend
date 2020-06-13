@@ -19,9 +19,9 @@ namespace WebApi.Controllers
             _service = service;
         }
         [HttpGet]
-        public IActionResult GetAllChannel()
+        public IActionResult GetAllChannel(GetAllDTO request)
         {
-            return Ok(_service.GetAllChannel());
+            return Ok(_service.GetAllChannel(request));
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateChannelById(UpdateChannelModel channel)
+        public IActionResult UpdateChannelById(UpdateChannelDTO channel)
         {
             if (_service.UpdateChannelById(channel) == false)
                 return BadRequest("Updated Failed !");
@@ -47,7 +47,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateChannel(CreateChannelModel channel)
+        public IActionResult CreateChannel(CreateChannelDTO channel)
         {
             return Ok("Created Successfully !");
         }

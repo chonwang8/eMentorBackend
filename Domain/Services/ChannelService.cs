@@ -23,10 +23,19 @@ namespace Domain.Services
         }
 
         #endregion Classes and Constructor
-        public List<GetChannelViewModel> GetAllChannel()
+        public List<GetChannelViewModel> GetAllChannel(GetAllDTO request)
         {
             List<GetChannelViewModel> result = new List<GetChannelViewModel>();
             IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll();
+            channels = channels.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+            if (request.IsAscending)
+            {
+                channels = channels.OrderBy(c => c.ChannelId);
+            }
+            else
+            {
+                channels = channels.OrderByDescending(c => c.ChannelId);
+            }
             foreach (var channel in channels)
             {
                 result.Add(new GetChannelViewModel
@@ -96,7 +105,7 @@ namespace Domain.Services
             return true;
         }
 
-        public bool UpdateChannelById(UpdateChannelModel channel)
+        public bool UpdateChannelById(UpdateChannelDTO channel)
         {
             Channel oldChannel = _uow.GetRepository<Channel>().Get(channel.ChannelId);
             if (oldChannel == null)
@@ -112,7 +121,7 @@ namespace Domain.Services
             return true;
         }
 
-        public bool CreateChannel(CreateChannelModel channel)
+        public bool CreateChannel(CreateChannelDTO channel)
         {
             _uow.GetRepository<Channel>().Insert(new Channel
             {

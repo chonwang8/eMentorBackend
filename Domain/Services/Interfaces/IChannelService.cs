@@ -9,7 +9,7 @@ namespace Domain.Services.Interfaces
 {
     public interface IChannelService
     {
-        public List<GetChannelViewModel> GetAllChannel();
+        public List<GetChannelViewModel> GetAllChannel(GetAllDTO request);
 
         public GetChannelViewModel GetChannelById(Guid ChannelId);
 
@@ -17,8 +17,8 @@ namespace Domain.Services.Interfaces
 
         public bool DeleteChannelById(Guid ChannelId);
 
-        public bool UpdateChannelById(UpdateChannelModel channel);
+        public bool UpdateChannelById(UpdateChannelDTO channel);
 
-        public bool CreateChannel(CreateChannelModel channel);
+        public bool CreateChannel(CreateChannelDTO channel);
     }
 }
