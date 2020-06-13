@@ -10,7 +10,7 @@ namespace Domain.Services.Interfaces
     {
         public List<GetTopicGroupByMajorViewModel> GetTopicGroupByMajor();
 
-        public List<GetMajorViewModel> GetAllMajor();
+        public List<GetMajorViewModel> GetAllMajor(GetAllDTO request);
 
         public GetMajorViewModel GetMajorById(Guid MajorId);
 

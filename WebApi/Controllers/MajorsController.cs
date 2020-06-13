@@ -20,9 +20,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllMajor()
+        public IActionResult GetAllMajor(GetAllDTO request)
         {
-            return Ok(_service.GetAllMajor());
+            return Ok(_service.GetAllMajor(request));
         }
 
         [HttpGet("group")]
