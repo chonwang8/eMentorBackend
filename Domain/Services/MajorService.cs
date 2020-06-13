@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ namespace Domain.Services
         {
             _uow = uow;
         }
+
+
 
         #endregion Classes and Constructor
 
@@ -75,8 +78,50 @@ namespace Domain.Services
                     Topics = topics
                 });
             }
-            _uow.Commit();
             return result;
+        }
+
+        public bool UpdateMajorById(UpdateMajorDTO major)
+        {
+            Major oldMajor = _uow.GetRepository<Major>().Get(major.MajorId);
+            if (oldMajor == null)
+                return false;
+            _uow.GetRepository<Major>().Update(new Major
+            {
+                MajorId = major.MajorId,
+                MajorName = major.MajorName,
+                CreatedBy = oldMajor.CreatedBy,
+                IsDisable = oldMajor.IsDisable
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool CreateMajor(string MajorName)
+        {
+            _uow.GetRepository<Major>().Update(new Major
+            {
+                MajorId = Guid.NewGuid(),
+                MajorName = MajorName,
+                CreatedBy = Guid.NewGuid(),
+                IsDisable = false
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool DeleteMajorById(Guid MajorId)
+        {
+            Major major = _uow.GetRepository<Major>().Get(MajorId);
+            if (major == null)
+                return false;
+            _uow.GetRepository<Major>().Update(new Major
+            {
+                MajorId = MajorId,
+                IsDisable = true
+            }) ;
+            _uow.Commit();
+            return true;
         }
     }
 }

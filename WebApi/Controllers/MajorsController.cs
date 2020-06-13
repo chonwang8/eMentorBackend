@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,11 +35,33 @@ namespace WebApi.Controllers
         [HttpPost]
         public IActionResult GetMajorById(Guid MajorId)
         {
-            if(GetMajorById(MajorId) == null)
+            if(_service.GetMajorById(MajorId) == null)
             {
                 return NotFound("Not found Major for this ID");
             }
             return Ok(_service.GetMajorById(MajorId));
+        }
+        
+        [HttpDelete]
+        public IActionResult DeleteMajorById(Guid MajorId)
+        {
+            if(_service.DeleteMajorById(MajorId) == false)
+                return BadRequest("Deleted Failed !");   
+            return Ok("Deleted Successfully !");
+        } 
+        
+        [HttpPut]
+        public IActionResult UpdateMajorById(UpdateMajorDTO major)
+        {
+            if(_service.UpdateMajorById(major) == false)
+                return BadRequest("Updated Failed !");
+            return Ok("Updated Successfully !");
+        } 
+        
+        [HttpPost]
+        public IActionResult CreateMajor(Guid MajorId)
+        {
+            return Ok("Created Successfully !");
         }
     }
 }
