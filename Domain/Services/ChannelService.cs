@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -78,6 +79,50 @@ namespace Domain.Services
                 }
             }
             return result;
+        }
+
+
+        public bool DeleteChannelById(Guid ChannelId)
+        {
+            Channel channel = _uow.GetRepository<Channel>().Get(ChannelId);
+            if (channel == null)
+                return false;
+            _uow.GetRepository<Channel>().Update(new Channel
+            {
+                ChannelId = channel.ChannelId,
+                IsDisable = true
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool UpdateChannelById(UpdateChannelModel channel)
+        {
+            Channel oldChannel = _uow.GetRepository<Channel>().Get(channel.ChannelId);
+            if (oldChannel == null)
+                return false;
+            _uow.GetRepository<Channel>().Update(new Channel
+            {
+                ChannelId = channel.ChannelId,
+                TopicId = channel.TopicId,
+                MentorId = channel.MentorId,
+                IsDisable = oldChannel.IsDisable
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool CreateChannel(CreateChannelModel channel)
+        {
+            _uow.GetRepository<Channel>().Insert(new Channel
+            {
+                ChannelId = Guid.NewGuid(),
+                TopicId = channel.TopicId,
+                MentorId = channel.MentorId,
+                IsDisable = false
+            });
+            _uow.Commit();
+            return true;
         }
     }
 }
