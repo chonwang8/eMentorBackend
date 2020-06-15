@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Data.Entities;
 using Data.UnitOfWork;
 using Data.UnitOfWork.Interfaces;
+using Domain.Helper.AdminFunctions;
+using Domain.Helper.AdminFunctions.Interfaces;
+using Domain.Helper.DataObjects;
 using Domain.Services;
 using Domain.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace eMentor
@@ -34,6 +40,14 @@ namespace eMentor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Get Config
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSetting>(appSettingsSection);
+
+            #endregion Get Config
+
 
             #region Dependency
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -44,11 +58,43 @@ namespace eMentor
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISharingService, SharingService>();
             services.AddTransient<IMentorService, MentorService>();
+            services.AddTransient<IAdminLogic, AdminLogic>();
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
             #endregion
+
+
+            #region JWT Auth
+
+            var appSettings = appSettingsSection.Get<AppSetting>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
+            #endregion JWT Auth
+
 
             #region Entity Framework Core
             services.AddDbContext<eMentorContext>(options =>
