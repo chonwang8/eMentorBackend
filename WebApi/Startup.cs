@@ -68,27 +68,40 @@ namespace eMentor
             var appSettings = appSettingsSection.Get<AppSetting>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
+                    options.Authority = "https://securetoken.google.com/my-project-id";
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://securetoken.google.com/my-project-id",
+                        ValidateAudience = true,
+                        ValidAudience = "my-project-id",
+                        ValidateLifetime = true
+                    };
+
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
                         {
-                            context.Response.Headers.Add("Token-Expired", "true");
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
                         }
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                    };
+                });
 
             #endregion JWT Auth
 
@@ -144,7 +157,7 @@ namespace eMentor
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();  
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
