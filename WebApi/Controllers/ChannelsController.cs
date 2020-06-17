@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,20 +18,39 @@ namespace WebApi.Controllers
         {
             _service = service;
         }
-        [HttpGet]
-        public IActionResult GetAllChannel()
+        [HttpPost("paging")]
+        public IActionResult GetAllChannel(GetAllDTO request)
         {
-            return Ok(_service.GetAllChannel());
+            return Ok(_service.GetAllChannel(request));
         }
 
-        [HttpGet("{channelId}")]
-        public IActionResult GetChannelById(Guid channelId)
+        [HttpPost]
+        public IActionResult GetChannelByTopicId(List<Guid> TopicId)
         {
-            if (_service.GetChannelById(channelId) == null)
-            {
-                return NotFound("Not found Channel for this ID");
-            }
-            return Ok(_service.GetChannelById(channelId));
+            return Ok(_service.GetChannelByTopicId(TopicId));
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteChannelById(Guid ChannelId)
+        {
+            if (_service.DeleteChannelById(ChannelId) == false)
+                return BadRequest("Deleted Failed !");
+            return Ok("Deleted Successfully !");
+        }
+
+        [HttpPut]
+        public IActionResult UpdateChannelById(UpdateChannelDTO channel)
+        {
+            if (_service.UpdateChannelById(channel) == false)
+                return BadRequest("Updated Failed !");
+            return Ok("Updated Successfully !");
+        }
+
+        [HttpPost("create")]
+        public IActionResult CreateChannel(CreateChannelDTO channel)
+        {
+            _service.CreateChannel(channel);
+            return Ok("Created Successfully !");
         }
     }
 }

@@ -55,12 +55,13 @@ namespace eMentor
             services.AddTransient<IChannelService, ChannelService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<ITopicService, TopicService>();
-
+            services.AddTransient<ISharingService, SharingService>();
+            services.AddTransient<IMentorService, MentorService>();
             services.AddTransient<IAdminLogic, AdminLogic>();
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
             #endregion
 
             #region JWT Auth
