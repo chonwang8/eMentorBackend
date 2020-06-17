@@ -48,7 +48,6 @@ namespace eMentor
 
             #endregion Get Config
 
-
             #region Dependency
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IUserService, UserService>();
@@ -62,9 +61,8 @@ namespace eMentor
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
             #endregion
-
 
             #region JWT Auth
 
@@ -94,7 +92,6 @@ namespace eMentor
             });
 
             #endregion JWT Auth
-
 
             #region Entity Framework Core
             services.AddDbContext<eMentorContext>(options =>
@@ -159,6 +156,8 @@ namespace eMentor
                 c.SwaggerEndpoint("/swagger/v5/swagger.json", "SWD391 V5");
                 c.RoutePrefix = "";
             });
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

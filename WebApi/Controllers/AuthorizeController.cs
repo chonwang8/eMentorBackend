@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Domain.Helper.AdminFunctions.Interfaces;
+using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,13 @@ namespace WebApi.Controllers
     public class AuthorizeController : ControllerBase
     {
         protected readonly IAdminLogic _admin;
-        public AuthorizeController(IAdminLogic admin)
+        protected readonly IUserService _user;
+
+        public AuthorizeController(IAdminLogic admin, IUserService user)
         {
             _admin = admin;
+            _user = user;
         }
-
 
         [HttpPost]
         public IActionResult AdminLogin(AdminLoginViewModel adminLogin)
@@ -35,5 +39,14 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet]
+        public IActionResult GetToken()
+        {
+            AdminClaimsProfile claimProfile = new AdminClaimsProfile();
+            AdminViewModel admin = claimProfile.GetProfile(HttpContext.User.Identity as ClaimsIdentity);
+            return Ok(admin);
+        }
+
     }
 }

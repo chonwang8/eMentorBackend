@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/channels")]
     [ApiController]
     public class ChannelsController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace WebApi.Controllers
         {
             _service = service;
         }
-        [HttpGet]
+        [HttpPost("paging")]
         public IActionResult GetAllChannel(GetAllDTO request)
         {
             return Ok(_service.GetAllChannel(request));
@@ -46,9 +46,10 @@ namespace WebApi.Controllers
             return Ok("Updated Successfully !");
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult CreateChannel(CreateChannelDTO channel)
         {
+            _service.CreateChannel(channel);
             return Ok("Created Successfully !");
         }
     }
