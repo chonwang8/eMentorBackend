@@ -107,29 +107,29 @@ namespace eMentor
                     Title = "eMentor API",
                     Version = "v5",
                 });
-                // var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                // c.IncludeXmlComments(xmlPath);
-                // c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                // {
-                //     In = ParameterLocation.Header,
-                //     Description = "Please insert JWT with Bearer into field",
-                //     Name = "Authorization",
-                //     Type = SecuritySchemeType.ApiKey
-                // });
-                // c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                //    {
-                //      new OpenApiSecurityScheme
-                //      {
-                //          Reference = new OpenApiReference
-                //          {
-                //             Type = ReferenceType.SecurityScheme,
-                //             Id = "Bearer"
-                //          }
-                //      },
-                //           new string[] { }
-                //    }
-                // });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                   {
+                     new OpenApiSecurityScheme
+                     {
+                         Reference = new OpenApiReference
+                         {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                         }
+                     },
+                          new string[] { }
+                   }
+                });
             });
 
             #endregion Swagger
