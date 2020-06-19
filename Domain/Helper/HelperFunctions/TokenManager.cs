@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Domain.Helper
+namespace Domain.Helper.HelperFunctions
 {
     public class TokenManager
     {

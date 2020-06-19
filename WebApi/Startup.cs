@@ -61,7 +61,7 @@ namespace eMentor
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
             #endregion
 
             #region JWT Auth
@@ -73,24 +73,25 @@ namespace eMentor
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://securetoken.google.com/my-project-id";
+                    options.Authority = "https://securetoken.google.com/flutter-chat-ba7c2";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = "https://securetoken.google.com/my-project-id",
+                        ValidIssuer = "https://securetoken.google.com/flutter-chat-ba7c2",
                         ValidateAudience = true,
-                        ValidAudience = "my-project-id",
+                        ValidAudience = "flutter-chat-ba7c2",
                         ValidateLifetime = true
                     };
 
 
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    ValidateIssuerSigningKey = true,
+                    //    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    //    ValidateIssuer = false,
+                    //    ValidateAudience = false
+                    //};
+
                     options.Events = new JwtBearerEvents
                     {
                         OnAuthenticationFailed = context =>
@@ -126,7 +127,7 @@ namespace eMentor
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
+                    Description = "devase insert JWT with Bearer into field",
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });

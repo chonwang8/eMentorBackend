@@ -5,6 +5,7 @@ using System.Security.Claims;
 using Domain.Helper.AdminFunctions.Interfaces;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace WebApi.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [Authorize]
     public class AuthorizeController : ControllerBase
     {
         protected readonly IUserService _user;
@@ -20,23 +22,20 @@ namespace WebApi.Controllers
             _user = user;
         }
 
+        [HttpPost]
         public IActionResult GoogleAuth()
         {
-            string jwt = null;
+            //if (adminLogin == null)
+            //{
+            //    return BadRequest("Bad Input");
+            //}
+            //string result = _admin.Login(adminLogin);
+            //if (result.Equals("Incorrect username or password"))
+            //{
+            //    return NotFound("Incorrect username or password");
+            //}
 
-            //  Decode Firebase Token to get User Info
-            
-            //var userProfile = claimInfo.GetProfile(HttpContext.User.Identity as ClaimsIdentity);
-
-            //  Check Input
-
-            //  Check for existing User in Database
-
-            //  if (exist) => Create new user   => create Token
-
-            //  else => create Token
-
-            return Ok(jwt);
+            return Ok("Auth success");
         }
 
 
