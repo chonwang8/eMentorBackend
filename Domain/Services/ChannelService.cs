@@ -173,7 +173,8 @@ namespace Domain.Services
 
             ChannelSubsCountViewModel channelSubCount = new ChannelSubsCountViewModel
             {
-                ChannelId = channel.ChannelId
+                ChannelId = channel.ChannelId,
+                MentorName = channel.MentorName
             };
 
 

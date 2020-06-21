@@ -29,6 +29,7 @@ namespace Domain.ViewModels.ChannelViewModels
         }
 
         public Guid ChannelId { get; set; }
+        public string MentorName { get; set; }
 
         public List<int> MonthSubsCount { get; set; }
     }
