@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using Domain.Helper.AdminFunctions.Interfaces;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +15,31 @@ namespace WebApi.Controllers
     [Authorize]
     public class AuthorizeController : ControllerBase
     {
-        protected readonly IUserService _user;
-        public AuthorizeController(IUserService user)
+        protected readonly IAuthService _auth;
+        public AuthorizeController(IAuthService auth)
         {
-            _user = user;
+            _auth = auth;
         }
 
+
+        /// <summary>
+        /// Register a user to database
+        /// </summary>
+        /// <returns>Registered the user</returns>
+        /// <response code="200">Success</response>
+        [HttpPost]
+        public IActionResult Register(UserRegisterViewModel user)
+        {
+            string result = _auth.Register(user);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <returns>User with matching Id</returns>
+        /// <response code="200">Success</response>
         [HttpPost]
         public IActionResult GoogleAuth()
         {
@@ -39,20 +57,11 @@ namespace WebApi.Controllers
         }
 
 
-    }
-
-
-    [Route("api/admin")]
-    [ApiController]
-    public class AdminController : ControllerBase
-    {
-        protected readonly IAdminLogic _admin;
-        public AdminController(IAdminLogic admin)
-        {
-            _admin = admin;
-        }
-
-
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <returns>User with matching Id</returns>
+        /// <response code="200">Success</response>
         [HttpPost]
         public IActionResult Login(AdminLoginViewModel adminLogin)
         {
@@ -60,7 +69,7 @@ namespace WebApi.Controllers
             {
                 return BadRequest("Bad Input");
             }
-            string result = _admin.Login(adminLogin);
+            string result = _auth.Login(adminLogin);
             if (result.Equals("Incorrect username or password"))
             {
                 return NotFound("Incorrect username or password");
@@ -68,5 +77,21 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
+
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <returns>User with matching Id</returns>
+        /// <response code="200">Success</response>
+        [HttpPost]
+        public IActionResult Login(UserLoginViewModel user)
+        {
+            string result = _auth.Login(user);
+            return Ok(result);
+        }
+
     }
+
+
 }

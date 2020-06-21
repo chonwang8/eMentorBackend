@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Data.Entities;
 using Data.UnitOfWork;
 using Data.UnitOfWork.Interfaces;
-using Domain.Helper.AdminFunctions;
-using Domain.Helper.AdminFunctions.Interfaces;
 using Domain.Helper.DataObjects;
 using Domain.Services;
 using Domain.Services.Interfaces;
@@ -57,7 +55,7 @@ namespace eMentor
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISharingService, SharingService>();
             services.AddTransient<IMentorService, MentorService>();
-            services.AddTransient<IAdminLogic, AdminLogic>();
+            services.AddTransient<IAuthService, AuthService>();
             #endregion
 
             #region DbConnection
@@ -77,12 +75,12 @@ namespace eMentor
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidIssuer = "https://securetoken.google.com/flutter-chat-ba7c2",
                         ValidateAudience = true,
                         ValidAudience = "flutter-chat-ba7c2",
                         ValidateLifetime = true
                     };
-
 
                     //options.TokenValidationParameters = new TokenValidationParameters
                     //{

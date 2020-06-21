@@ -19,6 +19,7 @@ namespace Domain.ViewModels
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string RoleName { get; set; }
     }
 
     public class UserRegisterViewModel
@@ -28,6 +29,14 @@ namespace Domain.ViewModels
         public string Phone { get; set; }
         public string Fullname { get; set; }
         public int YearOfBirth { get; set; }
+    }
+
+    public class UserRoleViewModel
+    {
+        public Guid UserId { get; set; }
+        public string Email { get; set; }
+        public string Fullname { get; set; }
+        public string RoleName { get; set; }
     }
 
     public class UserStatusViewModel
