@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Domain.DTO;
 using Domain.ViewModels;
+using Domain.ViewModels.ChannelViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,5 +21,11 @@ namespace Domain.Services.Interfaces
         public bool UpdateChannelById(UpdateChannelDTO channel);
 
         public bool CreateChannel(CreateChannelDTO channel);
+
+
+        //  Wang - hot fix
+        public int Count(Guid channelId);
+        public IEnumerable<ChannelViewModel> GetChannelInfo(Guid channelId);
+        public void CountSubscriptionsByYear(Guid channelId);
     }
 }

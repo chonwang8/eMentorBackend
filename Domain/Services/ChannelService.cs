@@ -3,10 +3,12 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Domain.ViewModels.ChannelViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 
 namespace Domain.Services
@@ -23,6 +25,8 @@ namespace Domain.Services
         }
 
         #endregion Classes and Constructor
+
+
         public List<GetChannelViewModel> GetAllChannel(GetAllDTO request)
         {
             List<GetChannelViewModel> result = new List<GetChannelViewModel>();
@@ -133,5 +137,53 @@ namespace Domain.Services
             _uow.Commit();
             return true;
         }
+
+
+
+        //  Wang - hot fix
+        public int Count(Guid channelId)
+        {
+            int count = _uow
+                .GetRepository<Channel>()
+                .GetAll()
+                .Where(c => c.ChannelId == channelId)
+                .Count();
+            return count;
+        }
+
+        public IEnumerable<ChannelViewModel> GetChannelInfo(Guid channelId)
+        {
+            if(channelId == null)
+            {
+                return null;
+            }
+
+            IEnumerable<ChannelViewModel> channelInfo;
+            channelInfo = _uow
+                .GetRepository<Channel>()
+                .GetAll()
+                .Where(s => s.ChannelId == channelId)
+                .Include(c => c.Subcription)
+                .Include(c => c.Topic)
+                .Include(c => c.Mentor)
+                .Select(c => new ChannelViewModel
+                {
+                    ChannelId = c.ChannelId,
+                    MentorName = c.Mentor.User.Email,
+                    TopicName = c.Topic.TopicName,
+                    Sharing = c.Sharing,
+                    Subcription = c.Subcription
+                });
+
+            return channelInfo;
+        }
+
+        public void CountSubscriptionsByYear(Guid channelId)
+        {
+            var list = GetChannelInfo(channelId);
+
+
+        }
+
     }
 }

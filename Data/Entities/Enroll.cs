@@ -10,6 +10,6 @@ namespace Data.Entities
         public Guid SharingId { get; set; }
 
         public virtual Sharing Sharing { get; set; }
-        public virtual Subcription Subscription { get; set; }
+        public virtual Subscription Subscription { get; set; }
     }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Data.Entities
 {
-    public partial class Subcription
+    public partial class Subscription
     {
-        public Subcription()
+        public Subscription()
         {
             Enroll = new HashSet<Enroll>();
         }
@@ -13,6 +13,7 @@ namespace Data.Entities
         public Guid SubcriptionId { get; set; }
         public Guid MenteeId { get; set; }
         public Guid ChannelId { get; set; }
+        public DateTime TimeSubscripted { get; set; }
         public bool IsDisable { get; set; }
 
         public virtual Channel Channel { get; set; }

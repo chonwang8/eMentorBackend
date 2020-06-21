@@ -23,7 +23,7 @@ namespace Data.Entities
         public virtual DbSet<Mentee> Mentee { get; set; }
         public virtual DbSet<Mentor> Mentor { get; set; }
         public virtual DbSet<Sharing> Sharing { get; set; }
-        public virtual DbSet<Subcription> Subcription { get; set; }
+        public virtual DbSet<Subscription> Subcription { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -213,7 +213,7 @@ namespace Data.Entities
                     .HasConstraintName("FK_Sharing_Channel");
             });
 
-            modelBuilder.Entity<Subcription>(entity =>
+            modelBuilder.Entity<Subscription>(entity =>
             {
                 entity.Property(e => e.SubcriptionId)
                     .HasColumnName("subcriptionId")

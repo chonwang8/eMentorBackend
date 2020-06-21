@@ -8,7 +8,7 @@ namespace Data.Entities
         public Channel()
         {
             Sharing = new HashSet<Sharing>();
-            Subcription = new HashSet<Subcription>();
+            Subcription = new HashSet<Subscription>();
         }
 
         public Guid ChannelId { get; set; }
@@ -20,6 +20,6 @@ namespace Data.Entities
         public virtual Mentor Mentor { get; set; }
         public virtual Topic Topic { get; set; }
         public virtual ICollection<Sharing> Sharing { get; set; }
-        public virtual ICollection<Subcription> Subcription { get; set; }
+        public virtual ICollection<Subscription> Subcription { get; set; }
     }
 }

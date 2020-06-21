@@ -52,5 +52,11 @@ namespace WebApi.Controllers
             _service.CreateChannel(channel);
             return Ok("Created Successfully !");
         }
+
+
+
+        //  Wang - hot fix
+
+
     }
 }
