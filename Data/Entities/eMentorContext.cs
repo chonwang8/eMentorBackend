@@ -23,7 +23,7 @@ namespace Data.Entities
         public virtual DbSet<Mentee> Mentee { get; set; }
         public virtual DbSet<Mentor> Mentor { get; set; }
         public virtual DbSet<Sharing> Sharing { get; set; }
-        public virtual DbSet<Subscription> Subcription { get; set; }
+        public virtual DbSet<Subscription> Subscription { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
         public virtual DbSet<User> User { get; set; }
 
@@ -126,7 +126,7 @@ namespace Data.Entities
                     .WithMany(p => p.Enroll)
                     .HasForeignKey(d => d.SubscriptionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Enroll_Subcription");
+                    .HasConstraintName("FK_Enroll_Subscription");
             });
 
             modelBuilder.Entity<Major>(entity =>
@@ -215,8 +215,8 @@ namespace Data.Entities
 
             modelBuilder.Entity<Subscription>(entity =>
             {
-                entity.Property(e => e.SubcriptionId)
-                    .HasColumnName("subcriptionId")
+                entity.Property(e => e.SubscriptionId)
+                    .HasColumnName("subscriptionId")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.ChannelId).HasColumnName("channelId");
@@ -225,17 +225,19 @@ namespace Data.Entities
 
                 entity.Property(e => e.MenteeId).HasColumnName("menteeId");
 
+                entity.Property(e => e.TimeSubscripted).HasColumnName("timeSubscripted");
+
                 entity.HasOne(d => d.Channel)
-                    .WithMany(p => p.Subcription)
+                    .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.ChannelId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Subcription_Channel");
+                    .HasConstraintName("FK_Subscription_Channel");
 
                 entity.HasOne(d => d.Mentee)
-                    .WithMany(p => p.Subcription)
+                    .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.MenteeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Subcription_Mentee");
+                    .HasConstraintName("FK_Subscription_Mentee");
             });
 
             modelBuilder.Entity<Topic>(entity =>

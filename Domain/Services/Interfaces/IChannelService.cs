@@ -25,7 +25,6 @@ namespace Domain.Services.Interfaces
 
         //  Wang - hot fix
         public int Count(Guid channelId);
-        public IEnumerable<ChannelViewModel> GetChannelInfo(Guid channelId);
-        public void CountSubscriptionsByYear(Guid channelId);
+        public ChannelSubsCountViewModel GetChannelSubCount(Guid channelId);
     }
 }

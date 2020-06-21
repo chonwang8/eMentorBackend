@@ -6,6 +6,7 @@ using Domain.ViewModels;
 using Domain.ViewModels.ChannelViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -72,7 +73,7 @@ namespace Domain.Services
         {
             List<GetChannelByTopicIdViewModel> result = new List<GetChannelByTopicIdViewModel>();
 
-            foreach(var topicId in TopicIds)
+            foreach (var topicId in TopicIds)
             {
                 IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll()
                     .Where(c => c.TopicId == topicId).Include(c => c.Topic).Include(c => c.Mentor.User);
@@ -88,7 +89,7 @@ namespace Domain.Services
                             MentorId = channel.MentorId,
                             MentorName = channel.Mentor.User.Fullname
                         });
-                    }                   
+                    }
                 }
             }
             return result;
@@ -151,39 +152,63 @@ namespace Domain.Services
             return count;
         }
 
-        public IEnumerable<ChannelViewModel> GetChannelInfo(Guid channelId)
+        public ChannelSubsCountViewModel GetChannelSubCount(Guid channelId)
         {
-            if(channelId == null)
-            {
-                return null;
-            }
-
-            IEnumerable<ChannelViewModel> channelInfo;
-            channelInfo = _uow
+            IEnumerable<ChannelViewModel> list = _uow
                 .GetRepository<Channel>()
                 .GetAll()
-                .Where(s => s.ChannelId == channelId)
-                .Include(c => c.Subcription)
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
+                .Include(c => c.Subscription)
                 .Select(c => new ChannelViewModel
                 {
                     ChannelId = c.ChannelId,
                     MentorName = c.Mentor.User.Email,
                     TopicName = c.Topic.TopicName,
-                    Sharing = c.Sharing,
-                    Subcription = c.Subcription
+                    Subscription = c.Subscription
                 });
 
-            return channelInfo;
+            ChannelViewModel channel = list
+                .FirstOrDefault(i => i.ChannelId == channelId);
+
+            ChannelSubsCountViewModel channelSubCount = new ChannelSubsCountViewModel
+            {
+                ChannelId = channel.ChannelId
+            };
+
+
+            foreach (Subscription s in channel.Subscription)
+            {
+                int currentMonth = int.Parse(s.TimeSubscripted.Month.ToString()) - 1;
+                var count = (int) channelSubCount.MonthSubsCount[currentMonth];
+                channelSubCount.MonthSubsCount[currentMonth] = count + 1;
+            }
+
+            return channelSubCount;
         }
 
-        public void CountSubscriptionsByYear(Guid channelId)
-        {
-            var list = GetChannelInfo(channelId);
+        //public ChannelSubsCountViewModel CountSubscriptionsByYear(Guid channelId)
+        //{
+        //    if (channelId == null)
+        //    {
+        //        return null;
+        //    }
 
+        //    var list = GetChannelInfo();
+        //    var item = list.FirstOrDefault(i => i.ChannelId == channelId);
 
-        }
+        //    ChannelSubsCountViewModel result = new ChannelSubsCountViewModel
+        //    {
+        //        ChannelId = channelId
+        //    };
+
+        //    foreach (Subscription sub in item.Subcription) 
+        //    {
+
+        //    }
+
+        //    return result;
+        //}
 
     }
 }
