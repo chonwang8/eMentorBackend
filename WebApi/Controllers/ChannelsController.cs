@@ -56,7 +56,7 @@ namespace WebApi.Controllers
 
 
         //  Wang - hot fix
-        [HttpPost("sub")]
+        [HttpGet("sub")]
         public IActionResult CreateChannel(string channelId)
         {
             var result = _service.GetChannelSubCount(new Guid(channelId));
