@@ -7,7 +7,7 @@ namespace Data.Entities
     {
         public Mentee()
         {
-            Subcription = new HashSet<Subcription>();
+            Subscription = new HashSet<Subscription>();
         }
 
         public Guid MenteeId { get; set; }
@@ -15,6 +15,6 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
 
         public virtual User User { get; set; }
-        public virtual ICollection<Subcription> Subcription { get; set; }
+        public virtual ICollection<Subscription> Subscription { get; set; }
     }
 }

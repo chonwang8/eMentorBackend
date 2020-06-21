@@ -3,6 +3,7 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Domain.ViewModels.TopicViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

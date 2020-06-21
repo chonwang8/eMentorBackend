@@ -1,5 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.ViewModels;
+using Domain.ViewModels.TopicViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;

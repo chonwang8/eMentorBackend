@@ -52,5 +52,16 @@ namespace WebApi.Controllers
             _service.CreateChannel(channel);
             return Ok("Created Successfully !");
         }
+
+
+
+        //  Wang - hot fix
+        [HttpPost("sub")]
+        public IActionResult CreateChannel(string channelId)
+        {
+            var result = _service.GetChannelSubCount(new Guid(channelId));
+            return Ok(result);
+        }
+
     }
 }
