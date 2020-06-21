@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.TopicViewModels
 {
     public class GetTopicGroupByMajorViewModel
     {
