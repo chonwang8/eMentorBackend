@@ -10,13 +10,7 @@
             </summary>
             <returns>Registered the user</returns>
             <response code="200">Success</response>
-        </member>
-        <member name="M:WebApi.Controllers.AuthorizeController.GoogleAuth">
-            <summary>
-            Login
-            </summary>
-            <returns>User with matching Id</returns>
-            <response code="200">Success</response>
+            <response code="400">Error</response>
         </member>
         <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminLoginViewModel)">
             <summary>

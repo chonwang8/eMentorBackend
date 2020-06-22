@@ -33,8 +33,8 @@ namespace Domain.Helper.HelperFunctions
                     new Claim("user_role", "admin")
                 }),
                 Expires = DateTime.Now.AddMinutes(45),
-                Issuer = null,
-                Audience = null,
+                Issuer = "https://securetoken.google.com/flutter-chat-ba7c2",
+                Audience = "flutter-chat-ba7c2",
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(
@@ -61,8 +61,8 @@ namespace Domain.Helper.HelperFunctions
                     new Claim("user_role", userRoleViewModel.RoleName)
                 }),
                 Expires = DateTime.Now.AddMinutes(45),
-                Issuer = null,
-                Audience = null,
+                Issuer = "https://securetoken.google.com/flutter-chat-ba7c2",
+                Audience = "flutter-chat-ba7c2",
                 IssuedAt = DateTime.UtcNow,
                 NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(

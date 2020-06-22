@@ -95,7 +95,6 @@ namespace Domain.Services
             {
                 UserId = loggedUser.UserId,
                 Email = loggedUser.Email,
-                Fullname = loggedUser.Fullname,
                 RoleName = user.RoleName
             });
 
