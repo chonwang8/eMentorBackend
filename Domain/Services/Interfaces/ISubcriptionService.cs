@@ -15,8 +15,7 @@ namespace Domain.Services.Interfaces
         public int Update(SubscriptionViewModel subscriptionViewModel);
 
 
-        public int Disable(string sharingId, bool status);
-        public int Activate(string sharingId, bool status);
+        public int ChangeStatus(string subscriptionId, bool status);
         public int Delete(string subscriptionId);
     }
 }
