@@ -93,6 +93,15 @@ namespace eMentor
 
             #endregion JWT Auth
 
+            #region CORS
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+            #endregion
+
             #region Entity Framework Core
             services.AddDbContext<eMentorContext>(options =>
                 options.UseSqlServer(ConnectionString));
@@ -148,6 +157,8 @@ namespace eMentor
             app.UseHttpsRedirection();  
 
             app.UseRouting();
+
+            app.UseCors("MyPolicy");
 
             app.UseSwagger();
 
