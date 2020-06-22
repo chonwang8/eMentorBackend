@@ -1,7 +1,10 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.Helper.DataObjects;
+using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,56 +14,21 @@ namespace Domain.Services
 {
     public class UserService : IUserService
     {
-
-
         #region Classes and Constructor
-
         protected readonly IUnitOfWork _uow;
+        protected readonly IOptions<AppSetting> _options;
+        protected TokenManager tokenManager;
 
-        public UserService(IUnitOfWork uow)
+        public UserService(IUnitOfWork uow, IOptions<AppSetting> options)
         {
             _uow = uow;
+            _options = options;
+            tokenManager = new TokenManager(_options);
         }
 
         #endregion Classes and Constructor
 
 
-        #region Register And Login Functions
-        public string Login(UserLoginViewModel user)
-        {
-            User loggedUser = _uow
-                .GetRepository<User>()
-                .GetAll()
-                .SingleOrDefault(u => u.Email == user.Email);
-            if (loggedUser != null)
-            {
-                return "Email does not exist ! Please Register !";
-            }
-            return "Logged in";
-        }
-
-        public string Register(UserRegisterViewModel user)
-        {
-            if (user == null)
-            {
-                return "Register failed";
-            }
-
-            User newUser = new User
-            {
-                UserId = Guid.NewGuid(),
-                Email = user.Email,
-                Fullname = user.Fullname,
-                Phone = user.Phone,
-                YearOfBirth = user.YearOfBirth,
-                AvatarUrl = "default"
-            };
-            _uow.GetRepository<User>().Insert(newUser);
-            _uow.Commit();
-
-            return "Success";
-        }
-        #endregion
 
 
         #region RESTful API Functions

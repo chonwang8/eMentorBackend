@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using Data.Entities;
 using Data.UnitOfWork;
 using Data.UnitOfWork.Interfaces;
-using Domain.Helper.AdminFunctions;
-using Domain.Helper.AdminFunctions.Interfaces;
 using Domain.Helper.DataObjects;
 using Domain.Services;
 using Domain.Services.Interfaces;
@@ -57,7 +55,7 @@ namespace eMentor
             services.AddTransient<ITopicService, TopicService>();
             services.AddTransient<ISharingService, SharingService>();
             services.AddTransient<IMentorService, MentorService>();
-            services.AddTransient<IAdminLogic, AdminLogic>();
+            services.AddTransient<IAuthService, AuthService>();
             #endregion
 
             #region DbConnection
@@ -69,27 +67,41 @@ namespace eMentor
             var appSettings = appSettingsSection.Get<AppSetting>();
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-                options.Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = context =>
+                    options.Authority = "https://securetoken.google.com/flutter-chat-ba7c2";
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        ValidateIssuer = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidIssuer = "https://securetoken.google.com/flutter-chat-ba7c2",
+                        ValidateAudience = true,
+                        ValidAudience = "flutter-chat-ba7c2",
+                        ValidateLifetime = true
+                    };
+
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    ValidateIssuerSigningKey = true,
+                    //    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    //    ValidateIssuer = false,
+                    //    ValidateAudience = false
+                    //};
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
                         {
-                            context.Response.Headers.Add("Token-Expired", "true");
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("Token-Expired", "true");
+                            }
+                            return Task.CompletedTask;
                         }
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+                    };
+                });
 
             #endregion JWT Auth
 
@@ -122,7 +134,7 @@ namespace eMentor
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please insert JWT with Bearer into field",
+                    Description = "devase insert JWT with Bearer into field",
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey
                 });
@@ -154,7 +166,7 @@ namespace eMentor
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();  
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
