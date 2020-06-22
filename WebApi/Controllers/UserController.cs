@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
 {
     [Route("api/users")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class UserController : ControllerBase
     {
         protected readonly IUserService _user;
