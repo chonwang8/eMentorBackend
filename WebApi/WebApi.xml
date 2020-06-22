@@ -4,6 +4,28 @@
         <name>WebApi</name>
     </assembly>
     <members>
+        <member name="M:WebApi.Controllers.AuthorizeController.Register(Domain.ViewModels.UserRegisterViewModel)">
+            <summary>
+            Register a user to database
+            </summary>
+            <returns>Registered the user</returns>
+            <response code="200">Success</response>
+            <response code="400">Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminLoginViewModel)">
+            <summary>
+            Login
+            </summary>
+            <returns>User with matching Id</returns>
+            <response code="200">Success</response>
+        </member>
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.UserLoginViewModel)">
+            <summary>
+            Login
+            </summary>
+            <returns>User with matching Id</returns>
+            <response code="200">Success</response>
+        </member>
         <member name="M:WebApi.Controllers.UserController.GetAll">
             <summary>
             View list of users
@@ -64,20 +86,6 @@
             <response code="400">Invalid input</response>
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal server error</response>
-        </member>
-        <member name="M:WebApi.Controllers.RegisterController.Register(Domain.ViewModels.UserRegisterViewModel)">
-            <summary>
-            Register a user to database
-            </summary>
-            <returns>Registered the user</returns>
-            <response code="200">Success</response>
-        </member>
-        <member name="M:WebApi.Controllers.LoginController.Login(Domain.ViewModels.UserLoginViewModel)">
-            <summary>
-            Login
-            </summary>
-            <returns>User with matching Id</returns>
-            <response code="200">Success</response>
         </member>
     </members>
 </doc>
