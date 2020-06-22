@@ -10,9 +10,10 @@ namespace Data.Entities
             Enroll = new HashSet<Enroll>();
         }
 
-        public Guid SubcriptionId { get; set; }
+        public Guid SubscriptionId { get; set; }
         public Guid MenteeId { get; set; }
         public Guid ChannelId { get; set; }
+        public DateTime TimeSubscripted { get; set; }
         public bool IsDisable { get; set; }
 
         public virtual Channel Channel { get; set; }

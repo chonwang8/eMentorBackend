@@ -8,16 +8,18 @@ namespace Data.Entities
         public Channel()
         {
             Sharing = new HashSet<Sharing>();
-            Subcription = new HashSet<Subscription>();
+            Subscription = new HashSet<Subscription>();
         }
 
         public Guid ChannelId { get; set; }
         public Guid TopicId { get; set; }
         public Guid MentorId { get; set; }
 
+        public bool IsDisable { get; set; }
+
         public virtual Mentor Mentor { get; set; }
         public virtual Topic Topic { get; set; }
         public virtual ICollection<Sharing> Sharing { get; set; }
-        public virtual ICollection<Subscription> Subcription { get; set; }
+        public virtual ICollection<Subscription> Subscription { get; set; }
     }
 }
