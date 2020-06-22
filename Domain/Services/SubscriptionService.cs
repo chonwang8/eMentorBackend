@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Domain.Services
 {
-    public class SubscriptionService : ISubcriptionService
+    public class SubscriptionService : ISubscriptionService
     {
         #region Classes and Constructor
 

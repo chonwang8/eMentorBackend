@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Services.Interfaces
 {
-    public interface ISubcriptionService
+    public interface ISubscriptionService
     {
         public IEnumerable<SubscriptionViewModel> GetAll();
         public IEnumerable<SubscriptionViewModel> GetById(string subscriptionId);
