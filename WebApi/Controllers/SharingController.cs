@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<SharingViewModel> result = _sharing.GetAll().ToList();
+            List<SharingInfoViewModel> result = _sharing.GetAll().ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no sharings in the system");
