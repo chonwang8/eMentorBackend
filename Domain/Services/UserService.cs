@@ -119,7 +119,7 @@ namespace Domain.Services
                 AvatarUrl = "default",
                 Balance = 0,
                 Description = "",
-                YearOfBirth = 1999
+                YearOfBirth = 1999,
                 IsDisable = false
             };
 

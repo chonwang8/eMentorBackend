@@ -84,7 +84,7 @@ namespace WebApi.Controllers
             try
             {
                 user = (UserInsertViewModel) userInsert;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return BadRequest("Request body does not fit UserInsertViewModel parameters");
             }
