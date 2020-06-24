@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,6 +13,7 @@ namespace WebApi.Controllers
 {
     [Route("api/topics")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class TopicController : ControllerBase
     {
         protected readonly ITopicService _topic;
