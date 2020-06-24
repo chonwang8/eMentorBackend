@@ -2,6 +2,7 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,13 @@ namespace Domain.Services
 
 
         #region RESTful API methods
-        public IEnumerable<SharingViewModel> GetAll()
+        public IEnumerable<SharingInfoViewModel> GetAll()
         {
-            IEnumerable<SharingViewModel> result = _uow
+            IEnumerable<SharingInfoViewModel> result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
-                .Select(s => new SharingViewModel
+                .Include(s => s.Channel.Topic)
+                .Select(s => new SharingInfoViewModel
                 {
                     SharingId = s.SharingId,
                     SharingName = s.SharingName,
@@ -38,7 +40,9 @@ namespace Domain.Services
                     EndTime = s.EndTime,
                     Maximum = s.Maximum,
                     Price = s.Price,
-                    ChannelId = s.ChannelId
+                    ChannelId = s.ChannelId,
+                    imageUrl = "https://www.vaisulweb.com/wp-content/uploads/2019/02/azure_logo_794_new.png",
+                    TopicName = s.Channel.Topic.TopicName
                 });
             return result;
         }

@@ -74,12 +74,21 @@ namespace WebApi.Controllers
         /// Insert a user into database
         /// </summary>
         /// <returns>Query status</returns>
-        /// <response code="200">User successfully inserted</response>
+        /// <response code="200">User successfully inserted</rpesponse>
         /// <response code="400">Invalid input</response>
         /// <response code="500">Internal server error</response>
         [HttpPost]
-        public IActionResult Insert(UserInsertViewModel user)
+        public IActionResult Insert(UserInsertViewModel userInsert)
         {
+            UserInsertViewModel user = null;
+            try
+            {
+                user = (UserInsertViewModel) userInsert;
+            } catch (Exception e)
+            {
+                return BadRequest("Request body does not fit UserInsertViewModel parameters");
+            }
+
             if (user == null)
             {
                 return BadRequest("User info must not be null");
