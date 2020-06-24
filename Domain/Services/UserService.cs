@@ -119,7 +119,8 @@ namespace Domain.Services
                 AvatarUrl = "default",
                 Balance = 0,
                 Description = userInsertion.Description,
-                YearOfBirth = userInsertion.YearOfBirth
+                YearOfBirth = userInsertion.YearOfBirth,
+                IsDisable = false
             };
 
             //  Insert user to DB

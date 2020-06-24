@@ -102,7 +102,8 @@ namespace Domain.Services
                 EndTime = sharingViewModel.EndTime,
                 Maximum = sharingViewModel.Maximum,
                 Price = sharingViewModel.Price,
-                ChannelId = sharingViewModel.ChannelId
+                ChannelId = sharingViewModel.ChannelId,
+                IsDisable = false
             };
 
 

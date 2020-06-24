@@ -86,7 +86,8 @@ namespace Domain.Services
                 TopicId = topicInput.TopicId,
                 TopicName = topicInput.TopicName,
                 MajorId = topicInput.MajorId,
-                CreatedBy = topicInput.CreatedBy
+                CreatedBy = topicInput.CreatedBy,
+                IsDisable = false
             };
 
             try

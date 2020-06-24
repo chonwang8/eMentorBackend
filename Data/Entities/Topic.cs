@@ -14,6 +14,7 @@ namespace Data.Entities
         public string TopicName { get; set; }
         public Guid MajorId { get; set; }
         public Guid CreatedBy { get; set; }
+        public bool IsDisable { get; set; }
 
         public virtual Major Major { get; set; }
         public virtual ICollection<Channel> Channel { get; set; }

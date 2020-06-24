@@ -14,7 +14,6 @@ namespace Data.Entities
         public Guid ChannelId { get; set; }
         public Guid TopicId { get; set; }
         public Guid MentorId { get; set; }
-
         public bool IsDisable { get; set; }
 
         public virtual Mentor Mentor { get; set; }
