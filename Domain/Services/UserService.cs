@@ -85,12 +85,12 @@ namespace Domain.Services
 
 
         //  Add a user
-        public int Insert(UserViewModel userInsertion)
+        public int Insert(UserInsertViewModel userInsert)
         {
             int result = 0;
 
             //  Check input
-            if (userInsertion == null)
+            if (userInsert == null)
             {
                 result = 0;
                 return result;
@@ -101,7 +101,7 @@ namespace Domain.Services
             User userInDb = _uow
                 .GetRepository<User>()
                 .GetAll()
-                .SingleOrDefault(u => u.Email == userInsertion.Email);
+                .SingleOrDefault(u => u.Email == userInsert.Email);
             if (userInDb != null)
             {
                 result = 1;
@@ -113,13 +113,13 @@ namespace Domain.Services
             User user = new User
             {
                 UserId = Guid.NewGuid(),
-                Email = userInsertion.Email,
-                Fullname = userInsertion.Fullname,
-                Phone = userInsertion.Phone,
+                Email = userInsert.Email,
+                Fullname = userInsert.Fullname,
+                Phone = userInsert.Phone,
                 AvatarUrl = "default",
                 Balance = 0,
-                Description = userInsertion.Description,
-                YearOfBirth = userInsertion.YearOfBirth
+                Description = "",
+                YearOfBirth = 1999
             };
 
             //  Insert user to DB

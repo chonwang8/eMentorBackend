@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace WebApi.Controllers
 {
     [Route("api/auth")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     [AllowAnonymous]
     public class AuthorizeController : ControllerBase
     {
