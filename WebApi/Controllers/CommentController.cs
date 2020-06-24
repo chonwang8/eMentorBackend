@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,9 +20,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllComment()
+        public IActionResult GetAllComment(GetAllDTO request)
         {
-            return Ok(_service.GetAllComment());
+            return Ok(_service.GetAllComment(request));
         }
 
         [HttpGet("{CommentId}")]

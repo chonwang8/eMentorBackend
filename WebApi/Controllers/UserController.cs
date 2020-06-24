@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Cors;
@@ -32,9 +33,9 @@ namespace WebApi.Controllers
         /// <response code="404">Empty challenge list</response>
         /// <response code="500">Internal Error</response>
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllDTO request)
         {
-            List<UserViewModel> result = _user.GetAll().ToList();
+            List<UserViewModel> result = _user.GetAll(request).ToList();
             if (result == null || result.Count == 0)
             {
                 return NotFound("There are no users in the system");

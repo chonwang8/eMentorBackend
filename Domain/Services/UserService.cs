@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
@@ -34,7 +35,7 @@ namespace Domain.Services
         #region RESTful API Functions
 
         //  Get all users
-        public IEnumerable<UserViewModel> GetAll()
+        public IEnumerable<UserViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<UserViewModel> result = _uow
                 .GetRepository<User>()
@@ -50,7 +51,7 @@ namespace Domain.Services
                     Balance = u.Balance,
                     Description = u.Description
                 });
-
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
 
             return result;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -21,9 +22,9 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllDTO request)
         {
-            List<MenteeViewModel> result = _mentee.GetAll().ToList();
+            List<MenteeViewModel> result = _mentee.GetAll(request).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no mentees in the system");

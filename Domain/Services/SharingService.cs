@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using System;
@@ -24,7 +25,7 @@ namespace Domain.Services
 
 
         #region RESTful API methods
-        public IEnumerable<SharingViewModel> GetAll()
+        public IEnumerable<SharingViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<SharingViewModel> result = _uow
                 .GetRepository<Sharing>()
@@ -40,6 +41,7 @@ namespace Domain.Services
                     Price = s.Price,
                     ChannelId = s.ChannelId
                 });
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

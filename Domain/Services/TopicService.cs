@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using System;
@@ -21,7 +22,7 @@ namespace Domain.Services
 
 
 
-        public IEnumerable<TopicViewModel> GetAll()
+        public IEnumerable<TopicViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<TopicViewModel> result = _uow
                 .GetRepository<Topic>()
@@ -33,7 +34,7 @@ namespace Domain.Services
                     MajorId = u.MajorId,
                     CreatedBy = u.CreatedBy
                 });
-
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

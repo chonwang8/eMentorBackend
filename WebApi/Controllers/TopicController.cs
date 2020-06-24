@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -23,9 +24,9 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllDTO request)
         {
-            List<TopicViewModel> result = _topic.GetAll().ToList();
+            List<TopicViewModel> result = _topic.GetAll(request).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no topics in the system");

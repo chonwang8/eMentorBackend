@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using System;
@@ -29,7 +30,7 @@ namespace Domain.Services
 
         #region RESTful API Functions
 
-        public IEnumerable<MentorViewModel> GetAll()
+        public IEnumerable<MentorViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<MentorViewModel> result = _uow
                 .GetRepository<Mentor>()
@@ -40,6 +41,7 @@ namespace Domain.Services
                     UserId = u.UserId,
                     IsDisable = u.IsDisable
                 });
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

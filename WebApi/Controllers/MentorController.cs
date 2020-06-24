@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -20,9 +21,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllDTO request)
         {
-            List<MentorViewModel> result = _mentor.GetAll().ToList();
+            List<MentorViewModel> result = _mentor.GetAll(request).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no users in the system");

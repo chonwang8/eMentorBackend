@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -22,9 +23,9 @@ namespace WebApi.Controllers
 
         #region RESTful APIs
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllDTO request)
         {
-            List<SharingViewModel> result = _sharing.GetAll().ToList();
+            List<SharingViewModel> result = _sharing.GetAll(request).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no sharings in the system");
