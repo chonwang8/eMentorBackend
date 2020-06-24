@@ -75,7 +75,7 @@ namespace WebApi.Controllers
         /// Insert a user into database
         /// </summary>
         /// <returns>Query status</returns>
-        /// <response code="200">User successfully inserted</rpesponse>
+        /// <response code="200">User successfully inserted</response>
         /// <response code="400">Invalid input</response>
         /// <response code="500">Internal server error</response>
         [HttpPost]
