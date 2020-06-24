@@ -41,7 +41,7 @@ namespace Domain.Services
                     Maximum = s.Maximum,
                     Price = s.Price,
                     ChannelId = s.ChannelId,
-                    imageUrl = "https://www.vaisulweb.com/wp-content/uploads/2019/02/azure_logo_794_new.png",
+                    imageUrl = "https://img-a.udemycdn.com/course/750x422/96808_967c_5.jpg",
                     TopicName = s.Channel.Topic.TopicName
                 });
             return result;
