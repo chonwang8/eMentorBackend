@@ -13,8 +13,8 @@ namespace Data.Entities
         public Guid SubscriptionId { get; set; }
         public Guid MenteeId { get; set; }
         public Guid ChannelId { get; set; }
-        public DateTime TimeSubscripted { get; set; }
         public bool IsDisable { get; set; }
+        public DateTime TimeSubscripted { get; set; }
 
         public virtual Channel Channel { get; set; }
         public virtual Mentee Mentee { get; set; }

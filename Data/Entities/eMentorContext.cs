@@ -31,7 +31,7 @@ namespace Data.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=.\\;Database=eMentor;Trusted_Connection=True;");
             }
         }
@@ -65,6 +65,8 @@ namespace Data.Entities
                     .HasColumnName("channelId")
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
+
                 entity.Property(e => e.MentorId).HasColumnName("mentorId");
 
                 entity.Property(e => e.TopicId).HasColumnName("topicId");
@@ -95,6 +97,8 @@ namespace Data.Entities
 
                 entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
 
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
+
                 entity.Property(e => e.ParentCommendId).HasColumnName("parentCommendId");
 
                 entity.Property(e => e.SharingId).HasColumnName("sharingId");
@@ -112,6 +116,8 @@ namespace Data.Entities
                     .HasColumnName("enrollId")
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
+
                 entity.Property(e => e.SharingId).HasColumnName("sharingId");
 
                 entity.Property(e => e.SubscriptionId).HasColumnName("subscriptionId");
@@ -126,7 +132,7 @@ namespace Data.Entities
                     .WithMany(p => p.Enroll)
                     .HasForeignKey(d => d.SubscriptionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Enroll_Subscription");
+                    .HasConstraintName("FK_Enroll_Subcription");
             });
 
             modelBuilder.Entity<Major>(entity =>
@@ -136,6 +142,8 @@ namespace Data.Entities
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
+
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
                 entity.Property(e => e.MajorName)
                     .IsRequired()
@@ -181,9 +189,11 @@ namespace Data.Entities
             {
                 entity.Property(e => e.SharingId)
                     .HasColumnName("sharingId")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.ChannelId).HasColumnName("channelId");
+                entity.Property(e => e.ChannelId)
+                    .HasColumnName("channelId")
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
@@ -192,6 +202,8 @@ namespace Data.Entities
                 entity.Property(e => e.EndTime)
                     .HasColumnName("endTime")
                     .HasColumnType("date");
+
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
                 entity.Property(e => e.Maximum).HasColumnName("maximum");
 
@@ -217,7 +229,7 @@ namespace Data.Entities
             {
                 entity.Property(e => e.SubscriptionId)
                     .HasColumnName("subscriptionId")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.ChannelId).HasColumnName("channelId");
 
@@ -225,19 +237,21 @@ namespace Data.Entities
 
                 entity.Property(e => e.MenteeId).HasColumnName("menteeId");
 
-                entity.Property(e => e.TimeSubscripted).HasColumnName("timeSubscripted");
+                entity.Property(e => e.TimeSubscripted)
+                    .HasColumnName("timeSubscripted")
+                    .HasColumnType("date");
 
                 entity.HasOne(d => d.Channel)
                     .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.ChannelId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Subscription_Channel");
+                    .HasConstraintName("FK_Subcription_Channel");
 
                 entity.HasOne(d => d.Mentee)
                     .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.MenteeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Subscription_Mentee");
+                    .HasConstraintName("FK_Subcription_Mentee");
             });
 
             modelBuilder.Entity<Topic>(entity =>
@@ -247,6 +261,8 @@ namespace Data.Entities
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
+
+                entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
                 entity.Property(e => e.MajorId).HasColumnName("majorId");
 

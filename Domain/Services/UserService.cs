@@ -120,6 +120,7 @@ namespace Domain.Services
                 Balance = 0,
                 Description = "",
                 YearOfBirth = 1999
+                IsDisable = false
             };
 
             //  Insert user to DB

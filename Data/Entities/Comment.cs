@@ -10,6 +10,7 @@ namespace Data.Entities
         public Guid SharingId { get; set; }
         public string CommentContent { get; set; }
         public Guid CreatedBy { get; set; }
+        public bool IsDisable { get; set; }
 
         public virtual Sharing Sharing { get; set; }
     }
