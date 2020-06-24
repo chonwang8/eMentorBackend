@@ -9,7 +9,7 @@ namespace Domain.Services.Interfaces
     {
         public IEnumerable<UserViewModel> GetAll();
         public IEnumerable<UserViewModel> GetById(string userId);
-        public int Insert(UserViewModel userInsertion);
+        public int Insert(UserInsertViewModel userInsert);
         public int Update(UserViewModel user);
         public int Disable(UserStatusViewModel user);
         public int Delete(string userId);

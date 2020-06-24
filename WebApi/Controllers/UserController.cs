@@ -79,7 +79,7 @@ namespace WebApi.Controllers
         /// <response code="400">Invalid input</response>
         /// <response code="500">Internal server error</response>
         [HttpPost]
-        public IActionResult Insert(UserViewModel user)
+        public IActionResult Insert(UserInsertViewModel user)
         {
             if (user == null)
             {
@@ -117,7 +117,7 @@ namespace WebApi.Controllers
                 return BadRequest("User info must not be null");
             }
 
-            int result = _user.Insert(user);
+            int result = _user.Update(user);
 
             if (result == 0)
             {

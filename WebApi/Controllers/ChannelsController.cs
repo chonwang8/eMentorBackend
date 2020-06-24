@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.DTO;
 using Domain.Services.Interfaces;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace WebApi.Controllers
 {
     [Route("api/channels")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class ChannelsController : ControllerBase
     {
         protected readonly IChannelService _service;

@@ -15,6 +15,16 @@ namespace Domain.ViewModels
         public double? Balance { get; set; }
         public string Description { get; set; }
     }
+
+    public class UserInsertViewModel
+    {
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Fullname { get; set; }
+        public int YearOfBirth { get; set; }
+        public string AvatarUrl { get; set; }
+    }
+
     public class UserLoginViewModel
     {
         public string Email { get; set; }
