@@ -1,14 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Security.Claims;
+﻿using Domain.DTO.AuthDTOs;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace WebApi.Controllers
 {
@@ -58,6 +54,36 @@ namespace WebApi.Controllers
         /// </summary>
         /// <returns>User with matching Id</returns>
         /// <response code="200">Success</response>
+        [HttpPost("login")]
+        public IActionResult Login(UserLoginViewModel userModel)
+        {
+            #region Check Input
+            if (userModel == null)
+            {
+                return BadRequest("Bad Input");
+            }
+            #endregion
+
+            LoginResponseDTO result = null;
+
+            try
+            {
+                result = _auth.Login(userModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <returns>User with matching Id</returns>
+        /// <response code="200">Success</response>
         [HttpPost("adminLogin")]
         public IActionResult Login(AdminLoginViewModel adminLogin)
         {
@@ -77,43 +103,15 @@ namespace WebApi.Controllers
                 Console.WriteLine(e.Message + e.StackTrace + e.Source);
             }
 
-            if (result.Equals("Incorrect username or password"))
+            if (result == null)
             {
                 return NotFound("Incorrect username or password");
             }
 
-            return Ok(result);
+            return Ok("Login Successfully.\n\n\n " + result);
         }
 
-
-        /// <summary>
-        /// Login
-        /// </summary>
-        /// <returns>User with matching Id</returns>
-        /// <response code="200">Success</response>
-        [HttpPost("login")]
-        public IActionResult Login(UserLoginViewModel user)
-        {
-            if (user == null)
-            {
-                return BadRequest("Bad Input");
-            }
-
-            string result = null;
-
-            try
-            {
-                result = _auth.Login(user);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            
-            return Ok(result);
-        }
 
     }
-
 
 }

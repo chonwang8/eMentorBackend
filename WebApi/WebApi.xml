@@ -12,13 +12,6 @@
             <response code="200">Success</response>
             <response code="400">Error</response>
         </member>
-        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminLoginViewModel)">
-            <summary>
-            Login
-            </summary>
-            <returns>User with matching Id</returns>
-            <response code="200">Success</response>
-        </member>
         <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.UserLoginViewModel)">
             <summary>
             Login
@@ -26,7 +19,14 @@
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
-        <member name="M:WebApi.Controllers.UserController.GetAll">
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminLoginViewModel)">
+            <summary>
+            Login
+            </summary>
+            <returns>User with matching Id</returns>
+            <response code="200">Success</response>
+        </member>
+        <member name="M:WebApi.Controllers.UserController.GetAll(System.String,System.String,System.String)">
             <summary>
             View list of users
             </summary>
