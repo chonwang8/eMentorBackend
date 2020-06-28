@@ -1,15 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using Domain.DTO;
+﻿using Domain.DTO.AuthDTOs;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace WebApi.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.DTO;
+using Domain.DTO.AuthDTOs;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;

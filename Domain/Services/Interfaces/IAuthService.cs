@@ -1,4 +1,4 @@
-﻿using Domain.DTO;
+﻿using Domain.DTO.AuthDTOs;
 using Domain.ViewModels;
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.DTO
+namespace Domain.DTO.AuthDTOs
 {
     public class LoginResponseDTO
     {
