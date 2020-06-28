@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
@@ -62,7 +63,7 @@ namespace Domain.Services
             if (loggedAdmin != null)
             {
                 if (loggedAdmin.Password != adminLogin.Password)
-                    return "Incorrect username or password";
+                    return null;
             }
 
             string jwtToken = tokenManager.CreateAdminAccessToken(new AdminViewModel
@@ -75,21 +76,90 @@ namespace Domain.Services
         }
 
 
-        public string Login(UserLoginViewModel user)
+        public LoginResponseDTO Login(UserLoginViewModel user)
         {
-            if (user.RoleName != "mentor" || user.RoleName != "mentee")
+            LoginResponseDTO result = null;
+
+            #region Check Input
+            if (user == null)
             {
-                return "Invalid Operation";
+                result = new LoginResponseDTO
+                {
+                    Status = 1,
+                    Message = "User Login information must not be null",
+                    Result = null
+                };
+                return result;
             }
 
+            if (user.RoleName != "mentor" && user.RoleName != "mentee")
+            {
+
+                result = new LoginResponseDTO
+                {
+                    Status = 2,
+                    Message = "User missing required role",
+                    Result = null
+                };
+                return result;
+            }
+            #endregion 
+
+            #region Check User
             User loggedUser = _uow
                 .GetRepository<User>()
                 .GetAll()
                 .SingleOrDefault(u => u.Email == user.Email);
-            if (loggedUser != null)
+
+            if (loggedUser == null)
             {
-                return "Email does not exist ! Please Register !";
+                result = new LoginResponseDTO
+                {
+                    Status = 3,
+                    Result = null,
+                    Message = "Email does not exist ! Please Register !"
+                };
+                return result;
             }
+            #endregion
+
+            #region Check Role
+
+            if (user.RoleName == "mentor")
+            {
+                Mentor mentor = _uow
+                    .GetRepository<Mentor>()
+                    .GetAll()
+                    .SingleOrDefault(m => m.UserId == loggedUser.UserId);
+                if (mentor == null)
+                {
+                    result = new LoginResponseDTO
+                    {
+                        Status = 4,
+                        Result = null,
+                        Message = "This user is not a Mentor."
+                    };
+                    return result;
+                }
+            } else if (user.RoleName == "mentee")
+            {
+                Mentee mentee = _uow
+                    .GetRepository<Mentee>()
+                    .GetAll()
+                    .SingleOrDefault(m => m.UserId == loggedUser.UserId);
+                if (mentee == null)
+                {
+                    result = new LoginResponseDTO
+                    {
+                        Status = 4,
+                        Result = null,
+                        Message = "This user is not a Mentee."
+                    };
+                    return result;
+                }
+            }
+
+            #endregion
 
             string jwtToken = tokenManager.CreateUserAccessToken(new UserRoleViewModel
             {
@@ -98,7 +168,14 @@ namespace Domain.Services
                 RoleName = user.RoleName
             });
 
-            return jwtToken;
+            result = new LoginResponseDTO
+            {
+                Status = 0,
+                Message = "Login Successfully.",
+                Result = jwtToken
+            };
+
+            return result;
         }
 
 
