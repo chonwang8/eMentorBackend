@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -16,6 +13,7 @@ namespace WebApi.Controllers
     public class CommentController : ControllerBase
     {
         protected readonly ICommentService _service;
+
         public CommentController(ICommentService service)
         {
             _service = service;
@@ -64,12 +62,8 @@ namespace WebApi.Controllers
                 }
                 IsAscended = bool.Parse(asc);
             }
-            else
-            {
-                IsAscended = false;
-            }
 
-            #endregion
+            #endregion Set default paging values if null or empty input
 
             request = new GetAllDTO
             {

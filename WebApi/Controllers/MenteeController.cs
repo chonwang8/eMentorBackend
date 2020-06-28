@@ -66,10 +66,6 @@ namespace WebApi.Controllers
                 }
                 IsAscended = bool.Parse(asc);
             }
-            else
-            {
-                IsAscended = false;
-            }
 
             #endregion
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -20,6 +18,8 @@ namespace WebApi.Controllers
         {
             _service = service;
         }
+
+
         [HttpPost("paging")]
         public IActionResult GetAllChannel(string size, string index, string asc)
         {
@@ -62,10 +62,6 @@ namespace WebApi.Controllers
                     return BadRequest("Invalid paging values");
                 }
                 IsAscended = bool.Parse(asc);
-            }
-            else
-            {
-                IsAscended = false;
             }
 
             #endregion
