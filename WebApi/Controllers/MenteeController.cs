@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Cors;
@@ -23,9 +24,59 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string size, string index, string asc)
         {
-            List<MenteeViewModel> result = _mentee.GetAll().ToList();
+            int pageSize, pageIndex;
+            bool IsAscended = false;
+            GetAllDTO paging = null;
+
+            #region Set default paging values if null or empty input
+
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                if (!size.All(char.IsDigit))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                pageSize = int.Parse(size);
+            }
+            else
+            {
+                pageSize = 40;
+            }
+
+            if (!string.IsNullOrWhiteSpace(index))
+            {
+                if (!index.All(char.IsDigit))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                pageIndex = int.Parse(index);
+            }
+            else
+            {
+                pageIndex = 1;
+            }
+
+            if (!string.IsNullOrWhiteSpace(asc))
+            {
+                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                IsAscended = bool.Parse(asc);
+            }
+
+            #endregion
+
+            paging = new GetAllDTO
+            {
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                IsAscending = false
+            };
+
+            List<MenteeViewModel> result = _mentee.GetAll(paging).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no mentees in the system");

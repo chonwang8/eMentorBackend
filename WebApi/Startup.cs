@@ -82,14 +82,6 @@ namespace eMentor
                         ValidateLifetime = true
                     };
 
-                    //options.TokenValidationParameters = new TokenValidationParameters
-                    //{
-                    //    ValidateIssuerSigningKey = true,
-                    //    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    //    ValidateIssuer = false,
-                    //    ValidateAudience = false
-                    //};
-
                     options.Events = new JwtBearerEvents
                     {
                         OnAuthenticationFailed = context =>

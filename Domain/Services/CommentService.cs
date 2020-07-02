@@ -1,9 +1,11 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Domain.Services
@@ -20,10 +22,11 @@ namespace Domain.Services
         }
 
         #endregion Classes and Constructor
-        public List<GetCommentViewModel> GetAllComment()
+        public List<GetCommentViewModel> GetAllComment(GetAllDTO request)
         {
             List<GetCommentViewModel> result = new List<GetCommentViewModel>();
             IEnumerable<Comment> comments = _uow.GetRepository<Comment>().GetAll();
+            comments = comments.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             foreach (var comment in comments)
             {
                 result.Add(new GetCommentViewModel

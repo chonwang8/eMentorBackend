@@ -1,4 +1,5 @@
-﻿using Domain.ViewModels;
+﻿using Domain.DTO.AuthDTOs;
+using Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Domain.Services.Interfaces
     {
 
         public string Register(UserRegisterViewModel user);
-        public string Login(UserLoginViewModel user);
+        public LoginResponseDTO Login(UserLoginViewModel user);
         public string Login(AdminLoginViewModel adminLogin);
     }
 }

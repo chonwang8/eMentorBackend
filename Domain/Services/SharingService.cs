@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ namespace Domain.Services
 
 
         #region RESTful API methods
-        public IEnumerable<SharingInfoViewModel> GetAll()
+
+        public IEnumerable<SharingInfoViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<SharingInfoViewModel> result = _uow
                 .GetRepository<Sharing>()
@@ -44,6 +46,7 @@ namespace Domain.Services
                     imageUrl = "https://img-a.udemycdn.com/course/750x422/96808_967c_5.jpg",
                     TopicName = s.Channel.Topic.TopicName
                 });
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

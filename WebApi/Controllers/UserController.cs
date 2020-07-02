@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Cors;
@@ -33,9 +34,60 @@ namespace WebApi.Controllers
         /// <response code="404">Empty challenge list</response>
         /// <response code="500">Internal Error</response>
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string size, string index, string asc)
         {
-            List<UserViewModel> result = _user.GetAll().ToList();
+            int pageSize, pageIndex;
+            bool IsAscended = false;
+            GetAllDTO paging = null;
+
+            #region Set default paging values if null or empty input
+
+            if (!string.IsNullOrWhiteSpace(size))
+            {
+                if (!size.All(char.IsDigit))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                pageSize = int.Parse(size);
+            }
+            else
+            {
+                pageSize = 40;
+            }
+
+            if (!string.IsNullOrWhiteSpace(index))
+            {
+                if (!index.All(char.IsDigit))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                pageIndex = int.Parse(index);
+            }
+            else
+            {
+                pageIndex = 1;
+            }
+
+            if (!string.IsNullOrWhiteSpace(asc))
+            {
+                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                IsAscended = bool.Parse(asc);
+            }
+
+            #endregion
+
+            paging = new GetAllDTO
+            {
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                IsAscending = false
+            };
+
+            List<UserViewModel> result = _user.GetAll(paging).ToList();
+
             if (result == null || result.Count == 0)
             {
                 return NotFound("There are no users in the system");
@@ -85,7 +137,7 @@ namespace WebApi.Controllers
             try
             {
                 user = (UserInsertViewModel) userInsert;
-            } catch (Exception e)
+            } catch (Exception)
             {
                 return BadRequest("Request body does not fit UserInsertViewModel parameters");
             }
