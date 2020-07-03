@@ -13,14 +13,16 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class ChannelsController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IChannelService _service;
         public ChannelsController(IChannelService service)
         {
             _service = service;
         }
+        #endregion
 
 
-        [HttpPost("paging")]
+        [HttpGet]
         public IActionResult GetAllChannel(string size, string index, string asc)
         {
             int pageSize, pageIndex;
@@ -77,12 +79,19 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
+        public IActionResult CreateChannel(CreateChannelDTO channel)
+        {
+            _service.CreateChannel(channel);
+            return Ok("Created Successfully !");
+        }
+
+        [HttpGet("TopicId")]
         public IActionResult GetChannelByTopicId(List<Guid> TopicId)
         {
             return Ok(_service.GetChannelByTopicId(TopicId));
         }
 
-        [HttpDelete]
+        [HttpDelete("{ChannelId}")]
         public IActionResult DeleteChannelById(Guid ChannelId)
         {
             if (_service.DeleteChannelById(ChannelId) == false)
@@ -98,14 +107,6 @@ namespace WebApi.Controllers
             return Ok("Updated Successfully !");
         }
 
-        [HttpPost("create")]
-        public IActionResult CreateChannel(CreateChannelDTO channel)
-        {
-            _service.CreateChannel(channel);
-            return Ok("Created Successfully !");
-        }
-
-
 
         //  Wang - hot fix
         [HttpGet("subcribe")]
@@ -114,6 +115,5 @@ namespace WebApi.Controllers
             var result = _service.GetChannelSubCount(new Guid(channelId));
             return Ok(result);
         }
-
     }
 }

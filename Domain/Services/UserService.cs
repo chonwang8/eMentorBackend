@@ -31,10 +31,6 @@ namespace Domain.Services
 
 
 
-
-        #region RESTful API Functions
-
-        //  Get all users
         public IEnumerable<UserViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<UserViewModel> result = _uow
@@ -56,8 +52,6 @@ namespace Domain.Services
             return result;
         }
 
-
-        //  Get user by Id
         public IEnumerable<UserViewModel> GetById(string userId)
         {
             if (userId == null)
@@ -84,8 +78,6 @@ namespace Domain.Services
             return result;
         }
 
-
-        //  Add a user
         public int Insert(UserInsertViewModel userInsert)
         {
             int result = 0;
@@ -139,8 +131,6 @@ namespace Domain.Services
             return result;
         }
 
-
-        //  Update a user
         public int Update(UserViewModel user)
         {
             int result = 0;
@@ -188,12 +178,12 @@ namespace Domain.Services
             return result;
         }
 
-        //  Disable a user
-        public int Disable(UserStatusViewModel user)
+        public int ChangeStatus(string userId, bool status)
         {
             int result = 0;
-            
-            if (user.Equals(null))
+            Guid guid = new Guid(userId);
+
+            if (userId.Equals(null))
             {
                 result = 0;
                 return result;
@@ -202,14 +192,14 @@ namespace Domain.Services
             User existingUser = _uow
                 .GetRepository<User>()
                 .GetAll()
-                .FirstOrDefault(u => u.UserId == user.UserId);
+                .FirstOrDefault(m => m.UserId == guid);
             if (existingUser == null)
             {
                 result = 1;
                 return result;
             }
 
-            existingUser.IsDisable = user.IsDisable;
+            existingUser.IsDisable = status;
 
             try
             {
@@ -225,8 +215,6 @@ namespace Domain.Services
             return result;
         }
 
-
-        //  Delete a user
         public int Delete(string userId)
         {
             int result = 0;
@@ -263,8 +251,6 @@ namespace Domain.Services
             return result;
         }
 
-
-        #endregion
 
     }
 }

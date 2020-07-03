@@ -32,7 +32,7 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost("{id}")]
+        [HttpPost("{subscriptionId}")]
         public IActionResult GetById(string subscriptionId)
         {
             if (subscriptionId == null)
@@ -94,53 +94,30 @@ namespace WebApi.Controllers
             return Ok("Subscription updated");
         }
 
-        [HttpPut("disable")]
-        public IActionResult Disable(string subscriptionId)
+        [HttpPut("status")]
+        public IActionResult ChangeStatus(string subscriptionId, bool isDisable)
         {
             if (subscriptionId == null)
             {
                 return BadRequest("SubscriptionId must not be null.");
             }
 
-            int result = _service.ChangeStatus(subscriptionId, true);
+            int result = _service.ChangeStatus(subscriptionId, isDisable);
 
             if (result == 0)
             {
-                return BadRequest("Faulthy SubscriptionId info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("subscription not found");
-            }
-
-            return Ok("Subscription is disabled.");
-        }
-
-        [HttpPut("activate")]
-        public IActionResult Activate(string subscriptionId)
-        {
-            if (subscriptionId == null || subscriptionId.Equals(""))
-            {
-                return BadRequest("SubscriptionId must not be empty.");
-            }
-
-            int result = _service.ChangeStatus(subscriptionId, false);
-
-            if (result == 0)
-            {
-                return BadRequest("Faulthy subscription info.");
+                return BadRequest("Faulthy SubscriptionId.");
             }
             if (result == 1)
             {
                 return NotFound("Subscription not found");
             }
 
-            return Ok("Subscription is activated.");
+            return isDisable ? Ok("Subscription is disabled.")
+                : Ok("Subscription is enabled.");
         }
 
-
-
-        [HttpDelete]
+        [HttpDelete("{menteeId}")]
         public IActionResult Delete(string menteeId)
         {
             if (menteeId == null)

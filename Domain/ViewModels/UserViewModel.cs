@@ -47,10 +47,4 @@ namespace Domain.ViewModels
         public string Email { get; set; }
         public string RoleName { get; set; }
     }
-
-    public class UserStatusViewModel
-    {
-        public Guid UserId { get; set; }
-        public bool IsDisable { get; set; }
-    }
 }

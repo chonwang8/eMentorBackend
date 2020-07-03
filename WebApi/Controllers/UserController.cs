@@ -201,25 +201,26 @@ namespace WebApi.Controllers
         /// <response code="404">User with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut("status")]
-        public IActionResult Disable(UserStatusViewModel user)
+        public IActionResult ChangeStatus(string userId, bool isDisable)
         {
-            if (user == null)
+            if (userId == null)
             {
-                return BadRequest("User info must not be null");
+                return BadRequest("UserId must not be null.");
             }
 
-            int result = _user.Disable(user);
+            int result = _user.ChangeStatus(userId, isDisable);
 
             if (result == 0)
             {
-                return BadRequest("Faulthy user info.");
+                return BadRequest("Faulthy UserId.");
             }
             if (result == 1)
             {
                 return NotFound("User not found");
             }
 
-            return Ok("User is disabled.");
+            return isDisable ? Ok("User is disabled.")
+                : Ok("User is enabled.");
         }
 
 
@@ -231,7 +232,7 @@ namespace WebApi.Controllers
         /// <response code="400">Invalid input</response>
         /// <response code="404">User with matching Id not found</response>
         /// <response code="500">Internal server error</response>
-        [HttpDelete("{id}")]
+        [HttpDelete("{userId}")]
         public IActionResult Delete(string userId)
         {
             if (userId == null)

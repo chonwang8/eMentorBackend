@@ -16,11 +16,14 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class MentorController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IMentorService _mentor;
         public MentorController(IMentorService service)
         {
             _mentor = service;
         }
+        #endregion
+        
 
         [HttpGet]
         public IActionResult GetAll(string size, string index, string asc)
@@ -83,8 +86,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-
-        [HttpPost("{id}")]
+        [HttpGet("{mentorId}")]
         public IActionResult GetById(string mentorId)
         {
             if (mentorId == null)
@@ -146,15 +148,15 @@ namespace WebApi.Controllers
             return Ok("Mentor updated");
         }
 
-        [HttpPut("disable")]
-        public IActionResult Disable(string mentorId)
+        [HttpPut("status")]
+        public IActionResult ChangeStatus(string mentorId, bool isDisable)
         {
             if (mentorId == null)
             {
                 return BadRequest("MentorId must not be null.");
             }
 
-            int result = _mentor.ChangeStatus(mentorId, true);
+            int result = _mentor.ChangeStatus(mentorId, isDisable);
 
             if (result == 0)
             {
@@ -165,34 +167,11 @@ namespace WebApi.Controllers
                 return NotFound("Mentor not found");
             }
 
-            return Ok("Mentor is disabled.");
+            return isDisable ? Ok("Mentor is disabled.")
+                : Ok("Mentor is enabled.");
         }
 
-        [HttpPut("activate")]
-        public IActionResult Activate(string mentorId)
-        {
-            if (mentorId == null)
-            {
-                return BadRequest("MentorId must not be null.");
-            }
-
-            int result = _mentor.ChangeStatus(mentorId, false);
-
-            if (result == 0)
-            {
-                return BadRequest("Faulthy mentor info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Mentor not found");
-            }
-
-            return Ok("Mentor is activated.");
-        }
-
-
-
-        [HttpDelete("{id}")]
+        [HttpDelete("{userId}")]
         public IActionResult Delete(string userId)
         {
             if (userId == null)
