@@ -20,8 +20,6 @@ namespace Domain.Services
         }
 
 
-
-
         public IEnumerable<TopicViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<TopicViewModel> result = _uow
@@ -138,6 +136,44 @@ namespace Domain.Services
             try
             {
                 _uow.GetRepository<Topic>().Update(topicUpdate);
+                _uow.Commit();
+                result = 2;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return result;
+        }
+
+
+        public int ChangeStatus(string topicId, bool status)
+        {
+            int result = 0;
+            Guid guid = new Guid(topicId);
+
+            if (topicId.Equals(null))
+            {
+                result = 0;
+                return result;
+            }
+
+            Topic existingTopic = _uow
+                .GetRepository<Topic>()
+                .GetAll()
+                .FirstOrDefault(m => m.TopicId == guid);
+            if (existingTopic == null)
+            {
+                result = 1;
+                return result;
+            }
+
+            existingTopic.IsDisable = status;
+
+            try
+            {
+                _uow.GetRepository<Topic>().Update(existingTopic);
                 _uow.Commit();
                 result = 2;
             }

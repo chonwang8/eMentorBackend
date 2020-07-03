@@ -16,12 +16,13 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class SharingController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly ISharingService _sharing;
         public SharingController(ISharingService service)
         {
             _sharing = service;
         }
-
+        #endregion
 
         #region RESTful APIs
         [HttpGet]
@@ -85,8 +86,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-
-        [HttpPost("{id}")]
+        [HttpGet("{sharingId}")]
         public IActionResult GetById(string sharingId)
         {
             if (sharingId == null)
@@ -148,8 +148,30 @@ namespace WebApi.Controllers
             return Ok("Sharing information updated");
         }
 
+        [HttpPut("status")]
+        public IActionResult ChangeStatus(string sharingId, bool isDisable)
+        {
+            if (sharingId == null)
+            {
+                return BadRequest("SharingId must not be null.");
+            }
 
-        [HttpDelete("{id}")]
+            int result = _sharing.ChangeStatus(sharingId, isDisable);
+
+            if (result == 0)
+            {
+                return BadRequest("Faulthy SharingId.");
+            }
+            if (result == 1)
+            {
+                return NotFound("Sharing not found");
+            }
+
+            return isDisable ? Ok("Sharing is disabled.") 
+                : Ok("Sharing is enabled.");
+        }
+
+        [HttpDelete("{sharingId}")]
         public IActionResult Delete(string sharingId)
         {
             if (sharingId == null)

@@ -16,11 +16,13 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class MenteeController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IMenteeService _mentee;
         public MenteeController(IMenteeService service)
         {
             _mentee = service;
         }
+        #endregion
 
 
         [HttpGet]
@@ -84,8 +86,7 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-
-        [HttpPost("{id}")]
+        [HttpGet("{menteeId}")]
         public IActionResult GetById(string menteeId)
         {
             if (menteeId == null)
@@ -147,15 +148,15 @@ namespace WebApi.Controllers
             return Ok("Mentee updated");
         }
 
-        [HttpPut("disable")]
-        public IActionResult Disable(string menteeId)
+        [HttpPut("status")]
+        public IActionResult ChangeStatus(string menteeId, bool isDisable)
         {
             if (menteeId == null)
             {
                 return BadRequest("MenteeId must not be null.");
             }
 
-            int result = _mentee.ChangeStatus(menteeId, true);
+            int result = _mentee.ChangeStatus(menteeId, isDisable);
 
             if (result == 0)
             {
@@ -166,34 +167,11 @@ namespace WebApi.Controllers
                 return NotFound("Mentee not found");
             }
 
-            return Ok("Mentee is disabled.");
+            return isDisable ? Ok("Mentee is disabled.")
+                : Ok("Mentee is enabled.");
         }
 
-        [HttpPut("activate")]
-        public IActionResult Activate(string menteeId)
-        {
-            if (menteeId == null)
-            {
-                return BadRequest("MenteeId must not be null.");
-            }
-
-            int result = _mentee.ChangeStatus(menteeId, false);
-
-            if (result == 0)
-            {
-                return BadRequest("Faulthy mentee info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Mentee not found");
-            }
-
-            return Ok("Mentee is activated.");
-        }
-
-
-
-        [HttpDelete("{id}")]
+        [HttpDelete("{menteeId}")]
         public IActionResult Delete(string menteeId)
         {
             if (menteeId == null)

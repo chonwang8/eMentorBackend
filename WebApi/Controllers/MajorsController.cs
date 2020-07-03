@@ -15,17 +15,14 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class MajorsController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IMajorService _service;
         public MajorsController(IMajorService service)
         {
             _service = service;
         }
+        #endregion
 
-        [HttpGet("topics")]
-        public IActionResult GetTopicGroupByMajor()
-        {
-            return Ok(_service.GetTopicGroupByMajor());
-        }
 
         [HttpGet]
         public IActionResult GetAllMajor(string size, string index, string asc)
@@ -83,6 +80,12 @@ namespace WebApi.Controllers
             return Ok(_service.GetAllMajor(paging));
         }
 
+        [HttpGet("topics")]
+        public IActionResult GetTopicGroupByMajor()
+        {
+            return Ok(_service.GetTopicGroupByMajor());
+        }
+
         [HttpGet("{MajorId}")]
         public IActionResult GetMajorById(Guid MajorId)
         {
@@ -92,8 +95,14 @@ namespace WebApi.Controllers
             }
             return Ok(_service.GetMajorById(MajorId));
         }
-        
-        [HttpDelete]
+
+        [HttpPost]
+        public IActionResult CreateMajor(Guid MajorId)
+        {
+            return Ok("Created Successfully !");
+        }
+
+        [HttpDelete("{MajorId}")]
         public IActionResult DeleteMajorById(Guid MajorId)
         {
             if(_service.DeleteMajorById(MajorId) == false)
@@ -109,10 +118,5 @@ namespace WebApi.Controllers
             return Ok("Updated Successfully !");
         } 
         
-        [HttpPost]
-        public IActionResult CreateMajor(Guid MajorId)
-        {
-            return Ok("Created Successfully !");
-        }
     }
 }

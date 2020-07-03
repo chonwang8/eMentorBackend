@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -17,12 +13,13 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class TopicController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly ITopicService _topic;
         public TopicController(ITopicService service)
         {
             _topic = service;
         }
-
+        #endregion
 
 
         [HttpGet]
@@ -87,7 +84,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{topicId}")]
-        public IActionResult Get( string topicId)
+        public IActionResult Get(string topicId)
         {
             if (topicId == null)
             {
@@ -126,26 +123,49 @@ namespace WebApi.Controllers
             return Ok("Inserted topic " + topic.TopicName);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public IActionResult Update(TopicViewModel topic)
         {
             if (topic == null)
             {
-                return BadRequest("User info must not be null");
+                return BadRequest("Topic info must not be null");
             }
 
             int result = _topic.Update(topic);
 
             if (result == 0)
             {
-                return BadRequest("Faulthy user info.");
+                return BadRequest("Faulthy topic info.");
             }
             if (result == 1)
             {
-                return NotFound("User not found");
+                return NotFound("Topic not found");
             }
 
             return Ok("Updated topic " + topic.TopicName);
+        }
+
+        [HttpPut("status")]
+        public IActionResult ChangeStatus(string topicId, bool isDisable)
+        {
+            if (topicId == null)
+            {
+                return BadRequest("SubscriptionId must not be null.");
+            }
+            
+            int result = _topic.ChangeStatus(topicId, isDisable);
+
+            if (result == 0)
+            {
+                return BadRequest("Faulthy TopicId.");
+            }
+            if (result == 1)
+            {
+                return NotFound("Topic not found");
+            }
+
+            return isDisable ? Ok("Topic is disabled.")
+                : Ok("Topic is enabled.");
         }
 
         [HttpDelete("{id}")]
