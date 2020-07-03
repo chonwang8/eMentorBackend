@@ -14,11 +14,13 @@ namespace WebApi.Controllers
     [AllowAnonymous]
     public class AuthorizeController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IAuthService _auth;
         public AuthorizeController(IAuthService auth)
         {
             _auth = auth;
         }
+        #endregion
 
 
         /// <summary>

@@ -12,12 +12,15 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class CommentController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly ICommentService _service;
 
         public CommentController(ICommentService service)
         {
             _service = service;
         }
+        #endregion
+
 
         [HttpGet]
         public IActionResult GetAllComment(string size, string index, string asc)
