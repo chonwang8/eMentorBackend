@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels.TopicViewModels
+namespace Domain.ViewModels.MajorModels
 {
     public class GetTopicGroupByMajorViewModel
     {

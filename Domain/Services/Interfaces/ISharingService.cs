@@ -1,17 +1,15 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels;
-using System;
+using Domain.ViewModels.SharingModels;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services.Interfaces
 {
     public interface ISharingService
     {
         public IEnumerable<SharingViewModel> GetAll(GetAllDTO request);
-        public IEnumerable<SharingViewModel> GetById(string sharingId);
-        public int Insert(SharingViewModel sharingViewModel);
-        public int Update(SharingViewModel sharingViewModel);
+        public IEnumerable<SharingModel> GetById(string sharingId);
+        public int Insert(SharingModel sharingViewModel);
+        public int Update(SharingModel sharingViewModel);
         public int ChangeStatus(string sharingId, bool status);
         public int Delete(string sharingId);
     }

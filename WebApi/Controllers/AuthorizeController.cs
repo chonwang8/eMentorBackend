@@ -1,6 +1,7 @@
 ﻿using Domain.DTO.AuthDTOs;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Domain.ViewModels.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

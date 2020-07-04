@@ -1,8 +1,6 @@
 ﻿using Domain.DTO.AuthDTOs;
 using Domain.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Domain.ViewModels.UserModels;
 
 namespace Domain.Services.Interfaces
 {

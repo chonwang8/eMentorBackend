@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.SharingModels
 {
-    public class SharingViewModel
+    public class SharingModel
     {
         public Guid SharingId { get; set; }
         public string SharingName { get; set; }

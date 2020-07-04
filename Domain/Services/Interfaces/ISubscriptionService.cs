@@ -1,8 +1,6 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels;
-using System;
+using Domain.ViewModels.SubscriptionModels;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services.Interfaces
 {
@@ -10,8 +8,8 @@ namespace Domain.Services.Interfaces
     {
         public IEnumerable<SubscriptionViewModel> GetAll(GetAllDTO request);
         public IEnumerable<SubscriptionViewModel> GetById(string subscriptionId);
-        
-        
+
+
         public int Insert(SubscriptionViewModel subscriptionViewModel);
         public int Update(SubscriptionViewModel subscriptionViewModel);
 

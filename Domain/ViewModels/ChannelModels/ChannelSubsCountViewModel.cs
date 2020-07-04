@@ -1,11 +1,7 @@
-﻿using Data.Entities;
-using Domain.ViewModels.SubscriptionViewModels;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels.ChannelViewModels
+namespace Domain.ViewModels.ChannelModels
 {
     public class ChannelSubsCountViewModel
     {

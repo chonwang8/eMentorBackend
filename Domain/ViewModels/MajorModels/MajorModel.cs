@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Domain.ViewModels.TopicModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.MajorModels
 {
     public class MajorViewModel
     {

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Domain.ViewModels.ChannelModels;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.TopicModels
 {
     public class TopicViewModel
     {

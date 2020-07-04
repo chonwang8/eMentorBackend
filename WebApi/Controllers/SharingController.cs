@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.SharingModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -109,10 +107,12 @@ namespace WebApi.Controllers
             };
 
             List<SharingViewModel> result = _sharing.GetAll(paging).ToList();
+            
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no sharings in the system");
             }
+
             return Ok(result);
         }
 
@@ -148,7 +148,7 @@ namespace WebApi.Controllers
                 return BadRequest("Sharing info must not be null");
             }
 
-            List<SharingViewModel> result = _sharing.GetById(sharingId).ToList();
+            List<SharingModel> result = _sharing.GetById(sharingId).ToList();
 
             if (result == null || result.Count == 0)
             {
@@ -179,7 +179,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(SharingViewModel sharingViewModel)
+        public IActionResult Insert(SharingModel sharingViewModel)
         {
             if (sharingViewModel == null)
             {
@@ -222,7 +222,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(SharingViewModel sharingViewModel)
+        public IActionResult Update(SharingModel sharingViewModel)
         {
             if (sharingViewModel == null)
             {
@@ -284,7 +284,7 @@ namespace WebApi.Controllers
                 return NotFound("Sharing not found");
             }
 
-            return isDisable ? Ok("Sharing is disabled.") 
+            return isDisable ? Ok("Sharing is disabled.")
                 : Ok("Sharing is enabled.");
         }
 
