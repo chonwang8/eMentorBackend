@@ -12,5 +12,6 @@ namespace Domain.ViewModels
         public Guid CreatedBy { get; set; }
 
 
+        public virtual ICollection<ChannelViewModel> ChannelList { get; set; }
     }
 }
