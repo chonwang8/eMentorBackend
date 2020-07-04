@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.MentorModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -108,7 +106,7 @@ namespace WebApi.Controllers
                 IsAscending = false
             };
 
-            List<MentorViewModel> result = _mentor.GetAll(paging).ToList();
+            List<MentorModel> result = _mentor.GetAll(paging).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no users in the system");
@@ -149,7 +147,7 @@ namespace WebApi.Controllers
                 return BadRequest("Mentor info must not be null");
             }
 
-            List<MentorViewModel> result = _mentor.GetById(mentorId).ToList();
+            List<MentorModel> result = _mentor.GetById(mentorId).ToList();
 
             if (result == null || result.Count == 0)
             {
@@ -180,7 +178,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(MentorViewModel mentor)
+        public IActionResult Insert(MentorModel mentor)
         {
             if (mentor == null)
             {
@@ -223,7 +221,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(MentorViewModel mentor)
+        public IActionResult Update(MentorModel mentor)
         {
             if (mentor == null)
             {

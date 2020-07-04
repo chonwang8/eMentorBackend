@@ -2,11 +2,10 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.TopicModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -19,7 +18,7 @@ namespace Domain.Services
             _uow = uow;
         }
 
-
+        #region CRUD Methods
         public IEnumerable<TopicViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<TopicViewModel> result = _uow
@@ -219,5 +218,7 @@ namespace Domain.Services
 
             return result;
         }
+        #endregion
+
     }
 }

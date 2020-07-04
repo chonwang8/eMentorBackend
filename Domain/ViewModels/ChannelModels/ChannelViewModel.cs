@@ -1,9 +1,8 @@
 ﻿using Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.ChannelModels
 {
     public class ChannelViewModel
     {

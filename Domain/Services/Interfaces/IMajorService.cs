@@ -1,9 +1,7 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels;
-using Domain.ViewModels.TopicViewModels;
+using Domain.ViewModels.MajorModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services.Interfaces
 {
