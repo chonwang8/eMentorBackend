@@ -18,7 +18,7 @@ namespace Domain.Services
             _uow = uow;
         }
 
-
+        #region CRUD Methods
         public IEnumerable<TopicViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<TopicViewModel> result = _uow
@@ -218,5 +218,7 @@ namespace Domain.Services
 
             return result;
         }
+        #endregion
+
     }
 }

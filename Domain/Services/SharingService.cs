@@ -15,8 +15,6 @@ namespace Domain.Services
         #region Classes and Constructor
         protected readonly IUnitOfWork _uow;
 
-
-
         public SharingService(IUnitOfWork uow)
         {
             _uow = uow;
@@ -24,7 +22,8 @@ namespace Domain.Services
         #endregion Classes and Constructor
 
 
-        #region RESTful API methods
+
+        #region CRUD Methods
 
         public IEnumerable<SharingViewModel> GetAll(GetAllDTO request)
         {
@@ -36,32 +35,27 @@ namespace Domain.Services
                 {
                     SharingId = s.SharingId,
                     SharingName = s.SharingName,
-                    Description = s.Description,
-                    StartTime = s.StartTime,
-                    EndTime = s.EndTime,
-                    Maximum = s.Maximum,
                     Price = s.Price,
-                    ChannelId = s.ChannelId,
-                    imageUrl = "https://img-a.udemycdn.com/course/750x422/96808_967c_5.jpg",
-                    TopicName = s.Channel.Topic.TopicName
+                    MentorName = s.Channel.Mentor.User.Fullname,
+                    ImageUrl = s.ImageUrl
                 });
             result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 
 
-        public IEnumerable<SharingViewModel> GetById(string sharingId)
+        public IEnumerable<SharingModel> GetById(string sharingId)
         {
             if (sharingId == null)
             {
                 return null;
             }
 
-            IEnumerable<SharingViewModel> result = _uow
+            IEnumerable<SharingModel> result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
                 .Where(s => s.SharingId.Equals(new Guid(sharingId)))
-                .Select(s => new SharingViewModel
+                .Select(s => new SharingModel
                 {
                     SharingId = s.SharingId,
                     SharingName = s.SharingName,
@@ -77,7 +71,7 @@ namespace Domain.Services
         }
 
 
-        public int Insert(SharingViewModel sharingViewModel)
+        public int Insert(SharingModel sharingViewModel)
         {
             int result = 0;
 
@@ -128,7 +122,7 @@ namespace Domain.Services
         }
 
 
-        public int Update(SharingViewModel sharingViewModel)
+        public int Update(SharingModel sharingViewModel)
         {
             int result = 0;
 
@@ -171,8 +165,6 @@ namespace Domain.Services
         }
 
 
-        //  Not in use
-        //  There is no IsDisable attribute for Sharing Entity, yet.
         public int ChangeStatus(string sharingId, bool status)
         {
             int result = 0;
@@ -246,6 +238,37 @@ namespace Domain.Services
 
             return result;
         }
+
+        #endregion
+
+
+
+        #region Specialized Methods
+        public IEnumerable<SharingModel> GetAvailableSharings()
+        {
+            IEnumerable<SharingModel> result = _uow
+                .GetRepository<Sharing>()
+                .GetAll()
+                .Include(s => s.Channel.Topic)
+                .Select(s => new SharingModel
+                {
+                    SharingId = s.SharingId,
+                    SharingName = s.SharingName,
+                    Description = s.Description,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
+                    Maximum = s.Maximum,
+                    Price = s.Price,
+                    ChannelId = s.ChannelId,
+                    imageUrl = s.ImageUrl,
+                    TopicName = s.Channel.Topic.TopicName
+                });
+            //result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+            
+            return result;
+        }
+
+
 
         #endregion
     }

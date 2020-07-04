@@ -265,7 +265,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingViewModel)">
+        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingModel)">
             <summary>
             Insert a sharing into database. POST "api/sharings".
             </summary>
@@ -278,7 +278,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.Update(Domain.ViewModels.SharingModels.SharingViewModel)">
+        <member name="M:WebApi.Controllers.SharingController.Update(Domain.ViewModels.SharingModels.SharingModel)">
             <summary>
             Update an existing sharing. PUT "api/sharings".
             </summary>
