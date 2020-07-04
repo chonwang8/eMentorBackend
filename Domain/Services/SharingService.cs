@@ -27,13 +27,13 @@ namespace Domain.Services
 
         #region RESTful API methods
 
-        public IEnumerable<SharingInfoViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<SharingViewModel> GetAll(GetAllDTO request)
         {
-            IEnumerable<SharingInfoViewModel> result = _uow
+            IEnumerable<SharingViewModel> result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
                 .Include(s => s.Channel.Topic)
-                .Select(s => new SharingInfoViewModel
+                .Select(s => new SharingViewModel
                 {
                     SharingId = s.SharingId,
                     SharingName = s.SharingName,

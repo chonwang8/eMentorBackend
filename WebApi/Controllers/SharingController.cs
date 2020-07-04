@@ -24,8 +24,38 @@ namespace WebApi.Controllers
         }
         #endregion
 
-        #region RESTful APIs
+
+
+        /// <summary>
+        /// Get list of users. GET "api/sharings"
+        /// </summary>
+        /// 
+        /// <param name="size">
+        /// The number of items on a page. If null will be 40 by default.
+        /// </param>
+        /// <param name="index">
+        /// The page number where paging is started. If null will be 1 by default.
+        /// </param>
+        /// <param name="asc">
+        /// Boolean value determining whether return list will be null or not. If null will be false by default.
+        /// </param>
+        /// 
+        /// <returns>
+        /// List containing sharings. Message if list is empty.
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
         public IActionResult GetAll(string size, string index, string asc)
         {
             int pageSize, pageIndex;
@@ -78,7 +108,7 @@ namespace WebApi.Controllers
                 IsAscending = false
             };
 
-            List<SharingInfoViewModel> result = _sharing.GetAll(paging).ToList();
+            List<SharingViewModel> result = _sharing.GetAll(paging).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no sharings in the system");
@@ -86,7 +116,31 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// Get user by Id. GET "api/sharings/{sharingId}"
+        /// </summary>
+        /// <param name="sharingId">
+        /// The sharing's identifier.
+        /// </param>
+        /// <returns>
+        /// Sharing with matching Id
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet("{sharingId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
         public IActionResult GetById(string sharingId)
         {
             if (sharingId == null)
@@ -104,7 +158,27 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+
+
+        /// <summary>
+        /// Insert a sharing into database. POST "api/sharings".
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
         [HttpPost]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Insert(SharingViewModel sharingViewModel)
         {
             if (sharingViewModel == null)
@@ -126,7 +200,28 @@ namespace WebApi.Controllers
             return Ok("Sharing Created");
         }
 
+
+
+        /// <summary>
+        /// Update an existing sharing. PUT "api/sharings".
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="500">Internal server error</response>
         [HttpPut]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Update(SharingViewModel sharingViewModel)
         {
             if (sharingViewModel == null)
@@ -148,7 +243,29 @@ namespace WebApi.Controllers
             return Ok("Sharing information updated");
         }
 
+
+
+        /// <summary>
+        /// Change status of a sharing (Disabled/Enabled). PUT "api/sharings/status".
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="500">Internal server error</response>
         [HttpPut("status")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult ChangeStatus(string sharingId, bool isDisable)
         {
             if (sharingId == null)
@@ -171,7 +288,32 @@ namespace WebApi.Controllers
                 : Ok("Sharing is enabled.");
         }
 
+
+
+        /// <summary>
+        /// Delete a sharing from database. DELETE "api/sharings/{sharingId}".
+        /// </summary>
+        /// <param name="sharingId">
+        /// The sharing's identifier.
+        /// </param>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpDelete("{sharingId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string sharingId)
         {
             if (sharingId == null)
@@ -194,57 +336,6 @@ namespace WebApi.Controllers
         }
 
 
-        #region Spare APIs without appropriate methods to call
-
-        //[HttpPut("disable")]
-        //public IActionResult Disable(string sharingId)
-        //{
-        //    if (sharingId == null)
-        //    {
-        //        return BadRequest("SharingId must not be null.");
-        //    }
-
-        //    int result = _sharing.ChangeStatus(sharingId, true);
-
-        //    if (result == 0)
-        //    {
-        //        return BadRequest("Faulthy sharing info.");
-        //    }
-        //    if (result == 1)
-        //    {
-        //        return NotFound("Sharing was not found");
-        //    }
-
-        //    return Ok("Sharing is disabled.");
-        //}
-
-
-
-        //[HttpPut("activate")]
-        //public IActionResult Activate(string sharingId)
-        //{
-        //    if (sharingId == null)
-        //    {
-        //        return BadRequest("SharingId must not be null.");
-        //    }
-
-        //    int result = _sharing.ChangeStatus(sharingId, false);
-
-        //    if (result == 0)
-        //    {
-        //        return BadRequest("Faulthy sharing info.");
-        //    }
-        //    if (result == 1)
-        //    {
-        //        return NotFound("Sharing was not found");
-        //    }
-
-        //    return Ok("Sharing is activated.");
-        //}
-        #endregion
-
-
-        #endregion
 
     }
 }

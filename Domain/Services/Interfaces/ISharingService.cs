@@ -8,7 +8,7 @@ namespace Domain.Services.Interfaces
 {
     public interface ISharingService
     {
-        public IEnumerable<SharingInfoViewModel> GetAll(GetAllDTO request);
+        public IEnumerable<SharingViewModel> GetAll(GetAllDTO request);
         public IEnumerable<SharingViewModel> GetById(string sharingId);
         public int Insert(SharingViewModel sharingViewModel);
         public int Update(SharingViewModel sharingViewModel);

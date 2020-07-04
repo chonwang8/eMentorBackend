@@ -36,8 +36,7 @@ namespace Domain.Services
                 .Select(u => new MenteeViewModel
                 {
                     MenteeId = u.MenteeId,
-                    UserId = u.UserId,
-                    IsDisable = u.IsDisable
+                    UserId = u.UserId
                 });
 
             result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
@@ -59,8 +58,7 @@ namespace Domain.Services
                 .Select(u => new MenteeViewModel
                 {
                     MenteeId = u.MenteeId,
-                    UserId = u.UserId,
-                    IsDisable = u.IsDisable
+                    UserId = u.UserId
                 });
 
             return result;
@@ -92,8 +90,7 @@ namespace Domain.Services
             Mentee newMentee = new Mentee
             {
                 MenteeId = mentee.MenteeId,
-                UserId = mentee.UserId,
-                IsDisable = mentee.IsDisable
+                UserId = mentee.UserId
             };
 
 
@@ -133,7 +130,6 @@ namespace Domain.Services
             }
 
             existingMentee.UserId = mentee.UserId;
-            existingMentee.IsDisable = mentee.IsDisable;
 
             try
             {

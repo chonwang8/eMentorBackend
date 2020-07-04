@@ -8,6 +8,5 @@ namespace Domain.ViewModels
     {
         public Guid MenteeId { get; set; }
         public Guid UserId { get; set; }
-        public bool IsDisable { get; set; }
     }
 }

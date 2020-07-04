@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
+using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using System;
@@ -12,20 +13,18 @@ namespace Domain.Services
     public class SubscriptionService : ISubscriptionService
     {
         #region Classes and Constructor
-
         protected readonly IUnitOfWork _uow;
 
         public SubscriptionService(IUnitOfWork uow)
         {
             _uow = uow;
         }
-
         #endregion Classes and Constructor
 
 
         #region RESTful API methods
 
-        public IEnumerable<SubscriptionViewModel> GetAll()
+        public IEnumerable<SubscriptionViewModel> GetAll(GetAllDTO request)
         {
             IEnumerable<SubscriptionViewModel> result = _uow
                 .GetRepository<Subscription>()
@@ -37,7 +36,8 @@ namespace Domain.Services
                     MenteeId = s.MenteeId,
                     IsDisable = s.IsDisable
                 });
-
+            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
+            
             return result;
         }
 

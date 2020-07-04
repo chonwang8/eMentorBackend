@@ -19,7 +19,9 @@ namespace Data.Entities
         public int Maximum { get; set; }
         public double Price { get; set; }
         public Guid ChannelId { get; set; }
+        public string ImageUrl { get; set; }
         public bool IsDisable { get; set; }
+        public bool IsApproved { get; set; }
 
         public virtual Channel Channel { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }
