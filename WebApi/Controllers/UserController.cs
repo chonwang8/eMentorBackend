@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -16,23 +15,46 @@ namespace WebApi.Controllers
     [EnableCors("MyPolicy")]
     public class UserController : ControllerBase
     {
+        #region Classes - Constructors
         protected readonly IUserService _user;
         public UserController(IUserService service)
         {
             _user = service;
         }
+        #endregion
+
+
 
         /// <summary>
-        /// View list of users
+        /// Get list of users. GET "api/users"
         /// </summary>
-        /// <returns>List of users</returns>
-        /// <response code="200">List of challenge</response>
-        /// <response code="400">Not have enough infomation</response>
-        /// <response code="401">Unauthorize</response>
-        /// <response code="403">Forbidden from resource</response>
-        /// <response code="404">Empty challenge list</response>
-        /// <response code="500">Internal Error</response>
+        /// 
+        /// <param name="size">
+        /// The number of items on a page. If null will be 40 by default.
+        /// </param>
+        /// <param name="index">
+        /// The page number where paging is started. If null will be 1 by default.
+        /// </param>
+        /// <param name="asc">
+        /// Boolean value determining whether return list will be null or not. If null will be false by default.
+        /// </param>
+        /// 
+        /// <returns>
+        /// List containing users. Message if list is empty.
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
         public IActionResult GetAll(string size, string index, string asc)
         {
             int pageSize, pageIndex;
@@ -89,21 +111,37 @@ namespace WebApi.Controllers
 
             if (result == null || result.Count == 0)
             {
-                return NotFound("There are no users in the system");
+                return Ok("There are no users in the system");
             }
             return Ok(result);
         }
 
 
+
         /// <summary>
-        /// Return User with matching Id
+        /// Get user by Id. GET "api/users/{userId}"
         /// </summary>
-        /// <returns>User with matching Id</returns>
-        /// <response code="200">User found with matching Id</response>
-        /// <response code="400">Invalid input</response>
+        /// <param name="userId">
+        /// The user's identifier.
+        /// </param>
+        /// <returns>
+        /// User with matching Id
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
         /// <response code="404">User with matching Id not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet("{userId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
         public IActionResult GetById(string userId)
         {
             if (userId == null)
@@ -122,31 +160,34 @@ namespace WebApi.Controllers
         }
 
 
+
         /// <summary>
-        /// Insert a user into database
+        /// Insert a user into database. POST "api/users".
         /// </summary>
-        /// <returns>Query status</returns>
-        /// <response code="200">User successfully inserted</response>
-        /// <response code="400">Invalid input</response>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
         /// <response code="500">Internal server error</response>
         [HttpPost]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Insert(UserInsertViewModel userInsert)
         {
-            UserInsertViewModel user = null;
-            try
-            {
-                user = (UserInsertViewModel) userInsert;
-            } catch (Exception)
-            {
-                return BadRequest("Request body does not fit UserInsertViewModel parameters");
-            }
-
-            if (user == null)
+            if (userInsert == null)
             {
                 return BadRequest("User info must not be null");
             }
 
-            int result = _user.Insert(user);
+            int result = _user.Insert(userInsert);
 
             if (result == 0)
             {
@@ -157,19 +198,31 @@ namespace WebApi.Controllers
                 return BadRequest("This user is already in the system");
             }
 
-            return Ok("Insert user " + user.Email);
+            return Ok("Insert user " + userInsert.Email);
         }
 
 
+
         /// <summary>
-        /// Update an existing user
+        /// Update an existing user. PUT "api/users".
         /// </summary>
-        /// <returns>Query status</returns>
-        /// <response code="200">User successfully updated</response>
-        /// <response code="400">Invalid input</response>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
         /// <response code="404">User with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Update(UserViewModel user)
         {
             if (user == null)
@@ -192,15 +245,28 @@ namespace WebApi.Controllers
         }
 
 
+
         /// <summary>
-        /// Disable a user
+        /// Change status of a user (Disabled/Enabled). PUT "api/users/status".
         /// </summary>
-        /// <returns>Query status</returns>
-        /// <response code="200">Disabled user with matching Id</response>
-        /// <response code="400">Invalid input</response>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
         /// <response code="404">User with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut("status")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult ChangeStatus(string userId, bool isDisable)
         {
             if (userId == null)
@@ -224,15 +290,31 @@ namespace WebApi.Controllers
         }
 
 
+
         /// <summary>
-        /// Delete a user from database
+        /// Delete a user from database. DELETE "api/users/{userId}".
         /// </summary>
-        /// <returns>Query status</returns>
-        /// <response code="200">User was deleted from database</response>
-        /// <response code="400">Invalid input</response>
+        /// <param name="userId">
+        /// The user's identifier.
+        /// </param>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
         /// <response code="404">User with matching Id not found</response>
-        /// <response code="500">Internal server error</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpDelete("{userId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string userId)
         {
             if (userId == null)
@@ -253,5 +335,8 @@ namespace WebApi.Controllers
 
             return Ok("User is deleted.");
         }
+
+
+
     }
 }
