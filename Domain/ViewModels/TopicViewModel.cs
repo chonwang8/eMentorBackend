@@ -10,5 +10,7 @@ namespace Domain.ViewModels
         public string TopicName { get; set; }
         public Guid MajorId { get; set; }
         public Guid CreatedBy { get; set; }
+
+
     }
 }

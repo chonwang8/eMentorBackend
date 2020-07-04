@@ -108,7 +108,7 @@ namespace WebApi.Controllers
                 IsAscending = false
             };
 
-            List<SharingInfoViewModel> result = _sharing.GetAll(paging).ToList();
+            List<SharingViewModel> result = _sharing.GetAll(paging).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no sharings in the system");
