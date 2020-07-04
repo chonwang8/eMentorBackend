@@ -20,6 +20,7 @@ namespace Data.Entities
         public double? Balance { get; set; }
         public string Description { get; set; }
         public bool IsDisable { get; set; }
+        public string Password { get; set; }
 
         public virtual ICollection<Mentee> Mentee { get; set; }
         public virtual ICollection<Mentor> Mentor { get; set; }

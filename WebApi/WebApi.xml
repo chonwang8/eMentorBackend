@@ -26,66 +26,588 @@
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
+        <member name="M:WebApi.Controllers.MenteeController.GetAll(System.String,System.String,System.String)">
+            <summary>
+            Get list of mentees. GET "api/mentees"
+            </summary>
+            
+            <param name="size">
+            The number of items on a page. If null will be 40 by default.
+            </param>
+            <param name="index">
+            The page number where paging is started. If null will be 1 by default.
+            </param>
+            <param name="asc">
+            Boolean value determining whether return list will be null or not. If null will be false by default.
+            </param>
+            
+            <returns>
+            List containing mentees. Message if list is empty.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.GetById(System.String)">
+            <summary>
+            Get mentee by Id. GET "api/mentees/{menteeId}"
+            </summary>
+            <param name="menteeId">
+            The user's identifier.
+            </param>
+            <returns>
+            User with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentee with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.ViewModels.MenteeViewModel)">
+            <summary>
+            Insert a mentee into database. POST "api/mentees".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.ViewModels.MenteeViewModel)">
+            <summary>
+            Update an existing mentee. PUT "api/mentees".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentee with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.ChangeStatus(System.String,System.Boolean)">
+            <summary>
+            Change status of a mentee (Disabled/Enabled). PUT "api/mentees/status".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentee with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.Delete(System.String)">
+            <summary>
+            Delete a mentee from database. DELETE "api/mentees/{menteeId}".
+            </summary>
+            <param name="menteeId">
+            The mentee's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentee with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.GetAll(System.String,System.String,System.String)">
+            <summary>
+            Get list of mentors. GET "api/mentors"
+            </summary>
+            
+            <param name="size">
+            The number of items on a page. If null will be 40 by default.
+            </param>
+            <param name="index">
+            The page number where paging is started. If null will be 1 by default.
+            </param>
+            <param name="asc">
+            Boolean value determining whether return list will be null or not. If null will be false by default.
+            </param>
+            
+            <returns>
+            List containing mentors. Message if list is empty.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.GetById(System.String)">
+            <summary>
+            Get mentor by Id. GET "api/mentors/{mentorId}"
+            </summary>
+            <param name="mentorId">
+            The user's identifier.
+            </param>
+            <returns>
+            User with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.Insert(Domain.ViewModels.MentorViewModel)">
+            <summary>
+            Insert a mentor into database. POST "api/mentors".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.Update(Domain.ViewModels.MentorViewModel)">
+            <summary>
+            Update an existing mentor. PUT "api/mentors".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.ChangeStatus(System.String,System.Boolean)">
+            <summary>
+            Change status of a mentor (Disabled/Enabled). PUT "api/mentors/status".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MentorController.Delete(System.String)">
+            <summary>
+            Delete a mentor from database. DELETE "api/mentors/{mentorId}".
+            </summary>
+            <param name="mentorId">
+            The mentor's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.GetAll(System.String,System.String,System.String)">
+            <summary>
+            Get list of users. GET "api/sharings"
+            </summary>
+            
+            <param name="size">
+            The number of items on a page. If null will be 40 by default.
+            </param>
+            <param name="index">
+            The page number where paging is started. If null will be 1 by default.
+            </param>
+            <param name="asc">
+            Boolean value determining whether return list will be null or not. If null will be false by default.
+            </param>
+            
+            <returns>
+            List containing sharings. Message if list is empty.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.GetById(System.String)">
+            <summary>
+            Get user by Id. GET "api/sharings/{sharingId}"
+            </summary>
+            <param name="sharingId">
+            The sharing's identifier.
+            </param>
+            <returns>
+            Sharing with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Sharing with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingViewModel)">
+            <summary>
+            Insert a sharing into database. POST "api/sharings".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.Update(Domain.ViewModels.SharingViewModel)">
+            <summary>
+            Update an existing sharing. PUT "api/sharings".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Sharing with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.ChangeStatus(System.String,System.Boolean)">
+            <summary>
+            Change status of a sharing (Disabled/Enabled). PUT "api/sharings/status".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Sharing with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SharingController.Delete(System.String)">
+            <summary>
+            Delete a sharing from database. DELETE "api/sharings/{sharingId}".
+            </summary>
+            <param name="sharingId">
+            The sharing's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Sharing with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.GetAll(System.String,System.String,System.String)">
+            <summary>
+            Get list of subscriptions. GET "api/subscriptions"
+            </summary>
+            <returns>
+            List containing subscriptions.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.GetById(System.String)">
+            <summary>
+            Get user by Id. GET "api/subscriptions/{subscriptionId}"
+            </summary>
+            <param name="subscriptionId">
+            The subscription identifier.
+            </param>
+            <returns>
+            Subscription with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">User with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.ViewModels.SubscriptionViewModel)">
+            <summary>
+            Insert a subscription into database. POST "api/subscriptions"
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.ViewModels.SubscriptionViewModel)">
+            <summary>
+            Update an existing subscription. PUT "api/subscriptions".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Subscription with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.ChangeStatus(System.String,System.Boolean)">
+            <summary>
+            Change status of a subscription (Disabled/Enabled). PUT "api/subscriptions/status".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Subscription with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.SubscriptionController.Delete(System.String)">
+            <summary>
+            Delete a subscription from database. DELETE "api/users/{userId}".
+            </summary>
+            <param name="subscriptionId">
+            The subscription's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Subscription with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.GetAll(System.String,System.String,System.String)">
+             <summary>
+             Get list of topics. GET "api/topics"
+             </summary>
+            
+             <param name="size">
+             The number of items on a page. If null will be 40 by default.
+             </param>
+             <param name="index">
+             The page number where paging is started. If null will be 1 by default.
+             </param>
+             <param name="asc">
+             Boolean value determining whether return list will be null or not. If null will be false by default.
+             </param>
+             
+             <returns>
+             List containing topics. Message if list is empty.
+             </returns>
+             <response code="200">Success</response>
+             <response code="400">Not have enough infomation</response>
+             <response code="401">Unauthorize</response>
+             <response code="403">Forbidden from resource</response>
+             <response code="500">Internal Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.Get(System.String)">
+            <summary>
+            Get topic by Id.  GET "api/topics/{topicId}"
+            </summary>
+            <param name="topicId">
+            The topic's identifier.
+            </param>
+            <returns>
+            Topic with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Topic with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.Insert(Domain.ViewModels.TopicViewModel)">
+            <summary>
+            Insert a topic into database. POST "api/topics".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.Update(Domain.ViewModels.TopicViewModel)">
+            <summary>
+            Update an existing topic. PUT "api/topics".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Topic with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.ChangeStatus(System.String,System.Boolean)">
+            <summary>
+            Change status of a topic (Disabled/Enabled). PUT "api/users/status".
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Topic with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.Delete(System.String)">
+            <summary>
+            Delete a topic from database.. DELETE "api/topics/{topicId}".
+            </summary>
+            <param name="topicId">
+            The topic's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Topic with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
         <member name="M:WebApi.Controllers.UserController.GetAll(System.String,System.String,System.String)">
             <summary>
-            View list of users
+            Get list of users. GET "api/users"
             </summary>
-            <returns>List of users</returns>
-            <response code="200">List of challenge</response>
-            <response code="400">Not have enough infomation</response>
-            <response code="401">Unauthorize</response>
-            <response code="403">Forbidden from resource</response>
-            <response code="404">Empty challenge list</response>
-            <response code="500">Internal Error</response>
+            
+            <param name="size">
+            The number of items on a page. If null will be 40 by default.
+            </param>
+            <param name="index">
+            The page number where paging is started. If null will be 1 by default.
+            </param>
+            <param name="asc">
+            Boolean value determining whether return list will be null or not. If null will be false by default.
+            </param>
+            
+            <returns>
+            List containing users. Message if list is empty.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.GetById(System.String)">
             <summary>
-            Return User with matching Id
+            Get user by Id. GET "api/users/{userId}"
             </summary>
-            <returns>User with matching Id</returns>
-            <response code="200">User found with matching Id</response>
-            <response code="400">Invalid input</response>
+            <param name="userId">
+            The user's identifier.
+            </param>
+            <returns>
+            User with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
             <response code="404">User with matching Id not found</response>
-            <response code="500">Internal server error</response>
+            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.Insert(Domain.ViewModels.UserInsertViewModel)">
             <summary>
-            Insert a user into database
+            Insert a user into database. POST "api/users".
             </summary>
-            <returns>Query status</returns>
-            <response code="200">User successfully inserted</response>
-            <response code="400">Invalid input</response>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.Update(Domain.ViewModels.UserViewModel)">
             <summary>
-            Update an existing user
+            Update an existing user. PUT "api/users".
             </summary>
-            <returns>Query status</returns>
-            <response code="200">User successfully updated</response>
-            <response code="400">Invalid input</response>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal server error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.ChangeStatus(System.String,System.Boolean)">
             <summary>
-            Disable a user
+            Change status of a user (Disabled/Enabled). PUT "api/users/status".
             </summary>
-            <returns>Query status</returns>
-            <response code="200">Disabled user with matching Id</response>
-            <response code="400">Invalid input</response>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal server error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.Delete(System.String)">
             <summary>
-            Delete a user from database
+            Delete a user from database. DELETE "api/users/{userId}".
             </summary>
-            <returns>Query status</returns>
-            <response code="200">User was deleted from database</response>
-            <response code="400">Invalid input</response>
+            <param name="userId">
+            The user's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
             <response code="404">User with matching Id not found</response>
-            <response code="500">Internal server error</response>
+            <response code="500">Internal Server Error</response>
         </member>
     </members>
 </doc>

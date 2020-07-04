@@ -38,8 +38,7 @@ namespace Domain.Services
                 .Select(u => new MentorViewModel
                 {
                     MentorId = u.MentorId,
-                    UserId = u.UserId,
-                    IsDisable = u.IsDisable
+                    UserId = u.UserId
                 });
             result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
@@ -60,8 +59,7 @@ namespace Domain.Services
                 .Select(u => new MentorViewModel
                 {
                     MentorId = u.MentorId,
-                    UserId = u.UserId,
-                    IsDisable = u.IsDisable
+                    UserId = u.UserId
                 });
 
             return result;
@@ -93,8 +91,7 @@ namespace Domain.Services
             Mentor newMentor = new Mentor
             {
                 MentorId = mentor.MentorId,
-                UserId = mentor.UserId,
-                IsDisable = mentor.IsDisable
+                UserId = mentor.UserId
             };
 
 
@@ -133,16 +130,11 @@ namespace Domain.Services
                 return result;
             }
 
-            Mentor updateMentor = new Mentor
-            {
-                MentorId= existingMentor.MentorId,
-                UserId = mentor.UserId,
-                IsDisable = mentor.IsDisable
-            };
+            existingMentor.UserId = mentor.UserId;
 
             try
             {
-                _uow.GetRepository<Mentor>().Update(updateMentor);
+                _uow.GetRepository<Mentor>().Update(existingMentor);
                 _uow.Commit();
                 result = 2;
             }
