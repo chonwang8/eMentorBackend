@@ -1,10 +1,7 @@
-﻿using Data.Entities;
-using Domain.DTO;
-using Domain.ViewModels;
-using Domain.ViewModels.ChannelViewModels;
+﻿using Domain.DTO;
+using Domain.ViewModels.ChannelModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services.Interfaces
 {

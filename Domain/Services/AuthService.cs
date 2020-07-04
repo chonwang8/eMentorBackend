@@ -5,11 +5,10 @@ using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
 using Domain.ViewModels;
+using Domain.ViewModels.UserModels;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -141,7 +140,8 @@ namespace Domain.Services
                     };
                     return result;
                 }
-            } else if (user.RoleName == "mentee")
+            }
+            else if (user.RoleName == "mentee")
             {
                 Mentee mentee = _uow
                     .GetRepository<Mentee>()

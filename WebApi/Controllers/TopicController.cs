@@ -1,6 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.TopicModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -271,7 +271,7 @@ namespace WebApi.Controllers
             {
                 return BadRequest("SubscriptionId must not be null.");
             }
-            
+
             int result = _topic.ChangeStatus(topicId, isDisable);
 
             if (result == 0)

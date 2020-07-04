@@ -2,15 +2,11 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
-using Domain.ViewModels.ChannelViewModels;
+using Domain.ViewModels.ChannelModels;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -181,7 +177,7 @@ namespace Domain.Services
             foreach (Subscription s in channel.Subscription)
             {
                 int currentMonth = int.Parse(s.TimeSubscripted.Month.ToString()) - 1;
-                var count = (int) channelSubCount.MonthSubsCount[currentMonth];
+                var count = (int)channelSubCount.MonthSubsCount[currentMonth];
                 channelSubCount.MonthSubsCount[currentMonth] = count + 1;
             }
 

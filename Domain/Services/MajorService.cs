@@ -2,14 +2,11 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
-using Domain.ViewModels.TopicViewModels;
+using Domain.ViewModels.MajorModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -130,7 +127,7 @@ namespace Domain.Services
             {
                 MajorId = MajorId,
                 IsDisable = true
-            }) ;
+            });
             _uow.Commit();
             return true;
         }

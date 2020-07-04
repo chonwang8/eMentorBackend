@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Domain.ViewModels
+namespace Domain.ViewModels.MentorModels
 {
-    public class MentorViewModel
+    public class MentorModel
     {
         public Guid MentorId { get; set; }
         public Guid UserId { get; set; }
+
     }
 }

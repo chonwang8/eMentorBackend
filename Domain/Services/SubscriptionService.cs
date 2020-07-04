@@ -2,11 +2,10 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.SubscriptionModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -37,7 +36,7 @@ namespace Domain.Services
                     IsDisable = s.IsDisable
                 });
             result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            
+
             return result;
         }
 
@@ -123,7 +122,7 @@ namespace Domain.Services
                 .GetRepository<Subscription>()
                 .GetAll()
                 .SingleOrDefault(s => s.SubscriptionId == subscriptionViewModel.SubcriptionId);
-            
+
             if (existingSubscription == null)
             {
                 result = 1;

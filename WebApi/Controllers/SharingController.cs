@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Domain.DTO;
+﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.SharingModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace WebApi.Controllers
 {
@@ -284,7 +282,7 @@ namespace WebApi.Controllers
                 return NotFound("Sharing not found");
             }
 
-            return isDisable ? Ok("Sharing is disabled.") 
+            return isDisable ? Ok("Sharing is disabled.")
                 : Ok("Sharing is enabled.");
         }
 

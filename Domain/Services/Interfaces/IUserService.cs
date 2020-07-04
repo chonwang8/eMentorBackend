@@ -1,8 +1,6 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels;
-using System;
+using Domain.ViewModels.UserModels;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.Services.Interfaces
 {

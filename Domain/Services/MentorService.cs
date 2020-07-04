@@ -2,11 +2,10 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.MentorModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -30,12 +29,12 @@ namespace Domain.Services
 
         #region RESTful API Functions
 
-        public IEnumerable<MentorViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<MentorModel> GetAll(GetAllDTO request)
         {
-            IEnumerable<MentorViewModel> result = _uow
+            IEnumerable<MentorModel> result = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
-                .Select(u => new MentorViewModel
+                .Select(u => new MentorModel
                 {
                     MentorId = u.MentorId,
                     UserId = u.UserId
@@ -45,18 +44,18 @@ namespace Domain.Services
         }
 
 
-        public IEnumerable<MentorViewModel> GetById(string mentorId)
+        public IEnumerable<MentorModel> GetById(string mentorId)
         {
             if (mentorId == null)
             {
                 return null;
             }
 
-            IEnumerable<MentorViewModel> result = _uow
+            IEnumerable<MentorModel> result = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
                 .Where(u => u.UserId.Equals(new Guid(mentorId)))
-                .Select(u => new MentorViewModel
+                .Select(u => new MentorModel
                 {
                     MentorId = u.MentorId,
                     UserId = u.UserId
@@ -66,7 +65,7 @@ namespace Domain.Services
         }
 
 
-        public int Insert(MentorViewModel mentor)
+        public int Insert(MentorModel mentor)
         {
             int result = 0;
 
@@ -110,7 +109,7 @@ namespace Domain.Services
         }
 
 
-        public int Update(MentorViewModel mentor)
+        public int Update(MentorModel mentor)
         {
             int result = 0;
 
