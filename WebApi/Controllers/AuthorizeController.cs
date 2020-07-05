@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.AuthDTOs;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.AdminModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -88,7 +88,7 @@ namespace WebApi.Controllers
         /// <returns>User with matching Id</returns>
         /// <response code="200">Success</response>
         [HttpPost("adminLogin")]
-        public IActionResult Login(AdminLoginViewModel adminLogin)
+        public IActionResult Login(AdminLoginModel adminLogin)
         {
             if (adminLogin == null)
             {

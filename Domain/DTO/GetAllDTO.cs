@@ -9,5 +9,6 @@ namespace Domain.DTO
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
         public bool IsAscending { get; set; }
+        public bool IsApproved { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Domain.DTO.AuthDTOs;
-using Domain.ViewModels;
+using Domain.ViewModels.AdminModels;
 using Domain.ViewModels.UserModels;
 
 namespace Domain.Services.Interfaces
@@ -9,6 +9,6 @@ namespace Domain.Services.Interfaces
 
         public string Register(UserRegisterViewModel user);
         public LoginResponseDTO Login(UserLoginViewModel user);
-        public string Login(AdminLoginViewModel adminLogin);
+        public string Login(AdminLoginModel adminLogin);
     }
 }

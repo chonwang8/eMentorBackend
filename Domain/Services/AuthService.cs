@@ -4,7 +4,7 @@ using Domain.DTO.AuthDTOs;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
-using Domain.ViewModels;
+using Domain.ViewModels.AdminModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.Extensions.Options;
 using System;
@@ -48,7 +48,7 @@ namespace Domain.Services
         }
 
 
-        public string Login(AdminLoginViewModel adminLogin)
+        public string Login(AdminLoginModel adminLogin)
         {
             if (adminLogin == null)
             {
@@ -65,7 +65,7 @@ namespace Domain.Services
                     return null;
             }
 
-            string jwtToken = tokenManager.CreateAdminAccessToken(new AdminViewModel
+            string jwtToken = tokenManager.CreateAdminAccessToken(new AdminModel
             {
                 AdminId = loggedAdmin.AdminId,
                 AdminUsername = loggedAdmin.AdminUsername

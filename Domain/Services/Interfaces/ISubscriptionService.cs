@@ -6,12 +6,12 @@ namespace Domain.Services.Interfaces
 {
     public interface ISubscriptionService
     {
-        public IEnumerable<SubscriptionViewModel> GetAll(GetAllDTO request);
-        public IEnumerable<SubscriptionViewModel> GetById(string subscriptionId);
+        public IEnumerable<SubscriptionModel> GetAll(GetAllDTO request);
+        public IEnumerable<SubscriptionModel> GetById(string subscriptionId);
 
 
-        public int Insert(SubscriptionViewModel subscriptionViewModel);
-        public int Update(SubscriptionViewModel subscriptionViewModel);
+        public int Insert(SubscriptionModel subscriptionViewModel);
+        public int Update(SubscriptionModel subscriptionViewModel);
 
 
         public int ChangeStatus(string subscriptionId, bool status);

@@ -37,8 +37,10 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
-                    ImageUrl = s.ImageUrl
+                    ImageUrl = s.ImageUrl,
+                    IsApproved = s.IsApproved
                 });
+            result = result.Where(s => s.IsApproved == request.IsApproved);
             result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
@@ -64,7 +66,11 @@ namespace Domain.Services
                     EndTime = s.EndTime,
                     Maximum = s.Maximum,
                     Price = s.Price,
-                    ChannelId = s.ChannelId
+                    ChannelId = s.ChannelId,
+                    imageUrl = s.ImageUrl,
+                    TopicName = s.Channel.Topic.TopicName,
+                    IsApproved = s.IsApproved,
+                    IsDisable = s.IsDisable
                 });
 
             return result;
@@ -267,7 +273,6 @@ namespace Domain.Services
             
             return result;
         }
-
 
 
         #endregion
