@@ -4,6 +4,7 @@ using Domain.ViewModels.SharingModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -216,14 +217,23 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(SharingModel sharingViewModel)
+        public IActionResult Update(SharingModel sharingModel)
         {
-            if (sharingViewModel == null)
+            if (sharingModel == null)
             {
                 return BadRequest("Sharing info must not be null");
             }
 
-            int result = _sharing.Update(sharingViewModel);
+            int result;
+
+            try
+            {
+                result = _sharing.Update(sharingModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Internal server error");
+            }
 
             if (result == 0)
             {

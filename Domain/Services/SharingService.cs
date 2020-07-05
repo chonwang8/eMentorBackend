@@ -127,11 +127,11 @@ namespace Domain.Services
         }
 
 
-        public int Update(SharingModel sharingViewModel)
+        public int Update(SharingModel sharingModel)
         {
             int result = 0;
 
-            if (sharingViewModel == null)
+            if (sharingModel == null)
             {
                 result = 0;
                 return result;
@@ -139,7 +139,7 @@ namespace Domain.Services
 
             Sharing existingSharing = _uow.GetRepository<Sharing>()
                 .GetAll()
-                .FirstOrDefault(s => s.SharingId == sharingViewModel.SharingId);
+                .FirstOrDefault(s => s.SharingId == sharingModel.SharingId);
 
             if (existingSharing == null)
             {
@@ -147,13 +147,15 @@ namespace Domain.Services
                 return result;
             }
 
-            existingSharing.SharingName = sharingViewModel.SharingName;
-            existingSharing.Description = sharingViewModel.Description;
-            existingSharing.StartTime = sharingViewModel.StartTime;
-            existingSharing.EndTime = sharingViewModel.EndTime;
-            existingSharing.Maximum = sharingViewModel.Maximum;
-            existingSharing.Price = sharingViewModel.Price;
-            existingSharing.ChannelId = sharingViewModel.ChannelId;
+            existingSharing.SharingName = sharingModel.SharingName;
+            existingSharing.Description = sharingModel.Description;
+            existingSharing.StartTime = sharingModel.StartTime;
+            existingSharing.EndTime = sharingModel.EndTime;
+            existingSharing.Maximum = sharingModel.Maximum;
+            existingSharing.Price = sharingModel.Price;
+            existingSharing.ChannelId = sharingModel.ChannelId;
+            existingSharing.IsDisable = sharingModel.IsDisable;
+            existingSharing.IsApproved = sharingModel.IsApproved;
 
             try
             {
