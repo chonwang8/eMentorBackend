@@ -206,7 +206,7 @@ namespace WebApi.Controllers
                 return BadRequest("Subscription info must not be null");
             }
 
-            int result = _subscription.Insert(subscriptionViewModel);
+            int result = _subscription.Update(subscriptionViewModel);
 
             if (result == 0)
             {

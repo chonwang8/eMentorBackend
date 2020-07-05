@@ -13,7 +13,6 @@ namespace Domain.ViewModels.SharingModels
         public double Price { get; set; }
         public Guid ChannelId { get; set; }
         public string imageUrl { get; set; }
-        public string TopicName { get; set; }
         public bool IsDisable { get; set; }
         public bool IsApproved { get; set; }
     }

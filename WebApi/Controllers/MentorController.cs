@@ -228,7 +228,7 @@ namespace WebApi.Controllers
                 return BadRequest("Mentor info must not be null");
             }
 
-            int result = _mentor.Insert(mentor);
+            int result = _mentor.Update(mentor);
 
             if (result == 0)
             {
