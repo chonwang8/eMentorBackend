@@ -68,7 +68,6 @@ namespace Domain.Services
                     Price = s.Price,
                     ChannelId = s.ChannelId,
                     imageUrl = s.ImageUrl,
-                    TopicName = s.Channel.Topic.TopicName,
                     IsApproved = s.IsApproved,
                     IsDisable = s.IsDisable
                 });
@@ -267,7 +266,6 @@ namespace Domain.Services
                     Price = s.Price,
                     ChannelId = s.ChannelId,
                     imageUrl = s.ImageUrl,
-                    TopicName = s.Channel.Topic.TopicName
                 });
             //result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             

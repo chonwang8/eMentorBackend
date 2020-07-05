@@ -223,7 +223,7 @@ namespace WebApi.Controllers
                 return BadRequest("Sharing info must not be null");
             }
 
-            int result = _sharing.Insert(sharingViewModel);
+            int result = _sharing.Update(sharingViewModel);
 
             if (result == 0)
             {

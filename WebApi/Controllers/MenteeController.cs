@@ -228,7 +228,7 @@ namespace WebApi.Controllers
                 return BadRequest("Mentee info must not be null");
             }
 
-            int result = _mentee.Insert(mentee);
+            int result = _mentee.Update(mentee);
 
             if (result == 0)
             {
