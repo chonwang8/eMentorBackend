@@ -35,7 +35,10 @@ namespace WebApi.Controllers
         /// The page number where paging is started. If null will be 1 by default.
         /// </param>
         /// <param name="asc">
-        /// Boolean value determining whether return list will be null or not. If null will be false by default.
+        /// Boolean value determining whether return list will be ascending or not. If null will be false by default.
+        /// </param>
+        /// <param name="isApproved">
+        /// Boolean value determining whether return list will include sharings that are approved or not. If null will be false by default.
         /// </param>
         /// 
         /// <returns>
@@ -54,11 +57,10 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, string asc)
+        public IActionResult GetAll(string size, string index, bool asc, bool isApproved)
         {
             int pageSize, pageIndex;
-            bool IsAscended = false;
-            GetAllDTO paging = null;
+            GetAllDTO request = null;
 
             #region Set default paging values if null or empty input
 
@@ -88,25 +90,17 @@ namespace WebApi.Controllers
                 pageIndex = 1;
             }
 
-            if (!string.IsNullOrWhiteSpace(asc))
-            {
-                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                IsAscended = bool.Parse(asc);
-            }
-
             #endregion
 
-            paging = new GetAllDTO
+            request = new GetAllDTO
             {
                 PageSize = pageSize,
                 PageIndex = pageIndex,
-                IsAscending = false
+                IsAscending = asc,
+                IsApproved = isApproved
             };
 
-            List<SharingViewModel> result = _sharing.GetAll(paging).ToList();
+            List<SharingViewModel> result = _sharing.GetAll(request).ToList();
             
             if (result == null || result.Count == 0)
             {

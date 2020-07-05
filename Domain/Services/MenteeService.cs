@@ -27,12 +27,12 @@ namespace Domain.Services
 
         #region RESTful API Functions
 
-        public IEnumerable<MenteeViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<MenteeModel> GetAll(GetAllDTO request)
         {
-            IEnumerable<MenteeViewModel> result = _uow
+            IEnumerable<MenteeModel> result = _uow
                 .GetRepository<Mentee>()
                 .GetAll()
-                .Select(u => new MenteeViewModel
+                .Select(u => new MenteeModel
                 {
                     MenteeId = u.MenteeId,
                     UserId = u.UserId
@@ -43,18 +43,18 @@ namespace Domain.Services
         }
 
 
-        public IEnumerable<MenteeViewModel> GetById(string menteeId)
+        public IEnumerable<MenteeModel> GetById(string menteeId)
         {
             if (menteeId == null)
             {
                 return null;
             }
 
-            IEnumerable<MenteeViewModel> result = _uow
+            IEnumerable<MenteeModel> result = _uow
                 .GetRepository<Mentee>()
                 .GetAll()
                 .Where(u => u.UserId.Equals(new Guid(menteeId)))
-                .Select(u => new MenteeViewModel
+                .Select(u => new MenteeModel
                 {
                     MenteeId = u.MenteeId,
                     UserId = u.UserId
@@ -64,7 +64,7 @@ namespace Domain.Services
         }
 
 
-        public int Insert(MenteeViewModel mentee)
+        public int Insert(MenteeModel mentee)
         {
             int result = 0;
 
@@ -108,7 +108,7 @@ namespace Domain.Services
         }
 
 
-        public int Update(MenteeViewModel mentee)
+        public int Update(MenteeModel mentee)
         {
             int result = 0;
 
