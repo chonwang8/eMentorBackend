@@ -1,34 +1,35 @@
-﻿using Domain.DTO;
-using Domain.Services.Interfaces;
-using Domain.ViewModels.SharingModels;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Domain.DTO;
+using Domain.Services.Interfaces;
+using Domain.ViewModels.EnrollModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-    [Route("api/sharings")]
+    [Route("api/enrolls")]
     [ApiController]
-    [EnableCors("MyPolicy")]
-    public class SharingController : ControllerBase
+    public class EnrollController : ControllerBase
     {
+
         #region Classes - Constructors
-        protected readonly ISharingService _sharing;
-        public SharingController(ISharingService service)
+        protected readonly IEnrollService _enroll;
+
+        public EnrollController(IEnrollService enroll)
         {
-            _sharing = service;
+            _enroll = enroll;
         }
         #endregion
 
 
 
         /// <summary>
-        /// Get list of users. GET "api/sharings"
+        /// Get list of enrolls. GET "api/enrolls"
         /// </summary>
-        /// 
+        ///
         /// <param name="size">
         /// The number of items on a page. If null will be 40 by default.
         /// </param>
@@ -36,20 +37,17 @@ namespace WebApi.Controllers
         /// The page number where paging is started. If null will be 1 by default.
         /// </param>
         /// <param name="asc">
-        /// Boolean value determining whether return list will be ascending or not. If null will be false by default.
-        /// </param>
-        /// <param name="isApproved">
-        /// Boolean value determining whether return list will include sharings that are approved or not. If null will be false by default.
+        /// Boolean value determining whether return list will be null or not. If null will be false by default.
         /// </param>
         /// 
         /// <returns>
-        /// List containing sharings. Message if list is empty.
+        /// List containing enrolls. Message if list is empty.
         /// </returns>
         /// <response code="200">Success</response>
-        /// <response code="400">Bad Request</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="500">Internal Server Error</response>
+        /// <response code="400">Not have enough infomation</response>
+        /// <response code="401">Unauthorize</response>
+        /// <response code="403">Forbidden from resource</response>
+        /// <response code="500">Internal Error</response>
         [HttpGet]
         #region repCode 200 400 401 403 500
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,10 +56,11 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, bool asc, bool isApproved)
+        public IActionResult GetAll(string size, string index, string asc)
         {
             int pageSize, pageIndex;
-            GetAllDTO request = null;
+            bool IsAscended = false;
+            GetAllDTO paging = null;
 
             #region Set default paging values if null or empty input
 
@@ -91,43 +90,61 @@ namespace WebApi.Controllers
                 pageIndex = 1;
             }
 
+            if (!string.IsNullOrWhiteSpace(asc))
+            {
+                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
+                {
+                    return BadRequest("Invalid paging values");
+                }
+                IsAscended = bool.Parse(asc);
+            }
+
             #endregion
 
-            request = new GetAllDTO
+            paging = new GetAllDTO
             {
                 PageSize = pageSize,
                 PageIndex = pageIndex,
-                IsAscending = asc,
-                IsApproved = isApproved
+                IsAscending = false
             };
 
-            List<SharingViewModel> result = _sharing.GetAll(request).ToList();
-            
-            if (result == null || result.Count == 0)
+            ICollection<EnrollViewModel> result = null;
+
+            try
             {
-                return Ok("There are no sharings in the system");
+
+                result = _enroll.GetAll(paging).ToList();
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)500, e);
             }
 
+            if (result == null || result.Count == 0)
+            {
+                return Ok("There are no topics in the system");
+            }
             return Ok(result);
         }
 
 
+
         /// <summary>
-        /// Get user by Id. GET "api/sharings/{sharingId}"
+        /// Get enroll by Id.  GET "api/enrolls/{enrollId}"
         /// </summary>
-        /// <param name="sharingId">
-        /// The sharing's identifier.
+        /// <param name="enrollId">
+        /// The enroll's identifier.
         /// </param>
         /// <returns>
-        /// Sharing with matching Id
+        /// Enroll with matching Id
         /// </returns>
         /// <response code="200">Success</response>
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
-        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="404">Enroll with matching Id not found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpGet("{sharingId}")]
+        [HttpGet("{enrollId}")]
         #region repCode 200 400 401 403 404 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -136,18 +153,27 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetById(string sharingId)
+        public IActionResult GetById(string enrollId)
         {
-            if (sharingId == null)
+            if (enrollId == null)
             {
-                return BadRequest("Sharing info must not be null");
+                return BadRequest("User info must not be null");
             }
 
-            List<SharingModel> result = _sharing.GetById(sharingId).ToList();
+            ICollection<EnrollModel> result = null;
+
+            try
+            {
+                result = _enroll.GetById(enrollId).ToList();
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)500, e);
+            }
 
             if (result == null || result.Count == 0)
             {
-                return NotFound("No sharing(s) with ID " + sharingId + " found.");
+                return NotFound("No enroll with ID " + enrollId + " was found.");
             }
 
             return Ok(result);
@@ -156,7 +182,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Insert a sharing into database. POST "api/sharings".
+        /// Insert an enroll into database. POST "api/enrolls".
         /// </summary>
         /// <returns>
         /// Message
@@ -174,31 +200,40 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(SharingModel sharingViewModel)
+        public IActionResult Insert(EnrollInsertModel enrollInsertModel)
         {
-            if (sharingViewModel == null)
+            if (enrollInsertModel == null)
             {
-                return BadRequest("Sharing info must not be null");
+                return BadRequest("Enroll info must not be null");
             }
 
-            int result = _sharing.Insert(sharingViewModel);
+            int result = -1;
+
+            try
+            {
+                result = _enroll.Insert(enrollInsertModel);
+            }
+            catch (Exception e)
+            {
+                StatusCode((int)500, e);
+            }
 
             if (result == 0)
             {
-                return BadRequest("Faulthy sharing info.");
+                return BadRequest("Faulthy enroll info.");
             }
             if (result == 1)
             {
-                return BadRequest("This sharing is already existed");
+                return BadRequest("Already enrolled.");
             }
 
-            return Ok("Sharing Created");
+            return Ok("Enrolled into sharing session.");
         }
 
 
 
         /// <summary>
-        /// Update an existing sharing. PUT "api/sharings".
+        /// Update an existing enroll. PUT "api/enrolls".
         /// </summary>
         /// <returns>
         /// Message
@@ -207,7 +242,7 @@ namespace WebApi.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
-        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="404">Enroll with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut]
         #region repCode 200 400 401 403 500
@@ -217,40 +252,40 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(SharingModel sharingModel)
+        public IActionResult Update(EnrollModel enrollModel)
         {
-            if (sharingModel == null)
+            if (enrollModel == null)
             {
-                return BadRequest("Sharing info must not be null");
+                return BadRequest("Enroll info must not be null");
             }
 
-            int result;
+            int result = -1;
 
             try
             {
-                result = _sharing.Update(sharingModel);
+                result = _enroll.Update(enrollModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode((int)500, e);
             }
 
             if (result == 0)
             {
-                return BadRequest("Faulthy sharing info.");
+                return BadRequest("Faulthy enroll info.");
             }
             if (result == 1)
             {
-                return NotFound("Sharing not found");
+                return NotFound("Enroll not found");
             }
 
-            return Ok("Sharing information updated");
+            return Ok("Updated enroll " + enrollModel.EnrollId);
         }
 
 
 
         /// <summary>
-        /// Change status of a sharing (Disabled/Enabled). PUT "api/sharings/status".
+        /// Change status of an enroll (Disabled/Enabled). PUT "api/enrolls/status".
         /// </summary>
         /// <returns>
         /// Message
@@ -259,7 +294,7 @@ namespace WebApi.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
-        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="404">Enroll with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut("status")]
         #region repCode 200 400 401 403 404 500
@@ -270,35 +305,44 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult ChangeStatus(string sharingId, bool isDisable)
+        public IActionResult ChangeStatus(string enrollId, bool isDisable)
         {
-            if (sharingId == null)
+            if (enrollId == null)
             {
-                return BadRequest("SharingId must not be null.");
+                return BadRequest("EnrollId must not be null.");
             }
 
-            int result = _sharing.ChangeStatus(sharingId, isDisable);
+            int result = -1;
+
+            try
+            {
+                result = _enroll.ChangeStatus(enrollId, isDisable);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)500, e);
+            }
 
             if (result == 0)
             {
-                return BadRequest("Faulthy SharingId.");
+                return BadRequest("Faulthy EnrollId.");
             }
             if (result == 1)
             {
-                return NotFound("Sharing not found");
+                return NotFound("Enroll not found");
             }
 
-            return isDisable ? Ok("Sharing is disabled.")
-                : Ok("Sharing is enabled.");
+            return isDisable ? Ok("Enroll is disabled.")
+                : Ok("Enroll is enabled.");
         }
 
 
 
         /// <summary>
-        /// Delete a sharing from database. DELETE "api/sharings/{sharingId}".
+        /// Delete an enroll from database.. DELETE "api/enrolls/{enrollId}".
         /// </summary>
-        /// <param name="sharingId">
-        /// The sharing's identifier.
+        /// <param name="enrollId">
+        /// The enroll's identifier.
         /// </param>
         /// <returns>
         /// Message
@@ -307,9 +351,9 @@ namespace WebApi.Controllers
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
-        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="404">Enroll with matching Id not found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpDelete("{sharingId}")]
+        [HttpDelete("{enrollId}")]
         #region repCode 200 400 401 403 404 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -318,28 +362,34 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Delete(string sharingId)
+        public IActionResult Delete(string enrollId)
         {
-            if (sharingId == null)
+            if (enrollId == null)
             {
-                return BadRequest("Sharing info must not be null");
+                return BadRequest("Enroll info must not be null");
             }
 
-            int result = _sharing.Delete(sharingId);
+            int result = -1;
+
+            try
+            {
+                result = _enroll.Delete(enrollId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)500, e);
+            }
 
             if (result == 0)
             {
-                return BadRequest("Faulthy sharing info.");
+                return BadRequest("Faulthy enrollId.");
             }
             if (result == 1)
             {
-                return NotFound("Sharing was not found");
+                return NotFound("Enroll not found");
             }
 
-            return Ok("Sharing is deleted.");
+            return Ok("Enroll is deleted.");
         }
-
-
-
     }
 }
