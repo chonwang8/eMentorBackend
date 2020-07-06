@@ -16,14 +16,10 @@ namespace Domain.Services
     {
         #region Classes and Constructor
         protected readonly IUnitOfWork _uow;
-        protected readonly IOptions<AppSetting> _options;
-        protected TokenManager tokenManager;
 
-        public UserService(IUnitOfWork uow, IOptions<AppSetting> options)
+        public UserService(IUnitOfWork uow)
         {
             _uow = uow;
-            _options = options;
-            tokenManager = new TokenManager(_options);
         }
 
         #endregion Classes and Constructor
