@@ -1,5 +1,5 @@
 ﻿using Domain.Helper.DataObjects;
-using Domain.ViewModels;
+using Domain.ViewModels.AdminModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +19,7 @@ namespace Domain.Helper.HelperFunctions
             appSetting = options.Value;
         }
 
-        public string CreateAdminAccessToken(AdminViewModel adminViewModel)
+        public string CreateAdminAccessToken(AdminModel adminViewModel)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(appSetting.Secret);

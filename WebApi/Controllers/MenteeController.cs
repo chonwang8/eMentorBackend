@@ -106,7 +106,7 @@ namespace WebApi.Controllers
                 IsAscending = false
             };
 
-            List<MenteeViewModel> result = _mentee.GetAll(paging).ToList();
+            List<MenteeModel> result = _mentee.GetAll(paging).ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no mentees in the system");
@@ -147,7 +147,7 @@ namespace WebApi.Controllers
                 return BadRequest("Mentee info must not be null");
             }
 
-            List<MenteeViewModel> result = _mentee.GetById(menteeId).ToList();
+            List<MenteeModel> result = _mentee.GetById(menteeId).ToList();
 
             if (result == null || result.Count == 0)
             {
@@ -178,7 +178,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(MenteeViewModel mentee)
+        public IActionResult Insert(MenteeModel mentee)
         {
             if (mentee == null)
             {
@@ -221,14 +221,14 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(MenteeViewModel mentee)
+        public IActionResult Update(MenteeModel mentee)
         {
             if (mentee == null)
             {
                 return BadRequest("Mentee info must not be null");
             }
 
-            int result = _mentee.Insert(mentee);
+            int result = _mentee.Update(mentee);
 
             if (result == 0)
             {

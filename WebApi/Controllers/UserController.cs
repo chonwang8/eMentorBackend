@@ -54,10 +54,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, string asc)
+        public IActionResult GetAll(string size, string index, bool asc)
         {
             int pageSize, pageIndex;
-            bool IsAscended = false;
             GetAllDTO paging = null;
 
             #region Set default paging values if null or empty input
@@ -88,22 +87,13 @@ namespace WebApi.Controllers
                 pageIndex = 1;
             }
 
-            if (!string.IsNullOrWhiteSpace(asc))
-            {
-                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                IsAscended = bool.Parse(asc);
-            }
-
             #endregion
 
             paging = new GetAllDTO
             {
                 PageSize = pageSize,
                 PageIndex = pageIndex,
-                IsAscending = false
+                IsAscending = asc
             };
 
             List<UserViewModel> result = _user.GetAll(paging).ToList();

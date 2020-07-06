@@ -19,7 +19,7 @@
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
-        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminLoginViewModel)">
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminModels.AdminLoginModel)">
             <summary>
             Login
             </summary>
@@ -67,7 +67,7 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.ViewModels.MenteeModels.MenteeViewModel)">
+        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.ViewModels.MenteeModels.MenteeModel)">
             <summary>
             Insert a mentee into database. POST "api/mentees".
             </summary>
@@ -80,7 +80,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.ViewModels.MenteeModels.MenteeViewModel)">
+        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.ViewModels.MenteeModels.MenteeModel)">
             <summary>
             Update an existing mentee. PUT "api/mentees".
             </summary>
@@ -224,7 +224,7 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.SharingController.GetAll(System.String,System.String,System.Boolean,System.Boolean)">
             <summary>
             Get list of users. GET "api/sharings"
             </summary>
@@ -236,7 +236,10 @@
             The page number where paging is started. If null will be 1 by default.
             </param>
             <param name="asc">
-            Boolean value determining whether return list will be null or not. If null will be false by default.
+            Boolean value determining whether return list will be ascending or not. If null will be false by default.
+            </param>
+            <param name="isApproved">
+            Boolean value determining whether return list will include sharings that are approved or not. If null will be false by default.
             </param>
             
             <returns>
@@ -323,7 +326,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.SubscriptionController.GetAll(System.String,System.String,System.Boolean)">
             <summary>
             Get list of subscriptions. GET "api/subscriptions"
             </summary>
@@ -353,7 +356,7 @@
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.ViewModels.SubscriptionModels.SubscriptionViewModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.ViewModels.SubscriptionModels.SubscriptionModel)">
             <summary>
             Insert a subscription into database. POST "api/subscriptions"
             </summary>
@@ -366,7 +369,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.ViewModels.SubscriptionModels.SubscriptionViewModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.ViewModels.SubscriptionModels.SubscriptionModel)">
             <summary>
             Update an existing subscription. PUT "api/subscriptions".
             </summary>
@@ -510,7 +513,7 @@
             <response code="404">Topic with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.UserController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.UserController.GetAll(System.String,System.String,System.Boolean)">
             <summary>
             Get list of users. GET "api/users"
             </summary>

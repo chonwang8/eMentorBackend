@@ -23,12 +23,12 @@ namespace Domain.Services
 
         #region RESTful API methods
 
-        public IEnumerable<SubscriptionViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<SubscriptionModel> GetAll(GetAllDTO request)
         {
-            IEnumerable<SubscriptionViewModel> result = _uow
+            IEnumerable<SubscriptionModel> result = _uow
                 .GetRepository<Subscription>()
                 .GetAll()
-                .Select(s => new SubscriptionViewModel
+                .Select(s => new SubscriptionModel
                 {
                     SubcriptionId = s.SubscriptionId,
                     ChannelId = s.ChannelId,
@@ -40,18 +40,18 @@ namespace Domain.Services
             return result;
         }
 
-        public IEnumerable<SubscriptionViewModel> GetById(string subscriptionId)
+        public IEnumerable<SubscriptionModel> GetById(string subscriptionId)
         {
             if (subscriptionId == null)
             {
                 return null;
             }
 
-            IEnumerable<SubscriptionViewModel> result = _uow
+            IEnumerable<SubscriptionModel> result = _uow
                 .GetRepository<Subscription>()
                 .GetAll()
                 .Where(s => s.SubscriptionId.Equals(new Guid(subscriptionId)))
-                .Select(s => new SubscriptionViewModel
+                .Select(s => new SubscriptionModel
                 {
                     SubcriptionId = s.SubscriptionId,
                     ChannelId = s.ChannelId,
@@ -63,7 +63,7 @@ namespace Domain.Services
         }
 
 
-        public int Insert(SubscriptionViewModel subscriptionViewModel)
+        public int Insert(SubscriptionModel subscriptionViewModel)
         {
             int result = 0;
 
@@ -107,7 +107,7 @@ namespace Domain.Services
             return result;
         }
 
-        public int Update(SubscriptionViewModel subscriptionViewModel)
+        public int Update(SubscriptionModel subscriptionViewModel)
         {
             int result = 0;
 
