@@ -269,7 +269,7 @@ namespace WebApi.Controllers
         {
             if (topicId == null)
             {
-                return BadRequest("SubscriptionId must not be null.");
+                return BadRequest("TopicId must not be null.");
             }
 
             int result = _topic.ChangeStatus(topicId, isDisable);
@@ -317,7 +317,7 @@ namespace WebApi.Controllers
         {
             if (topicId == null)
             {
-                return BadRequest("User info must not be null");
+                return BadRequest("Topic info must not be null");
             }
 
             int result = _topic.Delete(topicId);
