@@ -352,7 +352,7 @@
         </member>
         <member name="M:WebApi.Controllers.SharingController.GetById(System.String)">
             <summary>
-            Get user by Id. GET "api/sharings/{sharingId}"
+            Get user by Id.
             </summary>
             <param name="sharingId">
             The sharing's identifier.
@@ -369,7 +369,7 @@
         </member>
         <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingInsertModel)">
             <summary>
-            Insert a sharing into database. POST "api/sharings".
+            Insert a sharing into database.
             </summary>
             <returns>
             Message
@@ -382,7 +382,7 @@
         </member>
         <member name="M:WebApi.Controllers.SharingController.Update(Domain.ViewModels.SharingModels.SharingModel)">
             <summary>
-            Update an existing sharing. PUT "api/sharings".
+            Update an existing sharing.
             </summary>
             <returns>
             Message
@@ -394,9 +394,9 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.ChangeStatus(System.String,System.Boolean)">
+        <member name="M:WebApi.Controllers.SharingController.ChangeStatus(System.String,System.Nullable{System.Boolean})">
             <summary>
-            Change status of a sharing (Disabled/Enabled). PUT "api/sharings/status".
+            Change status of a sharing (Disabled/Enabled).
             </summary>
             <returns>
             Message
@@ -410,7 +410,7 @@
         </member>
         <member name="M:WebApi.Controllers.SharingController.Delete(System.String)">
             <summary>
-            Delete a sharing from database. DELETE "api/sharings/{sharingId}".
+            Delete a sharing from database.
             </summary>
             <param name="sharingId">
             The sharing's identifier.

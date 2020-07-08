@@ -33,6 +33,7 @@ namespace Domain.Services
                 Message = "Success",
                 Content = null
             };
+
             IEnumerable<SharingViewModel> result = null;
 
             try
@@ -90,14 +91,29 @@ namespace Domain.Services
         }
 
 
-        public IEnumerable<SharingModel> GetById(string sharingId)
+        public SharingResponseDto<SharingModel> GetById(string sharingId)
         {
+            IEnumerable<SharingModel> result = null;
+            SharingResponseDto<SharingModel> responseDto = new SharingResponseDto<SharingModel>
+            {
+                Status = 0,
+                Message = "Success",
+                Content = null
+            };
+
             if (sharingId == null)
             {
-                return null;
-            }
+                responseDto = new SharingResponseDto<SharingModel>
+                {
+                    Status = 1,
+                    Message = "SharingId must be specified",
+                    Content = null
+                };
+            };
 
-            IEnumerable<SharingModel> result = _uow
+            try
+            {
+                result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
                 .Where(s => s.SharingId.Equals(new Guid(sharingId)))
@@ -115,16 +131,35 @@ namespace Domain.Services
                     IsApproved = s.IsApproved,
                     IsDisable = s.IsDisable
                 });
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
-            return result;
+            if (result == null)
+            {
+                responseDto = new SharingResponseDto<SharingModel>
+                {
+                    Status = 2,
+                    Message = "Sharing with id " + sharingId + " does not exist",
+                    Content = null
+                };
+            }
+
+            responseDto.Content = result;
+
+            return responseDto;
         }
 
 
         public SharingResponseDto Insert(SharingInsertModel sharingInsertModel)
         {
+            SharingResponseDto responseDto = null;
+
             if (sharingInsertModel == null)
             {
-                return new SharingResponseDto
+                responseDto = new SharingResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing info"
@@ -155,32 +190,51 @@ namespace Domain.Services
                 throw e;
             }
 
-            return new SharingResponseDto
+            responseDto = new SharingResponseDto
             {
                 Status = 0,
                 Message = "Sharing session " + sharingInsertModel.SharingName + " successfully inserted"
             };
+
+            return responseDto;
         }
 
 
-        public int Update(SharingModel sharingModel)
+        public SharingResponseDto Update(SharingModel sharingModel)
         {
-            int result = 0;
+            SharingResponseDto responseDto = null;
 
             if (sharingModel == null)
             {
-                result = 0;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy sharing info"
+                };
+                return responseDto;
             }
 
-            Sharing existingSharing = _uow.GetRepository<Sharing>()
-                .GetAll()
-                .FirstOrDefault(s => s.SharingId == sharingModel.SharingId);
+            Sharing existingSharing = null;
+
+            try
+            {
+                existingSharing = _uow.GetRepository<Sharing>()
+                    .GetAll()
+                    .FirstOrDefault(s => s.SharingId == sharingModel.SharingId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             if (existingSharing == null)
             {
-                result = 1;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 2,
+                    Message = "No existing sharing with specified id found"
+                };
+                return responseDto;
             }
 
             existingSharing.SharingName = sharingModel.SharingName;
@@ -193,30 +247,40 @@ namespace Domain.Services
             existingSharing.IsDisable = sharingModel.IsDisable;
             existingSharing.IsApproved = sharingModel.IsApproved;
 
+
             try
             {
                 _uow.GetRepository<Sharing>().Update(existingSharing);
                 _uow.Commit();
-                result = 2;
             }
             catch (Exception e)
             {
                 throw e;
             }
 
-            return result;
+            responseDto = new SharingResponseDto
+            {
+                Status = 0,
+                Message = "Success"
+            };
+
+            return responseDto;
         }
 
 
-        public int ChangeStatus(string sharingId, bool status)
+        public SharingResponseDto ChangeStatus(string sharingId, bool status)
         {
-            int result = 0;
+            SharingResponseDto responseDto = null;
             Guid guid = new Guid(sharingId);
 
             if (sharingId.Equals(null))
             {
-                result = 0;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy sharing Id."
+                };
+                return responseDto;
             }
 
             Sharing existingSharing = _uow
@@ -225,61 +289,88 @@ namespace Domain.Services
                 .FirstOrDefault(s => s.SharingId == guid);
             if (existingSharing == null)
             {
-                result = 1;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 2,
+                    Message = "Sharing with specified id not found"
+                };
+                return responseDto;
             }
-
-            //  existingSharing.IsDisable = status;
 
             try
             {
+                existingSharing.IsDisable = status;
                 _uow.GetRepository<Sharing>().Update(existingSharing);
                 _uow.Commit();
-                result = 2;
             }
             catch (Exception e)
             {
                 throw e;
             }
 
-            return result;
+            responseDto = new SharingResponseDto
+            {
+                Status = 0
+            };
+
+            if(status == true)
+            {
+                responseDto.Message = "Sharing is disabled.";
+            } else if (status == false)
+            {
+                responseDto.Message = "Sharing is enabled.";
+            }
+
+            return responseDto;
         }
 
 
-        public int Delete(string sharingId)
+        public SharingResponseDto Delete(string sharingId)
         {
-            int result = 0;
-            Guid sharingGuid = new Guid(sharingId);
+            SharingResponseDto responseDto = null;
+            Guid guid = new Guid(sharingId);
 
             if (sharingId.Equals(null))
             {
-                result = 0;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy sharing Id."
+                };
+                return responseDto;
             }
 
             Sharing existingSharing = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
-                .FirstOrDefault(s => s.SharingId == sharingGuid);
+                .FirstOrDefault(s => s.SharingId == guid);
             if (existingSharing == null)
             {
-                result = 1;
-                return result;
+                responseDto = new SharingResponseDto
+                {
+                    Status = 2,
+                    Message = "Sharing with specified id not found"
+                };
+                return responseDto;
             }
 
             try
             {
                 _uow.GetRepository<Sharing>().Delete(existingSharing);
                 _uow.Commit();
-                result = 2;
             }
             catch (Exception e)
             {
                 throw e;
             }
 
+            responseDto = new SharingResponseDto
+            {
+                Status = 0,
+                Message = "Successfully remove sharing " + existingSharing.SharingName + " from database."
+            };
 
-            return result;
+            return responseDto;
         }
 
         #endregion
@@ -287,30 +378,6 @@ namespace Domain.Services
 
 
         #region Specialized Methods
-        public IEnumerable<SharingModel> GetAvailableSharings()
-        {
-            IEnumerable<SharingModel> result = _uow
-                .GetRepository<Sharing>()
-                .GetAll()
-                .Include(s => s.Channel.Topic)
-                .Select(s => new SharingModel
-                {
-                    SharingId = s.SharingId,
-                    SharingName = s.SharingName,
-                    Description = s.Description,
-                    StartTime = s.StartTime,
-                    EndTime = s.EndTime,
-                    Maximum = s.Maximum,
-                    Price = s.Price,
-                    ChannelId = s.ChannelId,
-                    imageUrl = s.ImageUrl,
-                });
-            //result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-
-            return result;
-        }
-
-
         #endregion
     }
 }

@@ -10,10 +10,10 @@ namespace Domain.Services.Interfaces
     public interface ISharingService
     {
         public SharingResponseDto<SharingViewModel> GetAll(PagingDto pagingRequest, FilterDto filterRequest);
-        public IEnumerable<SharingModel> GetById(string sharingId);
+        public SharingResponseDto<SharingModel> GetById(string sharingId);
         public SharingResponseDto Insert(SharingInsertModel sharingInsertModel);
-        public int Update(SharingModel sharingModel);
-        public int ChangeStatus(string sharingId, bool status);
-        public int Delete(string sharingId);
+        public SharingResponseDto Update(SharingModel sharingModel);
+        public SharingResponseDto ChangeStatus(string sharingId, bool status);
+        public SharingResponseDto Delete(string sharingId);
     }
 }
