@@ -43,14 +43,18 @@ namespace eMentor
 
             #region Dependency
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IMajorService, MajorService>();
+
+            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IChannelService, ChannelService>();
             services.AddTransient<ICommentService, CommentService>();
-            services.AddTransient<ITopicService, TopicService>();
-            services.AddTransient<ISharingService, SharingService>();
+            services.AddTransient<IEnrollService, EnrollService>();
+            services.AddTransient<IMajorService, MajorService>();
+            services.AddTransient<IMenteeService, MenteeService>();
             services.AddTransient<IMentorService, MentorService>();
-            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ISharingService, SharingService>();
+            services.AddTransient<ISubscriptionService, SubscriptionService>();
+            services.AddTransient<ITopicService, TopicService>();
+            services.AddTransient<IUserService, UserService>();
             #endregion
 
             #region DbConnection
