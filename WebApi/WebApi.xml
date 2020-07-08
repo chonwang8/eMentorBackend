@@ -323,22 +323,22 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.GetAll(System.String,System.String,System.Boolean,System.Boolean)">
+        <member name="M:WebApi.Controllers.SharingController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
             <summary>
-            Get list of users. GET "api/sharings"
+            Get list of sharings.
             </summary>
             
             <param name="size">
-            The number of items on a page. If null will be 40 by default.
+            The number of items on a page. May left null. Must co-exist with index.
             </param>
             <param name="index">
-            The page number where paging is started. If null will be 1 by default.
+            The page number where paging is started. May left null. Must co-exist with size.
             </param>
-            <param name="asc">
-            Boolean value determining whether return list will be ascending or not. If null will be false by default.
+            <param name="ascending">
+            (True(1)/False(0)) Boolean value determining whether return list will be ascending or not. May left null.
             </param>
-            <param name="isApproved">
-            Boolean value determining whether return list will include sharings that are approved or not. If null will be false by default.
+            <param name="approved">
+            (True(1)/False(0)) Boolean value determining whether return list will include sharings that are approved or not. May left null.
             </param>
             
             <returns>
@@ -367,7 +367,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingModel)">
+        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingInsertModel)">
             <summary>
             Insert a sharing into database. POST "api/sharings".
             </summary>

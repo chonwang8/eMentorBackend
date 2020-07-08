@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.DTO;
+using Domain.DTO.QueryAttributesDtos;
+using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.SharingModels;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,19 @@ namespace Domain.Services
 
 
         #region CRUD Methods
-
-        public IEnumerable<SharingViewModel> GetAll(GetAllDTO request)
+        public SharingResponseDto<SharingViewModel> GetAll(PagingDto pagingRequest, FilterDto filterRequest)
         {
-            IEnumerable<SharingViewModel> result = _uow
+            SharingResponseDto<SharingViewModel> responseDto = new SharingResponseDto<SharingViewModel>
+            {
+                Status = 0,
+                Message = "Success",
+                Content = null
+            };
+            IEnumerable<SharingViewModel> result = null;
+
+            try
+            {
+                result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
                 .Include(s => s.Channel.Topic)
@@ -37,12 +47,46 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
                     ImageUrl = s.ImageUrl,
                     IsApproved = s.IsApproved
-                });
-            result = result.Where(s => s.IsApproved == request.IsApproved);
-            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            return result;
+                })
+                .OrderBy(s => s.StartTime);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto.Status = 1;
+                responseDto.Message = "There are no sharings in the system";
+            };
+
+            if (filterRequest.IsApproved != null)
+            {
+                result = result.Where(s => s.IsApproved == filterRequest.IsApproved);
+                if (result == null || result.Count() <= 0)
+                {
+                    responseDto = new SharingResponseDto<SharingViewModel>
+                    {
+                        Status = 2,
+                        Message = "There are no Sharing with isApproved(" + filterRequest.IsApproved + ") status"
+                    };
+                }
+            }
+
+            if (pagingRequest.PageIndex != null && pagingRequest.PageSize != null)
+            {
+                result = result.Skip((pagingRequest.PageIndex.GetValueOrDefault() - 1) * pagingRequest.PageSize.GetValueOrDefault()).Take(pagingRequest.PageSize.GetValueOrDefault());
+            }
+
+            //  finalize
+            responseDto.Content = result;
+
+            return responseDto;
         }
 
 
@@ -76,54 +120,46 @@ namespace Domain.Services
         }
 
 
-        public int Insert(SharingModel sharingViewModel)
+        public SharingResponseDto Insert(SharingInsertModel sharingInsertModel)
         {
-            int result = 0;
-
-            if (sharingViewModel == null)
+            if (sharingInsertModel == null)
             {
-                result = 0;
-                return result;
+                return new SharingResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy sharing info"
+                };
             }
-
-
-            Sharing sharingInDb = _uow
-                .GetRepository<Sharing>()
-                .GetAll()
-                .SingleOrDefault(s => s.SharingId == sharingViewModel.SharingId);
-            if (sharingInDb != null)
-            {
-                result = 1;
-                return result;
-            }
-
-
-            Sharing newSharing = new Sharing
-            {
-                SharingId = sharingViewModel.SharingId,
-                SharingName = sharingViewModel.SharingName,
-                Description = sharingViewModel.Description,
-                StartTime = sharingViewModel.StartTime,
-                EndTime = sharingViewModel.EndTime,
-                Maximum = sharingViewModel.Maximum,
-                Price = sharingViewModel.Price,
-                ChannelId = sharingViewModel.ChannelId,
-                IsDisable = false
-            };
-
 
             try
             {
+                Sharing newSharing = new Sharing
+                {
+                    SharingId = Guid.NewGuid(),
+                    SharingName = sharingInsertModel.SharingName,
+                    Description = sharingInsertModel.Description,
+                    StartTime = sharingInsertModel.StartTime,
+                    EndTime = sharingInsertModel.EndTime,
+                    Maximum = sharingInsertModel.Maximum,
+                    Price = sharingInsertModel.Price,
+                    ChannelId = sharingInsertModel.ChannelId,
+                    IsDisable = false,
+                    IsApproved = false
+                };
+
                 _uow.GetRepository<Sharing>().Insert(newSharing);
                 _uow.Commit();
-                result = 2;
             }
             catch (Exception e)
             {
                 throw e;
             }
 
-            return result;
+            return new SharingResponseDto
+            {
+                Status = 0,
+                Message = "Sharing session " + sharingInsertModel.SharingName + " successfully inserted"
+            };
         }
 
 
@@ -270,7 +306,7 @@ namespace Domain.Services
                     imageUrl = s.ImageUrl,
                 });
             //result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            
+
             return result;
         }
 

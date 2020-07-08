@@ -122,7 +122,7 @@ namespace WebApi.Controllers
 
             if (result == null || result.Count == 0)
             {
-                return Ok("There are no topics in the system");
+                return Ok("There are no enrolls in the system");
             }
             return Ok(result);
         }
