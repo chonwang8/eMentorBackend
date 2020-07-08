@@ -224,6 +224,10 @@ namespace Data.Entities
                     .HasColumnName("startTime")
                     .HasColumnType("date");
 
+                entity.Property(e => e.ApprovedTime)
+                    .HasColumnName("approvedTime")
+                    .HasColumnType("date");
+
                 entity.HasOne(d => d.Channel)
                     .WithMany(p => p.Sharing)
                     .HasForeignKey(d => d.ChannelId)
