@@ -27,7 +27,7 @@ namespace Domain.Services
         public List<GetChannelViewModel> GetAllChannel(GetAllDTO request)
         {
             List<GetChannelViewModel> result = new List<GetChannelViewModel>();
-            IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll();
+            IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll().Include(c => c.Mentor).Include(c => c.Topic);
             channels = channels.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             if (request.IsAscending)
             {
@@ -42,8 +42,8 @@ namespace Domain.Services
                 result.Add(new GetChannelViewModel
                 {
                     ChannelId = channel.ChannelId,
-                    MentorId = channel.MentorId,
-                    TopicId = channel.TopicId
+                    MentorName = channel.Mentor.User.Fullname,
+                    TopicName = channel.Topic.TopicName
                 });
             }
             return result;
@@ -57,8 +57,8 @@ namespace Domain.Services
                 GetChannelViewModel result = new GetChannelViewModel
                 {
                     ChannelId = channel.ChannelId,
-                    MentorId = channel.MentorId,
-                    TopicId = channel.TopicId
+                    MentorName = channel.Mentor.User.Fullname,
+                    TopicName = channel.Topic.TopicName
                 };
                 return result;
             }
