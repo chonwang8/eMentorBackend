@@ -1,4 +1,6 @@
 ﻿using Domain.DTO;
+using Domain.DTO.QueryAttributesDtos;
+using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.SharingModels;
 using Microsoft.AspNetCore.Cors;
@@ -26,20 +28,20 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get list of users. GET "api/sharings"
+        /// Get list of sharings.
         /// </summary>
         /// 
         /// <param name="size">
-        /// The number of items on a page. If null will be 40 by default.
+        /// The number of items on a page. May left null. Must co-exist with index.
         /// </param>
         /// <param name="index">
-        /// The page number where paging is started. If null will be 1 by default.
+        /// The page number where paging is started. May left null. Must co-exist with size.
         /// </param>
-        /// <param name="asc">
-        /// Boolean value determining whether return list will be ascending or not. If null will be false by default.
+        /// <param name="ascending">
+        /// (True(1)/False(0)) Boolean value determining whether return list will be ascending or not. May left null.
         /// </param>
-        /// <param name="isApproved">
-        /// Boolean value determining whether return list will include sharings that are approved or not. If null will be false by default.
+        /// <param name="approved">
+        /// (True(1)/False(0)) Boolean value determining whether return list will include sharings that are approved or not. May left null.
         /// </param>
         /// 
         /// <returns>
@@ -58,55 +60,38 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, bool asc, bool isApproved)
+        public IActionResult GetAll(int? size = null, int? index = null, bool? ascending = null, bool? approved = null)
         {
-            int pageSize, pageIndex;
-            GetAllDTO request = null;
-
-            #region Set default paging values if null or empty input
-
-            if (!string.IsNullOrWhiteSpace(size))
+            PagingDto pagingRequest = new PagingDto
             {
-                if (!size.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageSize = int.Parse(size);
-            }
-            else
-            {
-                pageSize = 40;
-            }
-
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                if (!index.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageIndex = int.Parse(index);
-            }
-            else
-            {
-                pageIndex = 1;
-            }
-
-            #endregion
-
-            request = new GetAllDTO
-            {
-                PageSize = pageSize,
-                PageIndex = pageIndex,
-                IsAscending = asc,
-                IsApproved = isApproved
+                PageIndex = index,
+                PageSize = size
             };
 
-            List<SharingViewModel> result = _sharing.GetAll(request).ToList();
-            
-            if (result == null || result.Count == 0)
+            FilterDto filterRequest = new FilterDto
             {
-                return Ok("There are no sharings in the system");
+                IsApproved = approved,
+                IsAscending = ascending
+            };
+
+            SharingResponseDto<SharingViewModel> responseDto = null;
+            ICollection<SharingViewModel> result = null;
+
+            try
+            {
+                responseDto = _sharing.GetAll(pagingRequest, filterRequest);
             }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            { 
+                return Ok(responseDto.Message);
+            }
+
+            result = responseDto.Content.ToList();
 
             return Ok(result);
         }
@@ -174,25 +159,25 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(SharingModel sharingViewModel)
+        public IActionResult Insert(SharingInsertModel sharingInsertModel)
         {
-            if (sharingViewModel == null)
+            SharingResponseDto responseDto = null;
+
+            if (sharingInsertModel == null)
             {
                 return BadRequest("Sharing info must not be null");
             }
 
-            int result = _sharing.Insert(sharingViewModel);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy sharing info.");
+                responseDto = _sharing.Insert(sharingInsertModel);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return BadRequest("This sharing is already existed");
+                return StatusCode(500, e);
             }
 
-            return Ok("Sharing Created");
+            return Ok(responseDto.Message);
         }
 
 
