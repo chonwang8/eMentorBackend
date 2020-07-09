@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.ViewModels.ChannelModels;
+using System;
 
 namespace Domain.ViewModels.SharingModels
 {
@@ -15,5 +16,8 @@ namespace Domain.ViewModels.SharingModels
         public string imageUrl { get; set; }
         public bool IsDisable { get; set; }
         public bool IsApproved { get; set; }
+        public DateTime? ApprovedTime { get; set; }
+
+        public ChannelViewModel Channel { get; set; }
     }
 }
