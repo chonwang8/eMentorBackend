@@ -3,6 +3,9 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.ChannelModels;
+using Domain.ViewModels.MentorModels;
+using Domain.ViewModels.TopicModels;
+using Domain.ViewModels.UserModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,9 +27,9 @@ namespace Domain.Services
         #endregion Classes and Constructor
 
 
-        public List<GetChannelViewModel> GetAllChannel(GetAllDTO request)
+        public List<ChannelViewModel> GetAll(GetAllDTO request)
         {
-            List<GetChannelViewModel> result = new List<GetChannelViewModel>();
+            List<ChannelViewModel> result = new List<ChannelViewModel>();
             IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll().Include(c => c.Mentor).Include(c => c.Topic);
             channels = channels.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             if (request.IsAscending)
@@ -39,7 +42,7 @@ namespace Domain.Services
             }
             foreach (var channel in channels)
             {
-                result.Add(new GetChannelViewModel
+                result.Add(new ChannelViewModel
                 {
                     ChannelId = channel.ChannelId,
                     MentorName = channel.Mentor.User.Fullname,
@@ -49,22 +52,92 @@ namespace Domain.Services
             return result;
         }
 
-        public GetChannelViewModel GetChannelById(Guid ChannelId)
+        public ChannelModel GetById(Guid ChannelId)
         {
             Channel channel = _uow.GetRepository<Channel>().Get(ChannelId);
             if (channel != null)
             {
-                GetChannelViewModel result = new GetChannelViewModel
+                ChannelModel result = new ChannelModel
                 {
                     ChannelId = channel.ChannelId,
-                    MentorName = channel.Mentor.User.Fullname,
-                    TopicName = channel.Topic.TopicName
+                    Topic = new TopicViewModel
+                    {
+                        TopicId = channel.Topic.TopicId,
+                        TopicName = channel.Topic.TopicName,
+                        MajorId = channel.Topic.Major.MajorId,
+                        CreatedBy = channel.Topic.CreatedBy
+                    },
+                    Mentor = new MentorViewModel
+                    {
+                        MentorId = channel.MentorId,
+                        User = new UserViewModel
+                        {
+                            UserId = channel.Mentor.User.UserId,
+                            Email = channel.Mentor.User.Email,
+                            Phone = channel.Mentor.User.Phone,
+                            Fullname = channel.Mentor.User.Fullname,
+                            YearOfBirth = channel.Mentor.User.YearOfBirth,
+                            AvatarUrl = channel.Mentor.User.AvatarUrl,
+                            Balance = channel.Mentor.User.Balance,
+                            Description = channel.Mentor.User.Description
+                        }
+                    },
+                    Sharing = null,
+                    Subscription = null,
                 };
                 return result;
             }
             return null;
         }
 
+
+        public bool Insert(ChannelInsertModel channel)
+        {
+            _uow.GetRepository<Channel>().Insert(new Channel
+            {
+                ChannelId = Guid.NewGuid(),
+                TopicId = channel.TopicId,
+                MentorId = channel.MentorId,
+                IsDisable = false
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool Update(UpdateChannelDTO channel)
+        {
+            Channel oldChannel = _uow.GetRepository<Channel>().Get(channel.ChannelId);
+            if (oldChannel == null)
+                return false;
+            _uow.GetRepository<Channel>().Update(new Channel
+            {
+                ChannelId = channel.ChannelId,
+                TopicId = channel.TopicId,
+                MentorId = channel.MentorId,
+                IsDisable = oldChannel.IsDisable
+            });
+            _uow.Commit();
+            return true;
+        }
+
+        public bool Delete(Guid ChannelId)
+        {
+            Channel channel = _uow.GetRepository<Channel>().Get(ChannelId);
+            if (channel == null)
+                return false;
+            _uow.GetRepository<Channel>().Update(new Channel
+            {
+                ChannelId = channel.ChannelId,
+                IsDisable = true
+            });
+            _uow.Commit();
+            return true;
+        }
+
+
+
+
+        //  Keep
         public List<GetChannelByTopicIdViewModel> GetChannelByTopicId(List<Guid> TopicIds)
         {
             List<GetChannelByTopicIdViewModel> result = new List<GetChannelByTopicIdViewModel>();
@@ -92,50 +165,6 @@ namespace Domain.Services
         }
 
 
-        public bool DeleteChannelById(Guid ChannelId)
-        {
-            Channel channel = _uow.GetRepository<Channel>().Get(ChannelId);
-            if (channel == null)
-                return false;
-            _uow.GetRepository<Channel>().Update(new Channel
-            {
-                ChannelId = channel.ChannelId,
-                IsDisable = true
-            });
-            _uow.Commit();
-            return true;
-        }
-
-        public bool UpdateChannelById(UpdateChannelDTO channel)
-        {
-            Channel oldChannel = _uow.GetRepository<Channel>().Get(channel.ChannelId);
-            if (oldChannel == null)
-                return false;
-            _uow.GetRepository<Channel>().Update(new Channel
-            {
-                ChannelId = channel.ChannelId,
-                TopicId = channel.TopicId,
-                MentorId = channel.MentorId,
-                IsDisable = oldChannel.IsDisable
-            });
-            _uow.Commit();
-            return true;
-        }
-
-        public bool CreateChannel(CreateChannelDTO channel)
-        {
-            _uow.GetRepository<Channel>().Insert(new Channel
-            {
-                ChannelId = Guid.NewGuid(),
-                TopicId = channel.TopicId,
-                MentorId = channel.MentorId,
-                IsDisable = false
-            });
-            _uow.Commit();
-            return true;
-        }
-
-
 
         //  Wang - hot fix
         public int Count(Guid channelId)
@@ -150,13 +179,13 @@ namespace Domain.Services
 
         public ChannelSubsCountViewModel GetChannelSubCount(Guid channelId)
         {
-            IEnumerable<ChannelViewModel> list = _uow
+            IEnumerable<ChannelDirtyModel> list = _uow
                 .GetRepository<Channel>()
                 .GetAll()
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
                 .Include(c => c.Subscription)
-                .Select(c => new ChannelViewModel
+                .Select(c => new ChannelDirtyModel
                 {
                     ChannelId = c.ChannelId,
                     MentorName = c.Mentor.User.Email,
@@ -164,7 +193,7 @@ namespace Domain.Services
                     Subscription = c.Subscription
                 });
 
-            ChannelViewModel channel = list
+            ChannelDirtyModel channel = list
                 .FirstOrDefault(i => i.ChannelId == channelId);
 
             ChannelSubsCountViewModel channelSubCount = new ChannelSubsCountViewModel

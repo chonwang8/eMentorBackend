@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.DTO
+namespace Domain.ViewModels.ChannelModels
 {
-    public class CreateChannelDTO
+    public class ChannelInsertModel
     {
         public Guid TopicId { get; set; }
         public Guid MentorId { get; set; }
