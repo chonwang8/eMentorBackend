@@ -62,6 +62,9 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll(int? size = null, int? index = null, bool? ascending = null, bool? approved = null)
         {
+            SharingResponseDto<SharingViewModel> responseDto = null;
+            ICollection<SharingViewModel> result = null;
+
             PagingDto pagingRequest = new PagingDto
             {
                 PageIndex = index,
@@ -74,9 +77,6 @@ namespace WebApi.Controllers
                 IsAscending = ascending
             };
 
-            SharingResponseDto<SharingViewModel> responseDto = null;
-            ICollection<SharingViewModel> result = null;
-
             try
             {
                 responseDto = _sharing.GetAll(pagingRequest, filterRequest);
@@ -87,7 +87,7 @@ namespace WebApi.Controllers
             }
 
             if (responseDto.Status == 1 || responseDto.Status == 2)
-            { 
+            {
                 return Ok(responseDto.Message);
             }
 
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get user by Id. GET "api/sharings/{sharingId}"
+        /// Get user by Id.
         /// </summary>
         /// <param name="sharingId">
         /// The sharing's identifier.
@@ -123,17 +123,36 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string sharingId)
         {
+            SharingResponseDto<SharingModel> responseDto = null;
+            ICollection<SharingModel> result = null;
+
             if (sharingId == null)
             {
                 return BadRequest("Sharing info must not be null");
             }
 
-            List<SharingModel> result = _sharing.GetById(sharingId).ToList();
-
-            if (result == null || result.Count == 0)
+            try
             {
-                return NotFound("No sharing(s) with ID " + sharingId + " found.");
+                responseDto = _sharing.GetById(sharingId);
             }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
 
             return Ok(result);
         }
@@ -141,7 +160,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Insert a sharing into database. POST "api/sharings".
+        /// Insert a sharing into database.
         /// </summary>
         /// <returns>
         /// Message
@@ -183,7 +202,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Update an existing sharing. PUT "api/sharings".
+        /// Update an existing sharing.
         /// </summary>
         /// <returns>
         /// Message
@@ -204,38 +223,29 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Update(SharingModel sharingModel)
         {
+            SharingResponseDto responseDto = null;
+
             if (sharingModel == null)
             {
                 return BadRequest("Sharing info must not be null");
             }
 
-            int result;
-
             try
             {
-                result = _sharing.Update(sharingModel);
+                responseDto = _sharing.Update(sharingModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, e);
             }
 
-            if (result == 0)
-            {
-                return BadRequest("Faulthy sharing info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Sharing not found");
-            }
-
-            return Ok("Sharing information updated");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Change status of a sharing (Disabled/Enabled). PUT "api/sharings/status".
+        /// Change status of a sharing (Disabled/Enabled).
         /// </summary>
         /// <returns>
         /// Message
@@ -255,32 +265,43 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult ChangeStatus(string sharingId, bool isDisable)
+        public IActionResult ChangeStatus(string sharingId, bool? isDisable)
         {
+            SharingResponseDto responseDto = null;
+
             if (sharingId == null)
             {
                 return BadRequest("SharingId must not be null.");
             }
-
-            int result = _sharing.ChangeStatus(sharingId, isDisable);
-
-            if (result == 0)
+            if (isDisable.Equals(null))
             {
-                return BadRequest("Faulthy SharingId.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Sharing not found");
+                return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
             }
 
-            return isDisable ? Ok("Sharing is disabled.")
+            bool disable = isDisable.HasValue;
+
+            try
+            {
+                responseDto = _sharing.ChangeStatus(sharingId, disable);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return disable ? Ok("Sharing is disabled.")
                 : Ok("Sharing is enabled.");
         }
 
 
 
         /// <summary>
-        /// Delete a sharing from database. DELETE "api/sharings/{sharingId}".
+        /// Delete a sharing from database.
         /// </summary>
         /// <param name="sharingId">
         /// The sharing's identifier.
@@ -305,23 +326,28 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string sharingId)
         {
+            SharingResponseDto responseDto = null;
+
             if (sharingId == null)
             {
                 return BadRequest("Sharing info must not be null");
             }
 
-            int result = _sharing.Delete(sharingId);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy sharing info.");
+                responseDto = _sharing.Delete(sharingId);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return NotFound("Sharing was not found");
+                return StatusCode(500, e);
             }
 
-            return Ok("Sharing is deleted.");
+            if(responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return Ok(responseDto.Message);
         }
 
 
