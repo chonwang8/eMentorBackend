@@ -110,6 +110,7 @@ namespace Domain.Services
                     Message = "SharingId must be specified",
                     Content = null
                 };
+                return responseDto;
             };
 
             try
@@ -153,6 +154,7 @@ namespace Domain.Services
                     Message = "Sharing with id " + sharingId + " does not exist",
                     Content = null
                 };
+                return responseDto;
             }
 
             responseDto.Content = result;
@@ -172,6 +174,7 @@ namespace Domain.Services
                     Status = 1,
                     Message = "Faulthy sharing info"
                 };
+                return responseDto;
             }
 
             try
@@ -252,7 +255,8 @@ namespace Domain.Services
             if (sharingModel.IsApproved == true)
             {
                 approveTime = DateTime.Now;
-            } else if (sharingModel.IsApproved == false)
+            }
+            else if (sharingModel.IsApproved == false)
             {
                 approveTime = null;
             }
@@ -270,7 +274,7 @@ namespace Domain.Services
             existingSharing.ApprovedTime = approveTime;
 
             try
-            {   
+            {
                 _uow.GetRepository<Sharing>().Update(existingSharing);
                 _uow.Commit();
             }
@@ -334,10 +338,11 @@ namespace Domain.Services
                 Status = 0
             };
 
-            if(status == true)
+            if (status == true)
             {
                 responseDto.Message = "Sharing is disabled.";
-            } else if (status == false)
+            }
+            else if (status == false)
             {
                 responseDto.Message = "Sharing is enabled.";
             }

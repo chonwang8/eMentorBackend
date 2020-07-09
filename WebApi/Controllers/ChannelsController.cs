@@ -1,7 +1,10 @@
 ﻿using Domain.DTO;
+using Domain.DTO.QueryAttributesDtos;
+using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.ChannelModels;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,101 +18,335 @@ namespace WebApi.Controllers
     public class ChannelsController : ControllerBase
     {
         #region Classes - Constructors
-        protected readonly IChannelService _service;
-        public ChannelsController(IChannelService service)
+        protected readonly IChannelService _channel;
+
+        public ChannelsController(IChannelService channel)
         {
-            _service = service;
+            _channel = channel;
         }
         #endregion
 
 
+        /// <summary>
+        /// Get list of channels.
+        /// </summary>
+        /// 
+        /// <param name="size">
+        /// The number of items on a page. May left null. Must co-exist with index.
+        /// </param>
+        /// <param name="index">
+        /// The page number where paging is started. May left null. Must co-exist with size.
+        /// </param>
+        /// 
+        /// <returns>
+        /// List containing channels. Message if list is empty.
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
-        public IActionResult GetAll(string size, string index, string asc)
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GetAll(int? size = null, int? index = null)
         {
-            int pageSize, pageIndex;
-            bool IsAscended = false;
-            GetAllDTO request = null;
+            ChannelResponseDto<ChannelViewModel> responseDto = null;
+            ICollection<ChannelViewModel> result = null;
 
-            #region Set default paging values if null or empty input
-
-            if (!string.IsNullOrWhiteSpace(size))
+            PagingDto pagingRequest = new PagingDto
             {
-                if (!size.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageSize = int.Parse(size);
-            }
-            else
-            {
-                pageSize = 40;
-            }
-
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                if (!index.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageIndex = int.Parse(index);
-            }
-            else
-            {
-                pageIndex = 1;
-            }
-
-            if (!string.IsNullOrWhiteSpace(asc))
-            {
-                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                IsAscended = bool.Parse(asc);
-            }
-
-            #endregion
-
-            request = new GetAllDTO
-            {
-                PageSize = pageSize,
-                PageIndex = pageIndex,
-                IsAscending = false
+                PageIndex = index,
+                PageSize = size
             };
 
-            return Ok(_service.GetAll(request));
+            try
+            {
+                responseDto = _channel.GetAll(pagingRequest);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            result = responseDto.Content.ToList();
+
+            return Ok(result);
         }
 
+
+        /// <summary>
+        /// Get channel by Id.
+        /// </summary>
+        /// <param name="channelId">
+        /// The channel's identifier.
+        /// </param>
+        /// <returns>
+        /// Sharing with matching Id
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Sharing with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpGet("{sharingId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GetById(string channelId)
+        {
+            ChannelResponseDto<ChannelModel> responseDto = null;
+            ICollection<ChannelModel> result = null;
+
+            if (channelId == null)
+            {
+                return BadRequest("Channel Id must not be null");
+            }
+
+            try
+            {
+                responseDto = _channel.GetById(channelId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
+
+            return Ok(result);
+        }
+
+
+
+        /// <summary>
+        /// Insert a channel into database.
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
         [HttpPost]
-        public IActionResult Insert(ChannelInsertModel channel)
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult Insert(ChannelInsertModel channelInsertModel)
         {
-            _service.Insert(channel);
-            return Ok("Created Successfully !");
+            ChannelResponseDto responseDto = null;
+
+            if (channelInsertModel == null)
+            {
+                return BadRequest("Sharing info must not be null");
+            }
+
+            try
+            {
+                responseDto = _channel.Insert(channelInsertModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(responseDto.Message);
         }
 
+
+
+        /// <summary>
+        /// Update an existing channel.
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Channel with matching Id not found</response>
+        /// <response code="500">Internal server error</response>
         [HttpPut]
-        public IActionResult Update(UpdateChannelDTO channel)
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult Update(ChannelUpdateModel channelUpdateModel)
         {
-            if (_service.Update(channel) == false)
-                return BadRequest("Updated Failed !");
-            return Ok("Updated Successfully !");
+            ChannelResponseDto responseDto = null;
+
+            if (channelUpdateModel == null)
+            {
+                return BadRequest("Sharing info must not be null");
+            }
+
+            try
+            {
+                responseDto = _channel.Update(channelUpdateModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return Ok(responseDto.Message);
         }
 
-        [HttpDelete("{ChannelId}")]
-        public IActionResult Delete(Guid ChannelId)
+
+
+        /// <summary>
+        /// Change status of a channel (Disabled/Enabled).
+        /// </summary>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Channel with matching Id not found</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPut("status")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult ChangeStatus(string channelId, bool? isDisable)
         {
-            if (_service.Delete(ChannelId) == false)
-                return BadRequest("Deleted Failed !");
-            return Ok("Deleted Successfully !");
+            ChannelResponseDto responseDto = null;
+
+            if (channelId == null)
+            {
+                return BadRequest("Channel Id must not be null.");
+            }
+            if (isDisable.Equals(null))
+            {
+                return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
+            }
+
+            bool disable = isDisable.HasValue;
+
+            try
+            {
+                responseDto = _channel.ChangeStatus(channelId, disable);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return disable ? Ok("Channel is disabled.")
+                : Ok("Channel is enabled.");
+        }
+
+
+
+        /// <summary>
+        /// Delete a channel from database.
+        /// </summary>
+        /// <param name="channelId">
+        /// The channel's identifier.
+        /// </param>
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Channel with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpDelete("{channelId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult Delete(string channelId)
+        {
+            ChannelResponseDto responseDto = null;
+
+            if (channelId == null)
+            {
+                return BadRequest("Channel Id must not be null");
+            }
+
+            try
+            {
+                responseDto = _channel.Delete(channelId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return Ok(responseDto.Message);
         }
 
 
 
 
+        #region Specialized APIs
         //  Keep
         [HttpGet("topic")]
         public IActionResult GetChannelByTopicId(List<Guid> TopicId)
         {
-            return Ok(_service.GetChannelByTopicId(TopicId));
+            return Ok(_channel.GetChannelByTopicId(TopicId));
         }
 
 
@@ -117,8 +354,9 @@ namespace WebApi.Controllers
         [HttpGet("subcribe")]
         public IActionResult GetChannelSubCount(string channelId)
         {
-            var result = _service.GetChannelSubCount(new Guid(channelId));
+            var result = _channel.GetChannelSubCount(new Guid(channelId));
             return Ok(result);
         }
+        #endregion
     }
 }
