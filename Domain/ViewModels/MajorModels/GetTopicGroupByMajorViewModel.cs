@@ -9,11 +9,11 @@ namespace Domain.ViewModels.MajorModels
 
         public string MajorName { get; set; }
 
-        public List<Topic> Topics { get; set; }
+        public List<GetTopic> Topics { get; set; }
 
     }
 
-    public class Topic
+    public class GetTopic
     {
         public Guid TopicId { get; set; }
 

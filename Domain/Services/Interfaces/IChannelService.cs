@@ -7,18 +7,17 @@ namespace Domain.Services.Interfaces
 {
     public interface IChannelService
     {
-        public List<GetChannelViewModel> GetAllChannel(GetAllDTO request);
+        public List<ChannelViewModel> GetAll(GetAllDTO request);
 
-        public GetChannelViewModel GetChannelById(Guid ChannelId);
+        public ChannelModel GetById(Guid ChannelId);
+
+        public bool Insert(ChannelInsertModel channel);
+
+        public bool Update(UpdateChannelDTO channel);
+
+        public bool Delete(Guid ChannelId);
 
         public List<GetChannelByTopicIdViewModel> GetChannelByTopicId(List<Guid> TopicIds);
-
-        public bool DeleteChannelById(Guid ChannelId);
-
-        public bool UpdateChannelById(UpdateChannelDTO channel);
-
-        public bool CreateChannel(CreateChannelDTO channel);
-
 
         //  Wang - hot fix
         public int Count(Guid channelId);

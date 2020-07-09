@@ -1,5 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Services.Interfaces;
+using Domain.ViewModels.ChannelModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,7 +24,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllChannel(string size, string index, string asc)
+        public IActionResult GetAll(string size, string index, string asc)
         {
             int pageSize, pageIndex;
             bool IsAscended = false;
@@ -75,36 +76,40 @@ namespace WebApi.Controllers
                 IsAscending = false
             };
 
-            return Ok(_service.GetAllChannel(request));
+            return Ok(_service.GetAll(request));
         }
 
         [HttpPost]
-        public IActionResult CreateChannel(CreateChannelDTO channel)
+        public IActionResult Insert(ChannelInsertModel channel)
         {
-            _service.CreateChannel(channel);
+            _service.Insert(channel);
             return Ok("Created Successfully !");
         }
 
-        [HttpGet("TopicId")]
-        public IActionResult GetChannelByTopicId(List<Guid> TopicId)
+        [HttpPut]
+        public IActionResult Update(UpdateChannelDTO channel)
         {
-            return Ok(_service.GetChannelByTopicId(TopicId));
+            if (_service.Update(channel) == false)
+                return BadRequest("Updated Failed !");
+            return Ok("Updated Successfully !");
         }
 
         [HttpDelete("{ChannelId}")]
-        public IActionResult DeleteChannelById(Guid ChannelId)
+        public IActionResult Delete(Guid ChannelId)
         {
-            if (_service.DeleteChannelById(ChannelId) == false)
+            if (_service.Delete(ChannelId) == false)
                 return BadRequest("Deleted Failed !");
             return Ok("Deleted Successfully !");
         }
 
-        [HttpPut]
-        public IActionResult UpdateChannelById(UpdateChannelDTO channel)
+
+
+
+        //  Keep
+        [HttpGet("topic")]
+        public IActionResult GetChannelByTopicId(List<Guid> TopicId)
         {
-            if (_service.UpdateChannelById(channel) == false)
-                return BadRequest("Updated Failed !");
-            return Ok("Updated Successfully !");
+            return Ok(_service.GetChannelByTopicId(TopicId));
         }
 
 
