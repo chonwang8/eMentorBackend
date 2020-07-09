@@ -13,7 +13,6 @@ namespace Domain.ViewModels.SharingModels
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string ImageUrl { get; set; }
-
         public bool IsApproved { get; set; }
     }
 }
