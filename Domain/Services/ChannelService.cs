@@ -30,7 +30,12 @@ namespace Domain.Services
         public List<ChannelViewModel> GetAll(GetAllDTO request)
         {
             List<ChannelViewModel> result = new List<ChannelViewModel>();
-            IEnumerable<Channel> channels = _uow.GetRepository<Channel>().GetAll().Include(c => c.Mentor).Include(c => c.Topic);
+            IEnumerable<Channel> channels = _uow
+                .GetRepository<Channel>()
+                .GetAll()
+                .Include(c => c.Mentor)
+                .Include(c => c.Mentor.User)
+                .Include(c => c.Topic);
             channels = channels.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             if (request.IsAscending)
             {

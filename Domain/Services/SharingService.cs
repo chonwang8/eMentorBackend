@@ -3,6 +3,7 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
+using Domain.ViewModels.ChannelModels;
 using Domain.ViewModels.SharingModels;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -129,7 +130,14 @@ namespace Domain.Services
                     ChannelId = s.ChannelId,
                     imageUrl = s.ImageUrl,
                     IsApproved = s.IsApproved,
-                    IsDisable = s.IsDisable
+                    IsDisable = s.IsDisable,
+                    ApprovedTime = s.ApprovedTime,
+                    Channel = new ChannelViewModel
+                    {
+                        ChannelId = s.Channel.ChannelId,
+                        MentorName = s.Channel.Mentor.User.Email,
+                        TopicName = s.Channel.Topic.TopicName
+                    }
                 });
             }
             catch (Exception e)
@@ -179,7 +187,9 @@ namespace Domain.Services
                     Price = sharingInsertModel.Price,
                     ChannelId = sharingInsertModel.ChannelId,
                     IsDisable = false,
-                    IsApproved = false
+                    IsApproved = false,
+                    ImageUrl = sharingInsertModel.imageUrl,
+                    ApprovedTime = null
                 };
 
                 _uow.GetRepository<Sharing>().Insert(newSharing);
@@ -237,6 +247,16 @@ namespace Domain.Services
                 return responseDto;
             }
 
+            DateTime? approveTime = null;
+
+            if (sharingModel.IsApproved == true)
+            {
+                approveTime = DateTime.Now;
+            } else if (sharingModel.IsApproved == false)
+            {
+                approveTime = null;
+            }
+
             existingSharing.SharingName = sharingModel.SharingName;
             existingSharing.Description = sharingModel.Description;
             existingSharing.StartTime = sharingModel.StartTime;
@@ -246,10 +266,11 @@ namespace Domain.Services
             existingSharing.ChannelId = sharingModel.ChannelId;
             existingSharing.IsDisable = sharingModel.IsDisable;
             existingSharing.IsApproved = sharingModel.IsApproved;
-
+            existingSharing.ImageUrl = sharingModel.imageUrl;
+            existingSharing.ApprovedTime = approveTime;
 
             try
-            {
+            {   
                 _uow.GetRepository<Sharing>().Update(existingSharing);
                 _uow.Commit();
             }
