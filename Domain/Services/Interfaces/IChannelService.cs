@@ -1,4 +1,6 @@
 ﻿using Domain.DTO;
+using Domain.DTO.QueryAttributesDtos;
+using Domain.DTO.ResponseDtos;
 using Domain.ViewModels.ChannelModels;
 using System;
 using System.Collections.Generic;
@@ -7,16 +9,15 @@ namespace Domain.Services.Interfaces
 {
     public interface IChannelService
     {
-        public List<ChannelViewModel> GetAll(GetAllDTO request);
+        public ChannelResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest);
+        public ChannelResponseDto<ChannelModel> GetById(string ChannelId);
+        public ChannelResponseDto Insert(ChannelInsertModel channel);
+        public ChannelResponseDto Update(ChannelUpdateModel channelUpdateModel);
+        public ChannelResponseDto ChangeStatus(string channelId, bool status);
+        public ChannelResponseDto Delete(string ChannelId);
 
-        public ChannelModel GetById(Guid ChannelId);
 
-        public bool Insert(ChannelInsertModel channel);
-
-        public bool Update(UpdateChannelDTO channel);
-
-        public bool Delete(Guid ChannelId);
-
+        //  Keep
         public List<GetChannelByTopicIdViewModel> GetChannelByTopicId(List<Guid> TopicIds);
 
         //  Wang - hot fix

@@ -98,7 +98,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get user by Id.
+        /// Get sharing by Id.
         /// </summary>
         /// <param name="sharingId">
         /// The sharing's identifier.

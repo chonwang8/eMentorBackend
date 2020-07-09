@@ -26,6 +26,102 @@
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
+        <member name="M:WebApi.Controllers.ChannelsController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Get list of channels.
+            </summary>
+            
+            <param name="size">
+            The number of items on a page. May left null. Must co-exist with index.
+            </param>
+            <param name="index">
+            The page number where paging is started. May left null. Must co-exist with size.
+            </param>
+            
+            <returns>
+            List containing channels. Message if list is empty.
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.ChannelsController.GetById(System.String)">
+            <summary>
+            Get channel by Id.
+            </summary>
+            <param name="channelId">
+            The channel's identifier.
+            </param>
+            <returns>
+            Sharing with matching Id
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Sharing with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.ChannelsController.Insert(Domain.ViewModels.ChannelModels.ChannelInsertModel)">
+            <summary>
+            Insert a channel into database.
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.ChannelsController.Update(Domain.ViewModels.ChannelModels.ChannelUpdateModel)">
+            <summary>
+            Update an existing channel.
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Channel with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.ChannelsController.ChangeStatus(System.String,System.Nullable{System.Boolean})">
+            <summary>
+            Change status of a channel (Disabled/Enabled).
+            </summary>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Channel with matching Id not found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:WebApi.Controllers.ChannelsController.Delete(System.String)">
+            <summary>
+            Delete a channel from database.
+            </summary>
+            <param name="channelId">
+            The channel's identifier.
+            </param>
+            <returns>
+            Message
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Channel with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
         <member name="M:WebApi.Controllers.EnrollController.GetAll(System.String,System.String,System.String)">
              <summary>
              Get list of enrolls. GET "api/enrolls"
@@ -352,7 +448,7 @@
         </member>
         <member name="M:WebApi.Controllers.SharingController.GetById(System.String)">
             <summary>
-            Get user by Id.
+            Get sharing by Id.
             </summary>
             <param name="sharingId">
             The sharing's identifier.
