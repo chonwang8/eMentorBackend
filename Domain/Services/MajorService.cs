@@ -26,19 +26,11 @@ namespace Domain.Services
 
         #endregion Classes and Constructor
 
-        public List<GetMajorViewModel> GetAllMajor(GetAllDTO request)
+        public List<GetMajorViewModel> GetAllMajor()
         {
             List<GetMajorViewModel> result = new List<GetMajorViewModel>();
             IEnumerable<Major> majors = _uow.GetRepository<Major>().GetAll();
-            majors = majors.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-            if (request.IsAscending)
-            {
-                majors = majors.OrderBy(c => c.MajorName);
-            }
-            else
-            {
-                majors = majors.OrderByDescending(c => c.MajorName);
-            }
+            
             foreach (var major in majors)
             {
                 result.Add(new GetMajorViewModel
