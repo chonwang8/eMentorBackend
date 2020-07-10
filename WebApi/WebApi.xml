@@ -26,21 +26,15 @@
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
-        <member name="M:WebApi.Controllers.ChannelsController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:WebApi.Controllers.ChannelsController.GetAll">
             <summary>
             Get list of channels.
             </summary>
             
-            <param name="size">
-            The number of items on a page. May left null. Must co-exist with index.
-            </param>
-            <param name="index">
-            The page number where paging is started. May left null. Must co-exist with size.
-            </param>
-            
             <returns>
             List containing channels. Message if list is empty.
             </returns>
+            
             <response code="200">Success</response>
             <response code="400">Bad Request</response>
             <response code="401">Unauthorized</response>
@@ -122,24 +116,15 @@
             <response code="404">Channel with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.EnrollController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.EnrollController.GetAll">
              <summary>
              Get list of enrolls. GET "api/enrolls"
              </summary>
             
-             <param name="size">
-             The number of items on a page. If null will be 40 by default.
-             </param>
-             <param name="index">
-             The page number where paging is started. If null will be 1 by default.
-             </param>
-             <param name="asc">
-             Boolean value determining whether return list will be null or not. If null will be false by default.
-             </param>
-             
              <returns>
              List containing enrolls. Message if list is empty.
              </returns>
+             
              <response code="200">Success</response>
              <response code="400">Not have enough infomation</response>
              <response code="401">Unauthorize</response>
@@ -221,24 +206,15 @@
             <response code="404">Enroll with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.MenteeController.GetAll">
             <summary>
-            Get list of mentees. GET "api/mentees"
+            Get list of mentees.
             </summary>
-            
-            <param name="size">
-            The number of items on a page. If null will be 40 by default.
-            </param>
-            <param name="index">
-            The page number where paging is started. If null will be 1 by default.
-            </param>
-            <param name="asc">
-            Boolean value determining whether return list will be null or not. If null will be false by default.
-            </param>
             
             <returns>
             List containing mentees. Message if list is empty.
             </returns>
+            
             <response code="200">Success</response>
             <response code="400">Bad Request</response>
             <response code="401">Unauthorized</response>
@@ -320,21 +296,15 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+        <member name="M:WebApi.Controllers.MentorController.GetAll">
             <summary>
             Get list of mentors.
             </summary>
             
-            <param name="size">
-            The number of items on a page. If null will be 40 by default.
-            </param>
-            <param name="index">
-            The page number where paging is started. If null will be 1 by default.
-            </param>
-            
             <returns>
             List containing mentors. Message if list is empty.
             </returns>
+            
             <response code="200">Success</response>
             <response code="400">Bad Request</response>
             <response code="401">Unauthorized</response>
@@ -433,17 +403,11 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+        <member name="M:WebApi.Controllers.SharingController.GetAll(System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
             <summary>
             Get list of sharings.
             </summary>
             
-            <param name="size">
-            The number of items on a page. May left null. Must co-exist with index.
-            </param>
-            <param name="index">
-            The page number where paging is started. May left null. Must co-exist with size.
-            </param>
             <param name="ascending">
             (True(1)/False(0)) Boolean value determining whether return list will be ascending or not. May left null.
             </param>

@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult GetAllMajor()
         {
-            return Ok(_service.GetAllMajor(paging));
+            return Ok(_service.GetAllMajor());
         }
 
         [HttpGet("topics")]

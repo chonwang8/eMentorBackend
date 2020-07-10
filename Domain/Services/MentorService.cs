@@ -146,18 +146,18 @@ namespace Domain.Services
         }
 
 
-        public BaseResponseDto GoogleLogin(string mentorId)
+        public BaseResponseDto GoogleLogin(string mentorEmail)
         {
-            MentorModel result = null;
+            UserAuthModel result = null;
             BaseResponseDto responseDto = null;
 
             #region Check input
-            if (mentorId == null)
+            if (mentorEmail == null)
             {
                 responseDto = new BaseResponseDto
                 {
                     Status = 1,
-                    Message = "MentorId must be specified"
+                    Message = "Email must be specified"
                 };
                 return responseDto;
             };
@@ -167,15 +167,13 @@ namespace Domain.Services
                 result = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
-                .Where(m => m.MentorId == new Guid(mentorId))
                 .Include(m => m.User)
-                .Select(m => new MentorModel
+                .Where(m => m.User.Email == mentorEmail)
+                .Select(m => new UserAuthModel
                 {
-                    MentorId = m.MentorId,
-                    User = new UserViewModel
-                    {
-                        Email = m.User.Email
-                    }
+                    Id = m.MentorId,
+                    Email = mentorEmail,
+                    RoleName = "mentor"
                 })
                 .FirstOrDefault();
             }
@@ -189,19 +187,14 @@ namespace Domain.Services
                 responseDto = new BaseResponseDto
                 {
                     Status = 2,
-                    Message = "Mentor with id " + mentorId + " does not exist",
+                    Message = "Mentor " + mentorEmail + " does not exist",
                 };
                 return responseDto;
             }
             #endregion
 
             #region Generate JWT
-            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel
-            {
-                Id = new Guid(mentorId),
-                Email = result.User.Email,
-                RoleName = "mentor"
-            });
+            string jwtToken = tokenManager.CreateUserAccessToken(result);
             #endregion
 
             //  finalize
