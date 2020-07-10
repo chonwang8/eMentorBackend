@@ -27,7 +27,7 @@ namespace Domain.Services
 
         #region RESTful API Functions
 
-        public IEnumerable<MenteeModel> GetAll(GetAllDTO request)
+        public IEnumerable<MenteeModel> GetAll()
         {
             IEnumerable<MenteeModel> result = _uow
                 .GetRepository<Mentee>()
@@ -38,7 +38,6 @@ namespace Domain.Services
                     UserId = u.UserId
                 });
 
-            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

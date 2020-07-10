@@ -6,7 +6,7 @@ namespace Domain.Services.Interfaces
 {
     public interface ITopicService
     {
-        public IEnumerable<TopicViewModel> GetAll(GetAllDTO request);
+        public IEnumerable<TopicViewModel> GetAll();
         public IEnumerable<TopicViewModel> GetById(string topicId);
         public int Insert(TopicViewModel topicInput);
         public int Update(TopicViewModel topicInput);

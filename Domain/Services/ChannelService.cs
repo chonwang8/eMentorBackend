@@ -32,7 +32,7 @@ namespace Domain.Services
 
 
         #region CRUD Methods
-        public BaseResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest)
+        public BaseResponseDto<ChannelViewModel> GetAll()
         {
             BaseResponseDto<ChannelViewModel> responseDto =
                 new BaseResponseDto<ChannelViewModel>
@@ -69,14 +69,8 @@ namespace Domain.Services
                 responseDto.Message = "There are no channels in the system";
             };
 
-            if (pagingRequest.PageIndex != null && pagingRequest.PageSize != null)
-            {
-                result = result.Skip((pagingRequest.PageIndex.GetValueOrDefault() - 1) * pagingRequest.PageSize.GetValueOrDefault()).Take(pagingRequest.PageSize.GetValueOrDefault());
-            }
-
             //  finalize
             responseDto.Content = result;
-
             return responseDto;
         }
 

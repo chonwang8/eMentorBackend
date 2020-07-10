@@ -25,22 +25,13 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get list of mentees. GET "api/mentees"
+        /// Get list of mentees.
         /// </summary>
-        /// 
-        /// <param name="size">
-        /// The number of items on a page. If null will be 40 by default.
-        /// </param>
-        /// <param name="index">
-        /// The page number where paging is started. If null will be 1 by default.
-        /// </param>
-        /// <param name="asc">
-        /// Boolean value determining whether return list will be null or not. If null will be false by default.
-        /// </param>
         /// 
         /// <returns>
         /// List containing mentees. Message if list is empty.
         /// </returns>
+        /// 
         /// <response code="200">Success</response>
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
@@ -54,59 +45,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, string asc)
+        public IActionResult GetAll()
         {
-            int pageSize, pageIndex;
-            bool IsAscended = false;
-            GetAllDTO paging = null;
-
-            #region Set default paging values if null or empty input
-
-            if (!string.IsNullOrWhiteSpace(size))
-            {
-                if (!size.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageSize = int.Parse(size);
-            }
-            else
-            {
-                pageSize = 40;
-            }
-
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                if (!index.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageIndex = int.Parse(index);
-            }
-            else
-            {
-                pageIndex = 1;
-            }
-
-            if (!string.IsNullOrWhiteSpace(asc))
-            {
-                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                IsAscended = bool.Parse(asc);
-            }
-
-            #endregion
-
-            paging = new GetAllDTO
-            {
-                PageSize = pageSize,
-                PageIndex = pageIndex,
-                IsAscending = false
-            };
-
-            List<MenteeModel> result = _mentee.GetAll(paging).ToList();
+            ICollection<MenteeModel> result = _mentee.GetAll().ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no mentees in the system");

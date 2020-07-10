@@ -30,12 +30,6 @@ namespace WebApi.Controllers
         /// Get list of sharings.
         /// </summary>
         /// 
-        /// <param name="size">
-        /// The number of items on a page. May left null. Must co-exist with index.
-        /// </param>
-        /// <param name="index">
-        /// The page number where paging is started. May left null. Must co-exist with size.
-        /// </param>
         /// <param name="ascending">
         /// (True(1)/False(0)) Boolean value determining whether return list will be ascending or not. May left null.
         /// </param>
@@ -59,16 +53,10 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(int? size = null, int? index = null, bool? ascending = null, bool? approved = null)
+        public IActionResult GetAll(bool? ascending = null, bool? approved = null)
         {
             BaseResponseDto<SharingViewModel> responseDto = null;
             ICollection<SharingViewModel> result = null;
-
-            PagingDto pagingRequest = new PagingDto
-            {
-                PageIndex = index,
-                PageSize = size
-            };
 
             FilterDto filterRequest = new FilterDto
             {
@@ -78,7 +66,7 @@ namespace WebApi.Controllers
 
             try
             {
-                responseDto = _sharing.GetAll(pagingRequest, filterRequest);
+                responseDto = _sharing.GetAll(filterRequest);
             }
             catch (Exception e)
             {

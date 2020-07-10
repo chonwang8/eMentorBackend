@@ -19,7 +19,7 @@ namespace Domain.Services
         }
 
         #region CRUD Methods
-        public IEnumerable<TopicViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<TopicViewModel> GetAll()
         {
             IEnumerable<TopicViewModel> result = _uow
                 .GetRepository<Topic>()
@@ -31,7 +31,6 @@ namespace Domain.Services
                     MajorId = u.MajorId,
                     CreatedBy = u.CreatedBy
                 });
-            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             return result;
         }
 

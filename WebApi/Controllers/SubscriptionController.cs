@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace WebApi.Controllers
 {
-    [Route("api/subscription")]
+    [Route("api/subscriptions")]
     [ApiController]
     public class SubscriptionController : ControllerBase
     {
@@ -41,49 +41,9 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, bool asc)
+        public IActionResult GetAll()
         {
-            int pageSize, pageIndex;
-            GetAllDTO paging = null;
-
-            #region Set default paging values if null or empty input
-
-            if (!string.IsNullOrWhiteSpace(size))
-            {
-                if (!size.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageSize = int.Parse(size);
-            }
-            else
-            {
-                pageSize = 40;
-            }
-
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                if (!index.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageIndex = int.Parse(index);
-            }
-            else
-            {
-                pageIndex = 1;
-            }
-
-            #endregion
-
-            paging = new GetAllDTO
-            {
-                PageSize = pageSize,
-                PageIndex = pageIndex,
-                IsAscending = false
-            };
-
-            List<SubscriptionModel> result = _subscription.GetAll(paging).ToList();
+            List<SubscriptionModel> result = _subscription.GetAll().ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no subscription in the system");

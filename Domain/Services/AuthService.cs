@@ -161,9 +161,9 @@ namespace Domain.Services
 
             #endregion
 
-            string jwtToken = tokenManager.CreateUserAccessToken(new UserRoleViewModel
+            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel
             {
-                UserId = loggedUser.UserId,
+                Id = loggedUser.UserId,
                 Email = loggedUser.Email,
                 RoleName = user.RoleName
             });
