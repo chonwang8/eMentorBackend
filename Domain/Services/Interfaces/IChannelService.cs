@@ -9,12 +9,12 @@ namespace Domain.Services.Interfaces
 {
     public interface IChannelService
     {
-        public ChannelResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest);
-        public ChannelResponseDto<ChannelModel> GetById(string ChannelId);
-        public ChannelResponseDto Insert(ChannelInsertModel channel);
-        public ChannelResponseDto Update(ChannelUpdateModel channelUpdateModel);
-        public ChannelResponseDto ChangeStatus(string channelId, bool status);
-        public ChannelResponseDto Delete(string ChannelId);
+        public BaseResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest);
+        public BaseResponseDto<ChannelModel> GetById(string ChannelId);
+        public BaseResponseDto Insert(ChannelInsertModel channel);
+        public BaseResponseDto Update(ChannelUpdateModel channelUpdateModel);
+        public BaseResponseDto ChangeStatus(string channelId, bool status);
+        public BaseResponseDto Delete(string ChannelId);
 
 
         //  Keep

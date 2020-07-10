@@ -75,7 +75,7 @@ namespace Domain.Services
         }
 
 
-        public LoginResponseDTO Login(UserLoginViewModel user)
+        public LoginResponseDTO GoogleLogin(UserLoginViewModel user)
         {
             LoginResponseDTO result = null;
 

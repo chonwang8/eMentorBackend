@@ -1,5 +1,4 @@
-﻿using Domain.DTO;
-using Domain.DTO.QueryAttributesDtos;
+﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.SharingModels;
@@ -62,7 +61,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll(int? size = null, int? index = null, bool? ascending = null, bool? approved = null)
         {
-            SharingResponseDto<SharingViewModel> responseDto = null;
+            BaseResponseDto<SharingViewModel> responseDto = null;
             ICollection<SharingViewModel> result = null;
 
             PagingDto pagingRequest = new PagingDto
@@ -123,7 +122,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string sharingId)
         {
-            SharingResponseDto<SharingModel> responseDto = null;
+            BaseResponseDto<SharingModel> responseDto = null;
             ICollection<SharingModel> result = null;
 
             if (sharingId == null)
@@ -180,7 +179,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Insert(SharingInsertModel sharingInsertModel)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingInsertModel == null)
             {
@@ -223,7 +222,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Update(SharingModel sharingModel)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingModel == null)
             {
@@ -267,7 +266,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult ChangeStatus(string sharingId, bool? isDisable)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingId == null)
             {
@@ -326,7 +325,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string sharingId)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingId == null)
             {
@@ -342,7 +341,7 @@ namespace WebApi.Controllers
                 return StatusCode(500, e);
             }
 
-            if(responseDto.Status == 1 || responseDto.Status == 2)
+            if (responseDto.Status == 1 || responseDto.Status == 2)
             {
                 return BadRequest(responseDto.Message);
             }

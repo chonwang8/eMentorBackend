@@ -1,9 +1,11 @@
-﻿using Domain.DTO;
+﻿using Domain.DTO.QueryAttributesDtos;
+using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.MentorModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +27,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get list of mentors. GET "api/mentors"
+        /// Get list of mentors.
         /// </summary>
         /// 
         /// <param name="size">
@@ -33,9 +35,6 @@ namespace WebApi.Controllers
         /// </param>
         /// <param name="index">
         /// The page number where paging is started. If null will be 1 by default.
-        /// </param>
-        /// <param name="asc">
-        /// Boolean value determining whether return list will be null or not. If null will be false by default.
         /// </param>
         /// 
         /// <returns>
@@ -54,70 +53,40 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(string size, string index, string asc)
+        public IActionResult GetAll(int? size = null, int? index = null)
         {
-            int pageSize, pageIndex;
-            bool IsAscended = false;
-            GetAllDTO paging = null;
+            BaseResponseDto<MentorViewModel> responseDto = null;
+            ICollection<MentorViewModel> result = null;
 
-            #region Set default paging values if null or empty input
-
-            if (!string.IsNullOrWhiteSpace(size))
+            PagingDto pagingRequest = new PagingDto
             {
-                if (!size.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageSize = int.Parse(size);
-            }
-            else
-            {
-                pageSize = 40;
-            }
-
-            if (!string.IsNullOrWhiteSpace(index))
-            {
-                if (!index.All(char.IsDigit))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                pageIndex = int.Parse(index);
-            }
-            else
-            {
-                pageIndex = 1;
-            }
-
-            if (!string.IsNullOrWhiteSpace(asc))
-            {
-                if (!asc.ToLower().Equals("true") || !asc.ToLower().Equals("false"))
-                {
-                    return BadRequest("Invalid paging values");
-                }
-                IsAscended = bool.Parse(asc);
-            }
-
-            #endregion
-
-            paging = new GetAllDTO
-            {
-                PageSize = pageSize,
-                PageIndex = pageIndex,
-                IsAscending = false
+                PageIndex = index,
+                PageSize = size
             };
 
-            List<MentorModel> result = _mentor.GetAll(paging).ToList();
-            if (result == null || result.Count == 0)
+            try
             {
-                return Ok("There are no users in the system");
+                responseDto = _mentor.GetAll(pagingRequest);
             }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            result = responseDto.Content.ToList();
+
             return Ok(result);
         }
 
 
 
         /// <summary>
-        /// Get mentor by Id. GET "api/mentors/{mentorId}"
+        /// Get mentor by Id.
         /// </summary>
         /// <param name="mentorId">
         /// The user's identifier.
@@ -142,25 +111,43 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string mentorId)
         {
+            BaseResponseDto<MentorModel> responseDto = null;
+            ICollection<MentorModel> result = null;
+
             if (mentorId == null)
             {
-                return BadRequest("Mentor info must not be null");
+                return BadRequest("Mentor Id must not be null");
             }
 
-            List<MentorModel> result = _mentor.GetById(mentorId).ToList();
-
-            if (result == null || result.Count == 0)
+            try
             {
-                return NotFound("No mentor with mentorId " + mentorId + " found.");
+                responseDto = _mentor.GetById(mentorId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
             }
 
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
             return Ok(result);
         }
 
 
 
         /// <summary>
-        /// Insert a mentor into database. POST "api/mentors".
+        /// Insert a mentor into database.
         /// </summary>
         /// <returns>
         /// Message
@@ -178,31 +165,31 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(MentorModel mentor)
+        public IActionResult Insert(MentorInsertModel mentorModel)
         {
-            if (mentor == null)
+            BaseResponseDto responseDto = null;
+
+            if (mentorModel == null)
             {
-                return BadRequest("User info must not be null");
+                return BadRequest("Mentor info must not be null");
             }
 
-            int result = _mentor.Insert(mentor);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentor info.");
+                responseDto = _mentor.Insert(mentorModel);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return BadRequest("This user is already a mentor");
+                return StatusCode(500, e);
             }
 
-            return Ok("Mentor Inserted");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Update an existing mentor. PUT "api/mentors".
+        /// Update an existing mentor.
         /// </summary>
         /// <returns>
         /// Message
@@ -221,31 +208,31 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(MentorModel mentor)
+        public IActionResult Update(MentorUpdateModel mentorModel)
         {
-            if (mentor == null)
+            BaseResponseDto responseDto = null;
+
+            if (mentorModel == null)
             {
                 return BadRequest("Mentor info must not be null");
             }
 
-            int result = _mentor.Update(mentor);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentor info.");
+                responseDto = _mentor.Update(mentorModel);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return NotFound("Mentor not found");
+                return StatusCode(500, e);
             }
 
-            return Ok("Mentor updated");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Change status of a mentor (Disabled/Enabled). PUT "api/mentors/status".
+        /// Change status of a mentor (Disabled/Enabled).
         /// </summary>
         /// <returns>
         /// Message
@@ -265,32 +252,43 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult ChangeStatus(string mentorId, bool isDisable)
+        public IActionResult ChangeStatus(string mentorId, bool? isDisable)
         {
+            BaseResponseDto responseDto = null;
+
             if (mentorId == null)
             {
-                return BadRequest("MentorId must not be null.");
+                return BadRequest("Mentor Id must not be null.");
             }
-
-            int result = _mentor.ChangeStatus(mentorId, isDisable);
-
-            if (result == 0)
+            if (isDisable.Equals(null))
             {
-                return BadRequest("Faulthy mentor info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Mentor not found");
+                return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
             }
 
-            return isDisable ? Ok("Mentor is disabled.")
+            bool disable = isDisable.HasValue;
+
+            try
+            {
+                responseDto = _mentor.ChangeStatus(mentorId, disable);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return disable ? Ok("Mentor is disabled.")
                 : Ok("Mentor is enabled.");
         }
 
 
 
         /// <summary>
-        /// Delete a mentor from database. DELETE "api/mentors/{mentorId}".
+        /// Delete a mentor from database.
         /// </summary>
         /// <param name="mentorId">
         /// The mentor's identifier.
@@ -315,23 +313,28 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string mentorId)
         {
+            BaseResponseDto responseDto = null;
+
             if (mentorId == null)
             {
-                return BadRequest("Mentor info must not be null");
+                return BadRequest("Mentor id must not be null");
             }
 
-            int result = _mentor.Delete(mentorId);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentor info.");
+                responseDto = _mentor.Delete(mentorId);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return NotFound("Mentor not found");
+                return StatusCode(500, e);
             }
 
-            return Ok("Mentor is deleted.");
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return Ok(responseDto.Message);
         }
 
 
