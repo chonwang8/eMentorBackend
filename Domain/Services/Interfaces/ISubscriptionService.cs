@@ -6,7 +6,7 @@ namespace Domain.Services.Interfaces
 {
     public interface ISubscriptionService
     {
-        public IEnumerable<SubscriptionModel> GetAll(GetAllDTO request);
+        public IEnumerable<SubscriptionModel> GetAll();
         public IEnumerable<SubscriptionModel> GetById(string subscriptionId);
 
 

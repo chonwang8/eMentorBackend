@@ -23,7 +23,7 @@ namespace Domain.Services
 
 
 
-        public IEnumerable<UserViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<UserViewModel> GetAll()
         {
             IEnumerable<UserViewModel> result = _uow
                 .GetRepository<User>()
@@ -39,7 +39,6 @@ namespace Domain.Services
                     Balance = u.Balance,
                     Description = u.Description
                 });
-            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
 
             return result;
         }

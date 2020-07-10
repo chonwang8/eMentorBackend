@@ -4,6 +4,6 @@ namespace Domain.ViewModels.MentorModels
 {
     public class MentorInsertModel
     {
-        public UserViewModel User { get; set; }
+        public UserInsertViewModel User { get; set; }
     }
 }

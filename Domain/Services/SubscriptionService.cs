@@ -23,7 +23,7 @@ namespace Domain.Services
 
         #region RESTful API methods
 
-        public IEnumerable<SubscriptionModel> GetAll(GetAllDTO request)
+        public IEnumerable<SubscriptionModel> GetAll()
         {
             IEnumerable<SubscriptionModel> result = _uow
                 .GetRepository<Subscription>()
@@ -35,8 +35,7 @@ namespace Domain.Services
                     MenteeId = s.MenteeId,
                     IsDisable = s.IsDisable
                 });
-            result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
-
+            
             return result;
         }
 

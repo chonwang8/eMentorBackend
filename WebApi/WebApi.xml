@@ -358,12 +358,29 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
+        <member name="M:WebApi.Controllers.MentorController.GoogleLogin(System.String)">
+            <summary>
+            Generate a JWT for mentor.
+            </summary>
+            <param name="mentorId">
+            The mentor's identifier.
+            </param>
+            <returns>
+            Mentor with matching Id along with UserInfo
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
         <member name="M:WebApi.Controllers.MentorController.Insert(Domain.ViewModels.MentorModels.MentorInsertModel)">
             <summary>
-            Insert a mentor into database.
+            Insert a mentor into database. Returns a JWT
             </summary>
             <returns>
-            Message
+            JWT token || error message
             </returns>
             <response code="200">Success</response>
             <response code="400">Bad Request</response>
@@ -518,7 +535,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.GetAll(System.String,System.String,System.Boolean)">
+        <member name="M:WebApi.Controllers.SubscriptionController.GetAll">
             <summary>
             Get list of subscriptions. GET "api/subscriptions"
             </summary>
@@ -606,21 +623,11 @@
             <response code="404">Subscription with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.TopicController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.TopicController.GetAll">
              <summary>
              Get list of topics. GET "api/topics"
              </summary>
             
-             <param name="size">
-             The number of items on a page. If null will be 40 by default.
-             </param>
-             <param name="index">
-             The page number where paging is started. If null will be 1 by default.
-             </param>
-             <param name="asc">
-             Boolean value determining whether return list will be null or not. If null will be false by default.
-             </param>
-             
              <returns>
              List containing topics. Message if list is empty.
              </returns>
@@ -705,7 +712,7 @@
             <response code="404">Topic with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.UserController.GetAll(System.String,System.String,System.Boolean)">
+        <member name="M:WebApi.Controllers.UserController.GetAll">
             <summary>
             Get list of users. GET "api/users"
             </summary>

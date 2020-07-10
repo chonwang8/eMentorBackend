@@ -39,10 +39,4 @@ namespace Domain.ViewModels.UserModels
         public int YearOfBirth { get; set; }
     }
 
-    public class UserRoleViewModel
-    {
-        public Guid UserId { get; set; }
-        public string Email { get; set; }
-        public string RoleName { get; set; }
-    }
 }

@@ -78,7 +78,7 @@ namespace eMentor
                         ValidIssuer = "https://securetoken.google.com/flutter-chat-ba7c2",
                         ValidateAudience = true,
                         ValidAudience = "flutter-chat-ba7c2",
-                        ValidateLifetime = true
+                        ValidateLifetime = false
                     };
 
                     options.Events = new JwtBearerEvents
