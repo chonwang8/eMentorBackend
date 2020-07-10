@@ -320,9 +320,9 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.GetAll(System.String,System.String,System.String)">
+        <member name="M:WebApi.Controllers.MentorController.GetAll(System.Nullable{System.Int32},System.Nullable{System.Int32})">
             <summary>
-            Get list of mentors. GET "api/mentors"
+            Get list of mentors.
             </summary>
             
             <param name="size">
@@ -330,9 +330,6 @@
             </param>
             <param name="index">
             The page number where paging is started. If null will be 1 by default.
-            </param>
-            <param name="asc">
-            Boolean value determining whether return list will be null or not. If null will be false by default.
             </param>
             
             <returns>
@@ -346,7 +343,7 @@
         </member>
         <member name="M:WebApi.Controllers.MentorController.GetById(System.String)">
             <summary>
-            Get mentor by Id. GET "api/mentors/{mentorId}"
+            Get mentor by Id.
             </summary>
             <param name="mentorId">
             The user's identifier.
@@ -361,9 +358,9 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.Insert(Domain.ViewModels.MentorModels.MentorModel)">
+        <member name="M:WebApi.Controllers.MentorController.Insert(Domain.ViewModels.MentorModels.MentorInsertModel)">
             <summary>
-            Insert a mentor into database. POST "api/mentors".
+            Insert a mentor into database.
             </summary>
             <returns>
             Message
@@ -374,9 +371,9 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.Update(Domain.ViewModels.MentorModels.MentorModel)">
+        <member name="M:WebApi.Controllers.MentorController.Update(Domain.ViewModels.MentorModels.MentorUpdateModel)">
             <summary>
-            Update an existing mentor. PUT "api/mentors".
+            Update an existing mentor.
             </summary>
             <returns>
             Message
@@ -388,9 +385,9 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.ChangeStatus(System.String,System.Boolean)">
+        <member name="M:WebApi.Controllers.MentorController.ChangeStatus(System.String,System.Nullable{System.Boolean})">
             <summary>
-            Change status of a mentor (Disabled/Enabled). PUT "api/mentors/status".
+            Change status of a mentor (Disabled/Enabled).
             </summary>
             <returns>
             Message
@@ -404,7 +401,7 @@
         </member>
         <member name="M:WebApi.Controllers.MentorController.Delete(System.String)">
             <summary>
-            Delete a mentor from database. DELETE "api/mentors/{mentorId}".
+            Delete a mentor from database.
             </summary>
             <param name="mentorId">
             The mentor's identifier.

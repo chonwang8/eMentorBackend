@@ -8,7 +8,7 @@ namespace Domain.Services.Interfaces
     {
 
         public string Register(UserRegisterViewModel user);
-        public LoginResponseDTO Login(UserLoginViewModel user);
+        public LoginResponseDTO GoogleLogin(UserLoginViewModel user);
         public string Login(AdminLoginModel adminLogin);
     }
 }
