@@ -1,11 +1,11 @@
-﻿using Domain.DTO.AuthDTOs;
+﻿using System;
+using Domain.DTO.AuthDTOs;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.AdminModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace WebApi.Controllers
 {

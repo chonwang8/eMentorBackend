@@ -6,7 +6,7 @@ namespace Domain.Services.Interfaces
 {
     public interface IMenteeService
     {
-        public IEnumerable<MenteeModel> GetAll(GetAllDTO request);
+        public IEnumerable<MenteeModel> GetAll();
         public IEnumerable<MenteeModel> GetById(string menteeId);
         public int Insert(MenteeModel mentor);
         public int Update(MenteeModel mentor);

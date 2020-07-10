@@ -2,10 +2,13 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
+using Domain.Helper.DataObjects;
+using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.MentorModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +20,14 @@ namespace Domain.Services
 
         #region Classes and Constructor
         protected readonly IUnitOfWork _uow;
+        protected readonly IOptions<AppSetting> _options;
+        protected TokenManager tokenManager;
 
-
-
-
-        public MentorService(IUnitOfWork uow)
+        public MentorService(IUnitOfWork uow, IOptions<AppSetting> options)
         {
             _uow = uow;
+            _options = options;
+            tokenManager = new TokenManager(_options);
         }
         #endregion Classes and Constructor
 
@@ -31,7 +35,7 @@ namespace Domain.Services
 
         #region CRUD Methods
 
-        public BaseResponseDto<MentorViewModel> GetAll(PagingDto pagingRequest)
+        public BaseResponseDto<MentorViewModel> GetAll()
         {
             BaseResponseDto<MentorViewModel> responseDto = new BaseResponseDto<MentorViewModel>
             {
@@ -67,11 +71,6 @@ namespace Domain.Services
                 responseDto.Status = 1;
                 responseDto.Message = "There are no users in the system";
             };
-
-            if (pagingRequest.PageIndex != null && pagingRequest.PageSize != null)
-            {
-                result = result.Skip((pagingRequest.PageIndex.GetValueOrDefault() - 1) * pagingRequest.PageSize.GetValueOrDefault()).Take(pagingRequest.PageSize.GetValueOrDefault());
-            }
 
             //finalize
             responseDto.Content = result;
@@ -147,10 +146,79 @@ namespace Domain.Services
         }
 
 
+        public BaseResponseDto GoogleLogin(string mentorId)
+        {
+            MentorModel result = null;
+            BaseResponseDto responseDto = null;
+
+            #region Check input
+            if (mentorId == null)
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 1,
+                    Message = "MentorId must be specified"
+                };
+                return responseDto;
+            };
+
+            try
+            {
+                result = _uow
+                .GetRepository<Mentor>()
+                .GetAll()
+                .Where(m => m.MentorId == new Guid(mentorId))
+                .Include(m => m.User)
+                .Select(m => new MentorModel
+                {
+                    MentorId = m.MentorId,
+                    User = new UserViewModel
+                    {
+                        Email = m.User.Email
+                    }
+                })
+                .FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 2,
+                    Message = "Mentor with id " + mentorId + " does not exist",
+                };
+                return responseDto;
+            }
+            #endregion
+
+            #region Generate JWT
+            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel
+            {
+                Id = new Guid(mentorId),
+                Email = result.User.Email,
+                RoleName = "mentor"
+            });
+            #endregion
+
+            //  finalize
+            responseDto = new BaseResponseDto
+            {
+                Status = 0,
+                Message = jwtToken
+            };
+            return responseDto;
+        }
+
+
         public BaseResponseDto Insert(MentorInsertModel mentorInsertModel)
         {
             BaseResponseDto responseDto = null;
 
+            #region Check input
             if (mentorInsertModel == null)
             {
                 responseDto = new BaseResponseDto
@@ -160,13 +228,16 @@ namespace Domain.Services
                 };
                 return responseDto;
             }
+            #endregion
 
+            #region Insert mentor into database
             Guid userId = Guid.NewGuid();
+            Guid mentorId = Guid.NewGuid();
             try
             {
                 Mentor newMentor = new Mentor
                 {
-                    MentorId = Guid.NewGuid(),
+                    MentorId = mentorId,
                     User = new User 
                     {
                         UserId = userId,
@@ -174,8 +245,9 @@ namespace Domain.Services
                         Fullname = mentorInsertModel.User.Fullname,
                         YearOfBirth = mentorInsertModel.User.YearOfBirth,
                         AvatarUrl = mentorInsertModel.User.AvatarUrl,
-                        Balance = mentorInsertModel.User.Balance,
-                        Description = mentorInsertModel.User.Description
+                        Balance = 0,
+                        Phone = mentorInsertModel.User.Phone,
+                        Description = ""
                     },
                     UserId = userId,
                     IsDisable = false
@@ -188,11 +260,21 @@ namespace Domain.Services
             {
                 throw e;
             }
+            #endregion
+
+
+            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel 
+            {
+                Id = mentorId,
+                Email = mentorInsertModel.User.Email,
+                RoleName = "mentor"
+            });
+
 
             responseDto = new BaseResponseDto
             {
                 Status = 0,
-                Message = "Mentor successfully inserted"
+                Message = jwtToken
             };
 
             return responseDto;

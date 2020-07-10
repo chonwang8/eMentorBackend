@@ -6,7 +6,7 @@ namespace Domain.Services.Interfaces
 {
     public interface IUserService
     {
-        public IEnumerable<UserViewModel> GetAll(GetAllDTO request);
+        public IEnumerable<UserViewModel> GetAll();
         public IEnumerable<UserViewModel> GetById(string userId);
         public int Insert(UserInsertViewModel userInsert);
         public int Update(UserViewModel user);

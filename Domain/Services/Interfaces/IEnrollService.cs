@@ -8,7 +8,7 @@ namespace Domain.Services.Interfaces
 {
     public interface IEnrollService
     {
-        public IEnumerable<EnrollViewModel> GetAll(GetAllDTO request);
+        public IEnumerable<EnrollViewModel> GetAll();
         public IEnumerable<EnrollModel> GetById(string enrollId);
         public int Insert(EnrollInsertModel enrollModel);
         public int Update(EnrollModel enrollModel);
