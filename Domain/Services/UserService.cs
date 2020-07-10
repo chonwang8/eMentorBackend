@@ -1,11 +1,8 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
-using Domain.Helper.DataObjects;
-using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.UserModels;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

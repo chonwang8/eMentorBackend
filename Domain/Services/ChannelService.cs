@@ -5,8 +5,10 @@ using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.ChannelModels;
+using Domain.ViewModels.MentorModels;
 using Domain.ViewModels.SharingModels;
 using Domain.ViewModels.SubscriptionModels;
+using Domain.ViewModels.TopicModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,10 +32,10 @@ namespace Domain.Services
 
 
         #region CRUD Methods
-        public ChannelResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest)
+        public BaseResponseDto<ChannelViewModel> GetAll(PagingDto pagingRequest)
         {
-            ChannelResponseDto<ChannelViewModel> responseDto =
-                new ChannelResponseDto<ChannelViewModel>
+            BaseResponseDto<ChannelViewModel> responseDto =
+                new BaseResponseDto<ChannelViewModel>
                 {
                     Status = 0,
                     Message = "Success",
@@ -79,10 +81,10 @@ namespace Domain.Services
         }
 
 
-        public ChannelResponseDto<ChannelModel> GetById(string channelId)
+        public BaseResponseDto<ChannelModel> GetById(string channelId)
         {
             IEnumerable<ChannelModel> result = null;
-            ChannelResponseDto<ChannelModel> responseDto = new ChannelResponseDto<ChannelModel>
+            BaseResponseDto<ChannelModel> responseDto = new BaseResponseDto<ChannelModel>
             {
                 Status = 0,
                 Message = "Success",
@@ -91,7 +93,7 @@ namespace Domain.Services
 
             if (channelId == null)
             {
-                responseDto = new ChannelResponseDto<ChannelModel>
+                responseDto = new BaseResponseDto<ChannelModel>
                 {
                     Status = 1,
                     Message = "ChannelId must be specified",
@@ -108,35 +110,48 @@ namespace Domain.Services
 
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
-                .Include(c => c.Mentor.User)
-                .Include(c => c.Sharing.Select(s => new SharingViewModel
-                {
-                    SharingId = s.SharingId,
-                    SharingName = s.SharingName,
-                    Price = s.Price,
-                    MentorName = s.Channel.Mentor.User.Fullname,
-                    StartTime = s.StartTime,
-                    EndTime = s.EndTime,
-                    ImageUrl = s.ImageUrl,
-                    IsApproved = s.IsApproved
-                }))
-                .Include(c => c.Subscription.Select(s => new SubscriptionViewModel
-                {
-                    SubscriptionId = s.SubscriptionId,
-                    ChannelId = s.ChannelId,
-                    MenteeId = s.MenteeId,
-                    TimeSubscripted = s.TimeSubscripted,
-                    IsDisable = s.IsDisable
-                }))
+                .ThenInclude(c => c.User)
+                .Include(c => c.Sharing)
+                .Include(c => c.Subscription)
 
                 .Where(c => c.ChannelId.Equals(new Guid(channelId)))
                 .Select(c => new ChannelModel
                 {
                     ChannelId = c.ChannelId,
-                    Mentor = null,
-                    Topic = null,
-                    Sharing = null,
-                    Subscription = null
+                    Mentor = new MentorViewModel 
+                    { 
+                        MentorId = c.Mentor.MentorId,
+                        Email = c.Mentor.User.Email,
+                        Fullname = c.Mentor.User.Fullname,
+                        AvatarUrl = c.Mentor.User.AvatarUrl,
+                        Description = c.Mentor.User.Description
+                    },
+                    Topic = new TopicViewModel 
+                    { 
+                        TopicId = c.Topic.TopicId,
+                        TopicName = c.Topic.TopicName,
+                        MajorId = c.Topic.MajorId,
+                        CreatedBy = c.Topic.CreatedBy
+                    },
+                    Sharing = c.Sharing.Select(s => new SharingViewModel 
+                    {
+                        SharingId = s.SharingId,
+                        SharingName = s.SharingName,
+                        MentorName = s.Channel.Mentor.User.Email,
+                        StartTime = s.StartTime,
+                        EndTime = s.EndTime,
+                        ImageUrl = s.ImageUrl,
+                        Price = s.Price,
+                        IsApproved = s.IsApproved
+                    }).ToList(),
+                    Subscription = c.Subscription.Select(s => new SubscriptionViewModel
+                    {
+                        SubscriptionId = s.SubscriptionId,
+                        ChannelId = s.ChannelId,
+                        MenteeId = s.MenteeId,
+                        TimeSubscripted = s.TimeSubscripted,
+                        IsDisable = s.IsDisable
+                    }).ToList()
                 });
             }
             catch (Exception e)
@@ -146,7 +161,7 @@ namespace Domain.Services
 
             if (result == null)
             {
-                responseDto = new ChannelResponseDto<ChannelModel>
+                responseDto = new BaseResponseDto<ChannelModel>
                 {
                     Status = 2,
                     Message = "Channel with id " + channelId + " does not exist",
@@ -161,13 +176,13 @@ namespace Domain.Services
         }
 
 
-        public ChannelResponseDto Insert(ChannelInsertModel channelInsertModel)
+        public BaseResponseDto Insert(ChannelInsertModel channelInsertModel)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelInsertModel == null)
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing info"
@@ -193,7 +208,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new ChannelResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Channel successfully inserted"
@@ -203,13 +218,13 @@ namespace Domain.Services
         }
 
 
-        public ChannelResponseDto Update(ChannelUpdateModel channelUpdateModel)
+        public BaseResponseDto Update(ChannelUpdateModel channelUpdateModel)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelUpdateModel == null)
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy channel info"
@@ -232,7 +247,7 @@ namespace Domain.Services
 
             if (existingChannel == null)
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "No existing channel with specified id found"
@@ -254,7 +269,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new ChannelResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Success"
@@ -264,14 +279,14 @@ namespace Domain.Services
         }
 
 
-        public ChannelResponseDto ChangeStatus(string channelId, bool status)
+        public BaseResponseDto ChangeStatus(string channelId, bool status)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
             Guid guid = new Guid(channelId);
 
             if (channelId.Equals(null))
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy channel Id."
@@ -285,7 +300,7 @@ namespace Domain.Services
                 .FirstOrDefault(s => s.ChannelId == guid);
             if (existingChannel == null)
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "Channel with specified id not found"
@@ -304,7 +319,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new ChannelResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0
             };
@@ -322,14 +337,14 @@ namespace Domain.Services
         }
 
 
-        public ChannelResponseDto Delete(string channelId)
+        public BaseResponseDto Delete(string channelId)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
             Guid guid = new Guid(channelId);
 
             if (channelId.Equals(null))
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy channel Id."
@@ -343,7 +358,7 @@ namespace Domain.Services
                 .FirstOrDefault(s => s.ChannelId == guid);
             if (existingChannel == null)
             {
-                responseDto = new ChannelResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "Channel with specified id not found"
@@ -361,7 +376,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new ChannelResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Successfully remove channel " + existingChannel.ChannelId + " from database."
@@ -369,6 +384,8 @@ namespace Domain.Services
 
             return responseDto;
         }
+
+
         #endregion
 
 

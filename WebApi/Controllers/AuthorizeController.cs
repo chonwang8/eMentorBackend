@@ -71,7 +71,7 @@ namespace WebApi.Controllers
 
             try
             {
-                result = _auth.Login(userModel);
+                result = _auth.GoogleLogin(userModel);
             }
             catch (Exception e)
             {

@@ -26,9 +26,9 @@ namespace Domain.Services
 
 
         #region CRUD Methods
-        public SharingResponseDto<SharingViewModel> GetAll(PagingDto pagingRequest, FilterDto filterRequest)
+        public BaseResponseDto<SharingViewModel> GetAll(PagingDto pagingRequest, FilterDto filterRequest)
         {
-            SharingResponseDto<SharingViewModel> responseDto = new SharingResponseDto<SharingViewModel>
+            BaseResponseDto<SharingViewModel> responseDto = new BaseResponseDto<SharingViewModel>
             {
                 Status = 0,
                 Message = "Success",
@@ -72,7 +72,7 @@ namespace Domain.Services
                 result = result.Where(s => s.IsApproved == filterRequest.IsApproved);
                 if (result == null || result.Count() <= 0)
                 {
-                    responseDto = new SharingResponseDto<SharingViewModel>
+                    responseDto = new BaseResponseDto<SharingViewModel>
                     {
                         Status = 2,
                         Message = "There are no Sharing with isApproved(" + filterRequest.IsApproved + ") status"
@@ -92,10 +92,10 @@ namespace Domain.Services
         }
 
 
-        public SharingResponseDto<SharingModel> GetById(string sharingId)
+        public BaseResponseDto<SharingModel> GetById(string sharingId)
         {
             IEnumerable<SharingModel> result = null;
-            SharingResponseDto<SharingModel> responseDto = new SharingResponseDto<SharingModel>
+            BaseResponseDto<SharingModel> responseDto = new BaseResponseDto<SharingModel>
             {
                 Status = 0,
                 Message = "Success",
@@ -104,7 +104,7 @@ namespace Domain.Services
 
             if (sharingId == null)
             {
-                responseDto = new SharingResponseDto<SharingModel>
+                responseDto = new BaseResponseDto<SharingModel>
                 {
                     Status = 1,
                     Message = "SharingId must be specified",
@@ -148,7 +148,7 @@ namespace Domain.Services
 
             if (result == null)
             {
-                responseDto = new SharingResponseDto<SharingModel>
+                responseDto = new BaseResponseDto<SharingModel>
                 {
                     Status = 2,
                     Message = "Sharing with id " + sharingId + " does not exist",
@@ -163,13 +163,13 @@ namespace Domain.Services
         }
 
 
-        public SharingResponseDto Insert(SharingInsertModel sharingInsertModel)
+        public BaseResponseDto Insert(SharingInsertModel sharingInsertModel)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingInsertModel == null)
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing info"
@@ -203,7 +203,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new SharingResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Sharing session " + sharingInsertModel.SharingName + " successfully inserted"
@@ -213,13 +213,13 @@ namespace Domain.Services
         }
 
 
-        public SharingResponseDto Update(SharingModel sharingModel)
+        public BaseResponseDto Update(SharingModel sharingModel)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (sharingModel == null)
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing info"
@@ -242,7 +242,7 @@ namespace Domain.Services
 
             if (existingSharing == null)
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "No existing sharing with specified id found"
@@ -283,7 +283,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new SharingResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Success"
@@ -293,14 +293,14 @@ namespace Domain.Services
         }
 
 
-        public SharingResponseDto ChangeStatus(string sharingId, bool status)
+        public BaseResponseDto ChangeStatus(string sharingId, bool status)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
             Guid guid = new Guid(sharingId);
 
             if (sharingId.Equals(null))
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing Id."
@@ -314,7 +314,7 @@ namespace Domain.Services
                 .FirstOrDefault(s => s.SharingId == guid);
             if (existingSharing == null)
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "Sharing with specified id not found"
@@ -333,7 +333,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new SharingResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0
             };
@@ -351,14 +351,14 @@ namespace Domain.Services
         }
 
 
-        public SharingResponseDto Delete(string sharingId)
+        public BaseResponseDto Delete(string sharingId)
         {
-            SharingResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
             Guid guid = new Guid(sharingId);
 
             if (sharingId.Equals(null))
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 1,
                     Message = "Faulthy sharing Id."
@@ -372,7 +372,7 @@ namespace Domain.Services
                 .FirstOrDefault(s => s.SharingId == guid);
             if (existingSharing == null)
             {
-                responseDto = new SharingResponseDto
+                responseDto = new BaseResponseDto
                 {
                     Status = 2,
                     Message = "Sharing with specified id not found"
@@ -390,7 +390,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            responseDto = new SharingResponseDto
+            responseDto = new BaseResponseDto
             {
                 Status = 0,
                 Message = "Successfully remove sharing " + existingSharing.SharingName + " from database."

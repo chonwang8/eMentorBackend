@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll(int? size = null, int? index = null)
         {
-            ChannelResponseDto<ChannelViewModel> responseDto = null;
+            BaseResponseDto<ChannelViewModel> responseDto = null;
             ICollection<ChannelViewModel> result = null;
 
             PagingDto pagingRequest = new PagingDto
@@ -100,7 +100,7 @@ namespace WebApi.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Sharing with matching Id not found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpGet("{sharingId}")]
+        [HttpGet("{channelId}")]
         #region repCode 200 400 401 403 404 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,7 +111,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string channelId)
         {
-            ChannelResponseDto<ChannelModel> responseDto = null;
+            BaseResponseDto<ChannelModel> responseDto = null;
             ICollection<ChannelModel> result = null;
 
             if (channelId == null)
@@ -168,7 +168,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Insert(ChannelInsertModel channelInsertModel)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelInsertModel == null)
             {
@@ -211,7 +211,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Update(ChannelUpdateModel channelUpdateModel)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelUpdateModel == null)
             {
@@ -255,7 +255,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult ChangeStatus(string channelId, bool? isDisable)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelId == null)
             {
@@ -314,7 +314,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string channelId)
         {
-            ChannelResponseDto responseDto = null;
+            BaseResponseDto responseDto = null;
 
             if (channelId == null)
             {

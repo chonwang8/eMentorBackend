@@ -8,6 +8,9 @@ namespace Domain.ViewModels.MentorModels
     public class MentorViewModel
     {
         public Guid MentorId { get; set; }
-        public UserViewModel User { get; set; }
+        public string Email { get; set; }
+        public string Fullname { get; set; }
+        public string AvatarUrl { get; set; }
+        public string Description { get; set; }
     }
 }
