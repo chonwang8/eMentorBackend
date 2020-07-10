@@ -30,16 +30,10 @@ namespace WebApi.Controllers
         /// Get list of mentors.
         /// </summary>
         /// 
-        /// <param name="size">
-        /// The number of items on a page. If null will be 40 by default.
-        /// </param>
-        /// <param name="index">
-        /// The page number where paging is started. If null will be 1 by default.
-        /// </param>
-        /// 
         /// <returns>
         /// List containing mentors. Message if list is empty.
         /// </returns>
+        /// 
         /// <response code="200">Success</response>
         /// <response code="400">Bad Request</response>
         /// <response code="401">Unauthorized</response>
@@ -53,20 +47,14 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetAll(int? size = null, int? index = null)
+        public IActionResult GetAll()
         {
             BaseResponseDto<MentorViewModel> responseDto = null;
             ICollection<MentorViewModel> result = null;
 
-            PagingDto pagingRequest = new PagingDto
-            {
-                PageIndex = index,
-                PageSize = size
-            };
-
             try
             {
-                responseDto = _mentor.GetAll(pagingRequest);
+                responseDto = _mentor.GetAll();
             }
             catch (Exception e)
             {

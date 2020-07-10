@@ -6,7 +6,6 @@ using Domain.ViewModels.EnrollModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Domain.Services
 {
@@ -24,7 +23,7 @@ namespace Domain.Services
 
 
 
-        public IEnumerable<EnrollViewModel> GetAll(GetAllDTO request)
+        public IEnumerable<EnrollViewModel> GetAll()
         {
             IEnumerable<EnrollViewModel> result = null;
 
@@ -41,7 +40,6 @@ namespace Domain.Services
                         SubscriptionId = e.SubscriptionId,
                         IsDisable = e.IsDisable
                     });
-                result = result.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize);
             }
             catch (Exception e)
             {
@@ -94,7 +92,7 @@ namespace Domain.Services
             Enroll existingEnroll = _uow
                 .GetRepository<Enroll>()
                 .GetAll()
-                .SingleOrDefault(e => e.SubscriptionId == enrollModel.SubscriptionId 
+                .SingleOrDefault(e => e.SubscriptionId == enrollModel.SubscriptionId
                 && e.SharingId == enrollModel.SharingId);
 
             if (existingEnroll != null)

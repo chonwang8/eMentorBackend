@@ -26,7 +26,7 @@ namespace Domain.Services
 
 
         #region CRUD Methods
-        public BaseResponseDto<SharingViewModel> GetAll(PagingDto pagingRequest, FilterDto filterRequest)
+        public BaseResponseDto<SharingViewModel> GetAll(FilterDto filterRequest)
         {
             BaseResponseDto<SharingViewModel> responseDto = new BaseResponseDto<SharingViewModel>
             {
@@ -78,11 +78,6 @@ namespace Domain.Services
                         Message = "There are no Sharing with isApproved(" + filterRequest.IsApproved + ") status"
                     };
                 }
-            }
-
-            if (pagingRequest.PageIndex != null && pagingRequest.PageSize != null)
-            {
-                result = result.Skip((pagingRequest.PageIndex.GetValueOrDefault() - 1) * pagingRequest.PageSize.GetValueOrDefault()).Take(pagingRequest.PageSize.GetValueOrDefault());
             }
 
             //  finalize

@@ -35,7 +35,7 @@ namespace Domain.Services
 
         #region CRUD Methods
 
-        public BaseResponseDto<MentorViewModel> GetAll(PagingDto pagingRequest)
+        public BaseResponseDto<MentorViewModel> GetAll()
         {
             BaseResponseDto<MentorViewModel> responseDto = new BaseResponseDto<MentorViewModel>
             {
@@ -71,11 +71,6 @@ namespace Domain.Services
                 responseDto.Status = 1;
                 responseDto.Message = "There are no users in the system";
             };
-
-            if (pagingRequest.PageIndex != null && pagingRequest.PageSize != null)
-            {
-                result = result.Skip((pagingRequest.PageIndex.GetValueOrDefault() - 1) * pagingRequest.PageSize.GetValueOrDefault()).Take(pagingRequest.PageSize.GetValueOrDefault());
-            }
 
             //finalize
             responseDto.Content = result;
