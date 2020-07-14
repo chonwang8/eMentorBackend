@@ -22,6 +22,6 @@ namespace Domain.Services.Interfaces
 
         //  Wang - hot fix
         public int Count(Guid channelId);
-        public ChannelSubsCountViewModel GetChannelSubCount(Guid channelId);
+        public ChannelSubsCountViewModel GetChannelSubCount(string channelId);
     }
 }

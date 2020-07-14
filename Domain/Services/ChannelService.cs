@@ -1,7 +1,5 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.DTO;
-using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.ChannelModels;
@@ -112,22 +110,22 @@ namespace Domain.Services
                 .Select(c => new ChannelModel
                 {
                     ChannelId = c.ChannelId,
-                    Mentor = new MentorViewModel 
-                    { 
+                    Mentor = new MentorViewModel
+                    {
                         MentorId = c.Mentor.MentorId,
                         Email = c.Mentor.User.Email,
                         Fullname = c.Mentor.User.Fullname,
                         AvatarUrl = c.Mentor.User.AvatarUrl,
                         Description = c.Mentor.User.Description
                     },
-                    Topic = new TopicViewModel 
-                    { 
+                    Topic = new TopicViewModel
+                    {
                         TopicId = c.Topic.TopicId,
                         TopicName = c.Topic.TopicName,
                         MajorId = c.Topic.MajorId,
                         CreatedBy = c.Topic.CreatedBy
                     },
-                    Sharing = c.Sharing.Select(s => new SharingViewModel 
+                    Sharing = c.Sharing.Select(s => new SharingViewModel
                     {
                         SharingId = s.SharingId,
                         SharingName = s.SharingName,
@@ -425,33 +423,29 @@ namespace Domain.Services
             return count;
         }
 
-        public ChannelSubsCountViewModel GetChannelSubCount(Guid channelId)
+        public ChannelSubsCountViewModel GetChannelSubCount(string channelId)
         {
-            IEnumerable<ChannelDirtyModel> list = _uow
-                .GetRepository<Channel>()
-                .GetAll()
-                .Include(c => c.Topic)
-                .Include(c => c.Mentor)
-                .Include(c => c.Subscription)
-                .Select(c => new ChannelDirtyModel
-                {
-                    ChannelId = c.ChannelId,
-                    MentorName = c.Mentor.User.Email,
-                    TopicName = c.Topic.TopicName,
-                    Subscription = c.Subscription
-                });
+            BaseResponseDto<ChannelModel> query = null;
+            ChannelModel channel = null;
 
-            ChannelDirtyModel channel = list
-                .FirstOrDefault(i => i.ChannelId == channelId);
+            try
+            {
+                query = GetById(channelId);
+                channel = query.Content.First();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
 
             ChannelSubsCountViewModel channelSubCount = new ChannelSubsCountViewModel
             {
                 ChannelId = channel.ChannelId,
-                MentorName = channel.MentorName
+                MentorName = channel.Mentor.Email
             };
 
 
-            foreach (Subscription s in channel.Subscription)
+            foreach (SubscriptionViewModel s in channel.Subscription)
             {
                 int currentMonth = int.Parse(s.TimeSubscripted.Month.ToString()) - 1;
                 var count = (int)channelSubCount.MonthSubsCount[currentMonth];

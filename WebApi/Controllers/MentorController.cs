@@ -1,5 +1,4 @@
-﻿using Domain.DTO.QueryAttributesDtos;
-using Domain.DTO.ResponseDtos;
+﻿using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
 using Domain.ViewModels.MentorModels;
 using Microsoft.AspNetCore.Authorization;
@@ -138,7 +137,7 @@ namespace WebApi.Controllers
         /// <summary>
         /// Generate a JWT for mentor.
         /// </summary>
-        /// <param name="mentorId">
+        /// <param name="email">
         /// The mentor's identifier.
         /// </param>
         /// <returns>
