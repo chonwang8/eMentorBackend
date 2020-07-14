@@ -243,7 +243,6 @@ namespace WebApi.Controllers
         /// <response code="404">Mentor with matching Id not found</response>
         /// <response code="500">Internal server error</response>
         [HttpPut]
-        [Authorize]
         #region repCode 200 400 401 403 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
