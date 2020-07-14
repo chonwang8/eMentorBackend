@@ -202,14 +202,16 @@ namespace Domain.Services
             #endregion
 
             #region Generate JWT
-            string jwtToken = tokenManager.CreateUserAccessToken(result);
+            //  not in used - yet
+            //  string jwtToken = tokenManager.CreateUserAccessToken(result);
             #endregion
 
             //  finalize
             responseDto = new BaseResponseDto
             {
                 Status = 0,
-                Message = jwtToken
+                //  Message = jwtToken
+                Message = result.Id.ToString()
             };
             return responseDto;
         }
