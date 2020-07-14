@@ -342,7 +342,7 @@ namespace WebApi.Controllers
         [HttpGet("subcribe")]
         public IActionResult GetChannelSubCount(string channelId)
         {
-            var result = _channel.GetChannelSubCount(new Guid(channelId));
+            var result = _channel.GetChannelSubCount(channelId);
             return Ok(result);
         }
         #endregion

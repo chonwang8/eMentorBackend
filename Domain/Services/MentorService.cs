@@ -1,10 +1,10 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
-using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
+using Domain.ViewModels.ChannelModels;
 using Domain.ViewModels.MentorModels;
 using Domain.ViewModels.UserModels;
 using Microsoft.EntityFrameworkCore;
@@ -104,9 +104,11 @@ namespace Domain.Services
                 result = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
-                .Where(m => m.MentorId == new Guid(mentorId))
+
                 .Include(m => m.User)
-                .Include(m => m.Channel.Select(c => c.Topic))
+                .Include(m => m.Channel)
+
+                .Where(m => m.MentorId == new Guid(mentorId))
                 .Select(m => new MentorModel
                 {
                     MentorId = m.MentorId,
@@ -121,7 +123,13 @@ namespace Domain.Services
                         Balance = m.User.Balance,
                         YearOfBirth = m.User.YearOfBirth
                     },
-                    Channels = null
+                    Channels = m.Channel.Select(c => new ChannelViewModel
+                    {
+                        ChannelId = c.ChannelId,
+                        MentorName = m.User.Email,
+                        TopicName = c.Topic.TopicName
+                    }).ToList(),
+                    IsDisable = m.IsDisable
                 });
             }
             catch (Exception e)
@@ -231,7 +239,7 @@ namespace Domain.Services
                 Mentor newMentor = new Mentor
                 {
                     MentorId = mentorId,
-                    User = new User 
+                    User = new User
                     {
                         UserId = userId,
                         Email = mentorInsertModel.User.Email,
@@ -256,7 +264,7 @@ namespace Domain.Services
             #endregion
 
 
-            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel 
+            string jwtToken = tokenManager.CreateUserAccessToken(new UserAuthModel
             {
                 Id = mentorId,
                 Email = mentorInsertModel.User.Email,

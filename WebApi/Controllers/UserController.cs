@@ -28,16 +28,6 @@ namespace WebApi.Controllers
         /// Get list of users. GET "api/users"
         /// </summary>
         /// 
-        /// <param name="size">
-        /// The number of items on a page. If null will be 40 by default.
-        /// </param>
-        /// <param name="index">
-        /// The page number where paging is started. If null will be 1 by default.
-        /// </param>
-        /// <param name="asc">
-        /// Boolean value determining whether return list will be null or not. If null will be false by default.
-        /// </param>
-        /// 
         /// <returns>
         /// List containing users. Message if list is empty.
         /// </returns>
