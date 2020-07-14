@@ -265,7 +265,7 @@ namespace WebApi.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return StatusCode(500, e.Message + "  \n  \n  \n  " + e.StackTrace);
             }
 
             return Ok(responseDto.Message);
