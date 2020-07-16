@@ -1,7 +1,7 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.SharingModels;
+using Domain.Models.SharingModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

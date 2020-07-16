@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
-using Domain.ViewModels.MentorModels;
+using Domain.Models.MentorModels;
 
 namespace Domain.Services.Interfaces
 {

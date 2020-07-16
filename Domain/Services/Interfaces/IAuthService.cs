@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.AuthDTOs;
-using Domain.ViewModels.AdminModels;
-using Domain.ViewModels.UserModels;
+using Domain.Models.AdminModels;
+using Domain.Models.UserModels;
 
 namespace Domain.Services.Interfaces
 {

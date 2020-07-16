@@ -4,7 +4,7 @@
         <name>WebApi</name>
     </assembly>
     <members>
-        <member name="M:WebApi.Controllers.AuthorizeController.Register(Domain.ViewModels.UserModels.UserRegisterViewModel)">
+        <member name="M:WebApi.Controllers.AuthorizeController.Register(Domain.Models.UserModels.UserRegisterViewModel)">
             <summary>
             Register a user to database
             </summary>
@@ -12,14 +12,14 @@
             <response code="200">Success</response>
             <response code="400">Error</response>
         </member>
-        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.UserModels.UserLoginViewModel)">
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.Models.UserModels.UserLoginViewModel)">
             <summary>
             Login
             </summary>
             <returns>User with matching Id</returns>
             <response code="200">Success</response>
         </member>
-        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.ViewModels.AdminModels.AdminLoginModel)">
+        <member name="M:WebApi.Controllers.AuthorizeController.Login(Domain.Models.AdminModels.AdminLoginModel)">
             <summary>
             Login
             </summary>
@@ -58,7 +58,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.ChannelsController.Insert(Domain.ViewModels.ChannelModels.ChannelInsertModel)">
+        <member name="M:WebApi.Controllers.ChannelsController.Insert(Domain.Models.ChannelModels.ChannelInsertModel)">
             <summary>
             Insert a channel into database.
             </summary>
@@ -71,7 +71,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.ChannelsController.Update(Domain.ViewModels.ChannelModels.ChannelUpdateModel)">
+        <member name="M:WebApi.Controllers.ChannelsController.Update(Domain.Models.ChannelModels.ChannelUpdateModel)">
             <summary>
             Update an existing channel.
             </summary>
@@ -148,7 +148,7 @@
             <response code="404">Enroll with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.EnrollController.Insert(Domain.ViewModels.EnrollModels.EnrollInsertModel)">
+        <member name="M:WebApi.Controllers.EnrollController.Insert(Domain.Models.EnrollModels.EnrollInsertModel)">
             <summary>
             Insert an enroll into database. POST "api/enrolls".
             </summary>
@@ -161,7 +161,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.EnrollController.Update(Domain.ViewModels.EnrollModels.EnrollModel)">
+        <member name="M:WebApi.Controllers.EnrollController.Update(Domain.Models.EnrollModels.EnrollModel)">
             <summary>
             Update an existing enroll. PUT "api/enrolls".
             </summary>
@@ -238,7 +238,7 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.ViewModels.MenteeModels.MenteeModel)">
+        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.Models.MenteeModels.MenteeModel)">
             <summary>
             Insert a mentee into database. POST "api/mentees".
             </summary>
@@ -251,7 +251,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.ViewModels.MenteeModels.MenteeModel)">
+        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.Models.MenteeModels.MenteeModel)">
             <summary>
             Update an existing mentee. PUT "api/mentees".
             </summary>
@@ -345,7 +345,7 @@
             <response code="404">Mentor with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.Insert(Domain.ViewModels.MentorModels.MentorInsertModel)">
+        <member name="M:WebApi.Controllers.MentorController.Insert(Domain.Models.MentorModels.MentorInsertModel)">
             <summary>
             Insert a mentor into database. Returns a JWT
             </summary>
@@ -358,7 +358,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MentorController.Update(Domain.ViewModels.MentorModels.MentorUpdateModel)">
+        <member name="M:WebApi.Controllers.MentorController.Update(Domain.Models.MentorModels.MentorUpdateModel)">
             <summary>
             Update an existing mentor.
             </summary>
@@ -441,7 +441,7 @@
             <response code="404">Sharing with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.ViewModels.SharingModels.SharingInsertModel)">
+        <member name="M:WebApi.Controllers.SharingController.Insert(Domain.Models.SharingModels.SharingInsertModel)">
             <summary>
             Insert a sharing into database.
             </summary>
@@ -454,7 +454,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.Update(Domain.ViewModels.SharingModels.SharingModel)">
+        <member name="M:WebApi.Controllers.SharingController.Update(Domain.Models.SharingModels.SharingModel)">
             <summary>
             Update an existing sharing.
             </summary>
@@ -529,7 +529,7 @@
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.ViewModels.SubscriptionModels.SubscriptionModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.Models.SubscriptionModels.SubscriptionModel)">
             <summary>
             Insert a subscription into database. POST "api/subscriptions"
             </summary>
@@ -542,7 +542,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.ViewModels.SubscriptionModels.SubscriptionModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.Models.SubscriptionModels.SubscriptionModel)">
             <summary>
             Update an existing subscription. PUT "api/subscriptions".
             </summary>
@@ -618,7 +618,7 @@
             <response code="404">Topic with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.TopicController.Insert(Domain.ViewModels.TopicModels.TopicViewModel)">
+        <member name="M:WebApi.Controllers.TopicController.Insert(Domain.Models.TopicModels.TopicViewModel)">
             <summary>
             Insert a topic into database. POST "api/topics".
             </summary>
@@ -631,7 +631,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.TopicController.Update(Domain.ViewModels.TopicModels.TopicViewModel)">
+        <member name="M:WebApi.Controllers.TopicController.Update(Domain.Models.TopicModels.TopicViewModel)">
             <summary>
             Update an existing topic. PUT "api/topics".
             </summary>
@@ -707,7 +707,7 @@
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.UserController.Insert(Domain.ViewModels.UserModels.UserInsertViewModel)">
+        <member name="M:WebApi.Controllers.UserController.Insert(Domain.Models.UserModels.UserInsertModel)">
             <summary>
             Insert a user into database. POST "api/users".
             </summary>
@@ -720,7 +720,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.UserController.Update(Domain.ViewModels.UserModels.UserViewModel)">
+        <member name="M:WebApi.Controllers.UserController.Update(Domain.Models.UserModels.UserViewModel)">
             <summary>
             Update an existing user. PUT "api/users".
             </summary>

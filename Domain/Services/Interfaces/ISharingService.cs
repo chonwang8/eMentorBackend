@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
-using Domain.ViewModels.SharingModels;
+using Domain.Models.SharingModels;
 
 namespace Domain.Services.Interfaces
 {

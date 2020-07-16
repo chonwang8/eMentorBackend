@@ -1,7 +1,7 @@
 ﻿using Domain.DTO;
 using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
-using Domain.ViewModels.ChannelModels;
+using Domain.Models.ChannelModels;
 using System;
 using System.Collections.Generic;
 
