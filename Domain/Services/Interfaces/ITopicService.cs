@@ -1,5 +1,5 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels.TopicModels;
+using Domain.Models.TopicModels;
 using System.Collections.Generic;
 
 namespace Domain.Services.Interfaces

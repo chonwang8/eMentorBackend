@@ -2,7 +2,7 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.SubscriptionModels;
+using Domain.Models.SubscriptionModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

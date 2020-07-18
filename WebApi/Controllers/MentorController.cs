@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.MentorModels;
+using Domain.Models.MentorModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;

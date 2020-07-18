@@ -1,6 +1,5 @@
 ﻿using Domain.Helper.DataObjects;
-using Domain.ViewModels.AdminModels;
-using Domain.ViewModels.UserModels;
+using Domain.Models.AdminModels;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;

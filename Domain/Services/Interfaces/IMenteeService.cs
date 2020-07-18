@@ -1,5 +1,5 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels.MenteeModels;
+using Domain.Models.MenteeModels;
 using System.Collections.Generic;
 
 namespace Domain.Services.Interfaces

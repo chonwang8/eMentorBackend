@@ -1,12 +1,12 @@
 ﻿using Data.Entities;
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO.ResponseDtos;
+using Domain.Models.ChannelModels;
+using Domain.Models.MentorModels;
+using Domain.Models.SharingModels;
+using Domain.Models.SubscriptionModels;
+using Domain.Models.TopicModels;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.ChannelModels;
-using Domain.ViewModels.MentorModels;
-using Domain.ViewModels.SharingModels;
-using Domain.ViewModels.SubscriptionModels;
-using Domain.ViewModels.TopicModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

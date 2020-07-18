@@ -2,7 +2,7 @@
 using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.ChannelModels;
+using Domain.Models.ChannelModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
