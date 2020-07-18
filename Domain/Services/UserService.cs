@@ -2,7 +2,7 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.UserModels;
+using Domain.Models.UserModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +69,7 @@ namespace Domain.Services
             return result;
         }
 
-        public int Insert(UserInsertViewModel userInsert)
+        public int Insert(UserInsertModel userInsert)
         {
             int result = 0;
 

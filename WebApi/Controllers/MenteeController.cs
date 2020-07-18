@@ -1,6 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.MenteeModels;
+using Domain.Models.MenteeModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

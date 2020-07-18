@@ -2,7 +2,7 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.EnrollModels;
+using Domain.Models.EnrollModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.SubscriptionModels;
+using Domain.Models.SubscriptionModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

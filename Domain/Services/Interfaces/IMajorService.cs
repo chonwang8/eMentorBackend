@@ -1,5 +1,5 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels.MajorModels;
+using Domain.Models.MajorModels;
 using System;
 using System.Collections.Generic;
 
