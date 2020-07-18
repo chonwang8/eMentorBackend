@@ -7,6 +7,7 @@ namespace Domain.Services.Interfaces
     public interface ISharingService
     {
         public BaseResponseDto<SharingViewModel> GetAll(FilterDto filterRequest);
+        public BaseResponseDto<SharingViewModel> GetByName(string sharingName);
         public BaseResponseDto<SharingModel> GetById(string sharingId);
         public BaseResponseDto Insert(SharingInsertModel sharingInsertModel);
         public BaseResponseDto Update(SharingModel sharingModel);

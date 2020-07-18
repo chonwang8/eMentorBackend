@@ -77,12 +77,76 @@ namespace Domain.Services
                         Status = 2,
                         Message = "There are no Sharing with isApproved(" + filterRequest.IsApproved + ") status"
                     };
+                    return responseDto;
                 }
             }
 
             //  finalize
             responseDto.Content = result;
 
+            return responseDto;
+        }
+
+
+        public BaseResponseDto<SharingViewModel> GetByName(string sharingName)
+        {
+            IEnumerable<SharingViewModel> result = null;
+            BaseResponseDto<SharingViewModel> responseDto = new BaseResponseDto<SharingViewModel>
+            {
+                Status = 0,
+                Message = "Success",
+                Content = null
+            };
+
+            if (sharingName == null)
+            {
+                responseDto = new BaseResponseDto<SharingViewModel>
+                {
+                    Status = 1,
+                    Message = "Sharing name not specified",
+                    Content = null
+                };
+                return responseDto;
+            };
+
+            try
+            {
+                result = _uow
+                .GetRepository<Sharing>()
+                .GetAll()
+                .Include(s => s.Channel)
+                .ThenInclude(s => s.Topic)
+                .Where(s => s.IsApproved == true && s.IsDisable == false)
+                .Select(s => new SharingViewModel
+                {
+                    SharingId = s.SharingId,
+                    SharingName = s.SharingName,
+                    Price = s.Price,
+                    MentorName = s.Channel.Mentor.User.Fullname,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
+                    ImageUrl = s.ImageUrl,
+                    IsApproved = s.IsApproved
+                });
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto = new BaseResponseDto<SharingViewModel>
+                {
+                    Status = 2,
+                    Message = "Result not found for " + sharingName + " sharing name",
+                    Content = null
+                };
+                return responseDto;
+            }
+
+            //  finalize
+            responseDto.Content = result;
             return responseDto;
         }
 
@@ -399,6 +463,7 @@ namespace Domain.Services
 
 
         #region Specialized Methods
+
         #endregion
     }
 }

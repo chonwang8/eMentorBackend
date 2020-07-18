@@ -58,7 +58,7 @@ namespace eMentor
             #endregion
 
             #region DbConnection
-            string ConnectionString = Configuration.GetConnectionString("remote-eMentor-DB");
+            string ConnectionString = Configuration.GetConnectionString("local-eMentor-DB");
             #endregion
 
             #region JWT Auth
