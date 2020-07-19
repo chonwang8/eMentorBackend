@@ -140,7 +140,6 @@ namespace Domain.Services
                     {
                         SubscriptionId = s.SubscriptionId,
                         ChannelId = s.ChannelId,
-                        MenteeId = s.MenteeId,
                         TimeSubscripted = s.TimeSubscripted,
                         IsDisable = s.IsDisable
                     }).ToList()

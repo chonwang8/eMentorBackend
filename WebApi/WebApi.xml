@@ -223,7 +223,7 @@
         </member>
         <member name="M:WebApi.Controllers.MenteeController.GetById(System.String)">
             <summary>
-            Get mentee by Id. GET "api/mentees/{menteeId}"
+            Get mentee by Id.
             </summary>
             <param name="menteeId">
             The user's identifier.
@@ -238,9 +238,26 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.Models.MenteeModels.MenteeModel)">
+        <member name="M:WebApi.Controllers.MenteeController.GoogleLogin(System.String)">
             <summary>
-            Insert a mentee into database. POST "api/mentees".
+            Generate a JWT for mentee.
+            </summary>
+            <param name="email">
+            The mentor's identifier.
+            </param>
+            <returns>
+            Mentor with matching Id along with UserInfo
+            </returns>
+            <response code="200">Success</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="403">Forbidden</response>
+            <response code="404">Mentor with matching Id not found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.MenteeController.Insert(Domain.Models.MenteeModels.MenteeInsertModel)">
+            <summary>
+            Insert a mentee into database.
             </summary>
             <returns>
             Message
@@ -251,9 +268,9 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.Models.MenteeModels.MenteeModel)">
+        <member name="M:WebApi.Controllers.MenteeController.Update(Domain.Models.MenteeModels.MenteeUpdateModel)">
             <summary>
-            Update an existing mentee. PUT "api/mentees".
+            Update an existing mentee.
             </summary>
             <returns>
             Message
@@ -265,9 +282,9 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.MenteeController.ChangeStatus(System.String,System.Boolean)">
+        <member name="M:WebApi.Controllers.MenteeController.ChangeStatus(System.String,System.Nullable{System.Boolean})">
             <summary>
-            Change status of a mentee (Disabled/Enabled). PUT "api/mentees/status".
+            Change status of a mentee (Disabled/Enabled).
             </summary>
             <returns>
             Message
@@ -281,7 +298,7 @@
         </member>
         <member name="M:WebApi.Controllers.MenteeController.Delete(System.String)">
             <summary>
-            Delete a mentee from database. DELETE "api/mentees/{menteeId}".
+            Delete a mentee from database.
             </summary>
             <param name="menteeId">
             The mentee's identifier.

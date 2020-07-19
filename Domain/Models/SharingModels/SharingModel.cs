@@ -1,5 +1,8 @@
 ﻿using Domain.Models.ChannelModels;
+using Domain.Models.CommentModels;
+using Domain.Models.EnrollModels;
 using System;
+using System.Collections.Generic;
 
 namespace Domain.Models.SharingModels
 {
@@ -19,5 +22,7 @@ namespace Domain.Models.SharingModels
         public DateTime? ApprovedTime { get; set; }
 
         public ChannelViewModel Channel { get; set; }
+        public virtual ICollection<CommentViewModel> Comment { get; set; }
+        public virtual ICollection<EnrollViewModel> Enroll { get; set; }
     }
 }

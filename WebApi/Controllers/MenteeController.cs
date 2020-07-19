@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System;
+using Domain.DTO.ResponseDtos;
 
 namespace WebApi.Controllers
 {
@@ -47,18 +49,32 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll()
         {
-            ICollection<MenteeModel> result = _mentee.GetAll().ToList();
-            if (result == null || result.Count == 0)
+            BaseResponseDto<MenteeViewModel> responseDto = null;
+            ICollection<MenteeViewModel> result = null;
+
+            try
             {
-                return Ok("There are no mentees in the system");
+                responseDto = _mentee.GetAll();
             }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            result = responseDto.Content.ToList();
+
             return Ok(result);
         }
 
 
 
         /// <summary>
-        /// Get mentee by Id. GET "api/mentees/{menteeId}"
+        /// Get mentee by Id.
         /// </summary>
         /// <param name="menteeId">
         /// The user's identifier.
@@ -83,25 +99,96 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string menteeId)
         {
+            BaseResponseDto<MenteeModel> responseDto = null;
+            ICollection<MenteeModel> result = null;
+
             if (menteeId == null)
             {
-                return BadRequest("Mentee info must not be null");
+                return BadRequest("Mentee Id must not be null");
             }
 
-            List<MenteeModel> result = _mentee.GetById(menteeId).ToList();
-
-            if (result == null || result.Count == 0)
+            try
             {
-                return NotFound("No mentee with Id " + menteeId + " found.");
+                responseDto = _mentee.GetById(menteeId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
             }
 
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
             return Ok(result);
         }
 
 
 
         /// <summary>
-        /// Insert a mentee into database. POST "api/mentees".
+        /// Generate a JWT for mentee.
+        /// </summary>
+        /// <param name="email">
+        /// The mentor's identifier.
+        /// </param>
+        /// <returns>
+        /// Mentor with matching Id along with UserInfo
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Mentor with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpGet("auth/{email}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GoogleLogin(string email)
+        {
+            BaseResponseDto responseDto = null;
+
+            if (email == null)
+            {
+                return BadRequest("Email must not be null");
+            }
+
+            try
+            {
+                responseDto = _mentee.GoogleLogin(email);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+
+            return Ok(responseDto.Message);
+        }
+
+
+        /// <summary>
+        /// Insert a mentee into database.
         /// </summary>
         /// <returns>
         /// Message
@@ -119,31 +206,31 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(MenteeModel mentee)
+        public IActionResult Insert(MenteeInsertModel menteeInsertModel)
         {
-            if (mentee == null)
+            BaseResponseDto responseDto = null;
+
+            if (menteeInsertModel == null)
             {
                 return BadRequest("Mentee info must not be null");
             }
 
-            int result = _mentee.Insert(mentee);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentee info.");
+                responseDto = _mentee.Insert(menteeInsertModel);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return BadRequest("This user is already a mentee");
+                return StatusCode(500, e);
             }
 
-            return Ok("Mentee Inserted");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Update an existing mentee. PUT "api/mentees".
+        /// Update an existing mentee.
         /// </summary>
         /// <returns>
         /// Message
@@ -162,31 +249,31 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(MenteeModel mentee)
+        public IActionResult Update(MenteeUpdateModel menteeUpdateModel)
         {
-            if (mentee == null)
+            BaseResponseDto responseDto = null;
+
+            if (menteeUpdateModel == null)
             {
                 return BadRequest("Mentee info must not be null");
             }
 
-            int result = _mentee.Update(mentee);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentee info.");
+                responseDto = _mentee.Update(menteeUpdateModel);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return NotFound("Mentee not found");
+                return StatusCode(500, e.Message + "  \n  \n  \n  " + e.StackTrace);
             }
 
-            return Ok("Mentee updated");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Change status of a mentee (Disabled/Enabled). PUT "api/mentees/status".
+        /// Change status of a mentee (Disabled/Enabled).
         /// </summary>
         /// <returns>
         /// Message
@@ -206,32 +293,43 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult ChangeStatus(string menteeId, bool isDisable)
+        public IActionResult ChangeStatus(string menteeId, bool? isDisable)
         {
+            BaseResponseDto responseDto = null;
+
             if (menteeId == null)
             {
-                return BadRequest("MenteeId must not be null.");
+                return BadRequest("Mentee Id must not be null.");
             }
-
-            int result = _mentee.ChangeStatus(menteeId, isDisable);
-
-            if (result == 0)
+            if (isDisable.Equals(null))
             {
-                return BadRequest("Faulthy mentee info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Mentee not found");
+                return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
             }
 
-            return isDisable ? Ok("Mentee is disabled.")
+            bool disable = isDisable.HasValue;
+
+            try
+            {
+                responseDto = _mentee.ChangeStatus(menteeId, disable);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return disable ? Ok("Mentee is disabled.")
                 : Ok("Mentee is enabled.");
         }
 
 
 
         /// <summary>
-        /// Delete a mentee from database. DELETE "api/mentees/{menteeId}".
+        /// Delete a mentee from database.
         /// </summary>
         /// <param name="menteeId">
         /// The mentee's identifier.
@@ -256,23 +354,28 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string menteeId)
         {
+            BaseResponseDto responseDto = null;
+
             if (menteeId == null)
             {
-                return BadRequest("Mentee info must not be null");
+                return BadRequest("Mentee id must not be null");
             }
 
-            int result = _mentee.Delete(menteeId);
-
-            if (result == 0)
+            try
             {
-                return BadRequest("Faulthy mentee info.");
+                responseDto = _mentee.Delete(menteeId);
             }
-            if (result == 1)
+            catch (Exception e)
             {
-                return NotFound("Mentee not found");
+                return StatusCode(500, e);
             }
 
-            return Ok("Mentee is deleted.");
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return Ok(responseDto.Message);
         }
 
     }
