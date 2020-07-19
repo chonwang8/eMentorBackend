@@ -6,7 +6,6 @@ namespace Domain.Models.SubscriptionModels
     {
 
         public Guid SubscriptionId { get; set; }
-        public Guid MenteeId { get; set; }
         public Guid ChannelId { get; set; }
         public bool IsDisable { get; set; }
         public DateTime TimeSubscripted { get; set; }

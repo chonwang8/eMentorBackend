@@ -8,7 +8,9 @@ namespace Domain.Models.MenteeModels
     public class MenteeViewModel
     {
         public Guid MenteeId { get; set; }
-        public virtual UserViewModel User { get; set; }
-        public virtual ICollection<SubscriptionViewModel> Subscription { get; set; }
+        public string Email { get; set; }
+        public string Fullname { get; set; }
+        public string AvatarUrl { get; set; }
+        public string Description { get; set; }
     }
 }

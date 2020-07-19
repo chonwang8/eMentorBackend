@@ -427,7 +427,7 @@ namespace Domain.Services
             Mentor existingMentor = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
-                .FirstOrDefault(s => s.MentorId == guid);
+                .FirstOrDefault(m => m.MentorId == guid);
             if (existingMentor == null)
             {
                 responseDto = new BaseResponseDto

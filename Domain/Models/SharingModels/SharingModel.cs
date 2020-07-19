@@ -1,10 +1,10 @@
-﻿using Domain.ViewModels.ChannelModels;
-using Domain.ViewModels.CommentModels;
-using Domain.ViewModels.EnrollModels;
+﻿using Domain.Models.ChannelModels;
+using Domain.Models.CommentModels;
+using Domain.Models.EnrollModels;
 using System;
 using System.Collections.Generic;
 
-namespace Domain.ViewModels.SharingModels
+namespace Domain.Models.SharingModels
 {
     public class SharingModel
     {

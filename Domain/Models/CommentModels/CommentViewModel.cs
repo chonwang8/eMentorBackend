@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Domain.ViewModels.CommentModels
+namespace Domain.Models.CommentModels
 {
     public class CommentViewModel
     {

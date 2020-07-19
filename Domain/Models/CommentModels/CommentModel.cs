@@ -1,8 +1,6 @@
-﻿using Domain.ViewModels.SharingModels;
-using Domain.ViewModels.UserModels;
+﻿using Domain.Models.SharingModels;
+using Domain.Models.UserModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Domain.ViewModels.CommentModels
 {
