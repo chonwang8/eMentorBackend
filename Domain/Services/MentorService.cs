@@ -4,9 +4,9 @@ using Domain.DTO.ResponseDtos;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.ChannelModels;
-using Domain.ViewModels.MentorModels;
-using Domain.ViewModels.UserModels;
+using Domain.Models.ChannelModels;
+using Domain.Models.MentorModels;
+using Domain.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -427,7 +427,7 @@ namespace Domain.Services
             Mentor existingMentor = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
-                .FirstOrDefault(s => s.MentorId == guid);
+                .FirstOrDefault(m => m.MentorId == guid);
             if (existingMentor == null)
             {
                 responseDto = new BaseResponseDto

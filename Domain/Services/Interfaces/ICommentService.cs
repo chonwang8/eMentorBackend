@@ -1,5 +1,5 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels.CommentModels;
+using Domain.Models.CommentModels;
 using System;
 using System.Collections.Generic;
 

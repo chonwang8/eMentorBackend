@@ -1,12 +1,13 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
-using Domain.ViewModels.SharingModels;
+using Domain.Models.SharingModels;
 
 namespace Domain.Services.Interfaces
 {
     public interface ISharingService
     {
         public BaseResponseDto<SharingViewModel> GetAll(FilterDto filterRequest);
+        public BaseResponseDto<SharingViewModel> GetByName(string sharingName);
         public BaseResponseDto<SharingModel> GetById(string sharingId);
         public BaseResponseDto Insert(SharingInsertModel sharingInsertModel);
         public BaseResponseDto Update(SharingModel sharingModel);

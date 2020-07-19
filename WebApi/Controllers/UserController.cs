@@ -1,6 +1,6 @@
 ﻿using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.UserModels;
+using Domain.Models.UserModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -119,7 +119,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(UserInsertViewModel userInsert)
+        public IActionResult Insert(UserInsertModel userInsert)
         {
             if (userInsert == null)
             {

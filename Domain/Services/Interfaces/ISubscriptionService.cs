@@ -1,5 +1,5 @@
 ﻿using Domain.DTO;
-using Domain.ViewModels.SubscriptionModels;
+using Domain.Models.SubscriptionModels;
 using System.Collections.Generic;
 
 namespace Domain.Services.Interfaces

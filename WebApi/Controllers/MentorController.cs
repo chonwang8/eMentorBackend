@@ -1,6 +1,6 @@
 ﻿using Domain.DTO.ResponseDtos;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.MentorModels;
+using Domain.Models.MentorModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -207,18 +207,18 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(MentorInsertModel mentorModel)
+        public IActionResult Insert(MentorInsertModel mentorInsertModel)
         {
             BaseResponseDto responseDto = null;
 
-            if (mentorModel == null)
+            if (mentorInsertModel == null)
             {
                 return BadRequest("Mentor info must not be null");
             }
 
             try
             {
-                responseDto = _mentor.Insert(mentorModel);
+                responseDto = _mentor.Insert(mentorInsertModel);
             }
             catch (Exception e)
             {

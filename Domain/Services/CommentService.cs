@@ -2,7 +2,7 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.CommentModels;
+using Domain.Models.CommentModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

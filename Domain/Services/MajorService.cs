@@ -2,8 +2,8 @@
 using Data.UnitOfWork.Interfaces;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.MajorModels;
-using Domain.ViewModels.TopicModels;
+using Domain.Models.MajorModels;
+using Domain.Models.TopicModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

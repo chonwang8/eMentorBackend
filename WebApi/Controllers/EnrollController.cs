@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain.DTO;
 using Domain.Services.Interfaces;
-using Domain.ViewModels.EnrollModels;
+using Domain.Models.EnrollModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
