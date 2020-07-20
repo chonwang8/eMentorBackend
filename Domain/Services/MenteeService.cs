@@ -126,7 +126,6 @@ namespace Domain.Services
                     Subscription = m.Subscription.Select(s => new SubscriptionViewModel
                     {
                         SubscriptionId = s.SubscriptionId,
-                        ChannelId = s.ChannelId,
                         TimeSubscripted = s.TimeSubscripted,
                         IsDisable = s.IsDisable
                     }).ToList(),

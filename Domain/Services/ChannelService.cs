@@ -103,6 +103,9 @@ namespace Domain.Services
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
                 .ThenInclude(c => c.User)
+                .Include(c => c.Subscription)
+                .ThenInclude(c => c.Mentee)
+                .ThenInclude(c => c.User)
                 .Include(c => c.Sharing)
                 .Include(c => c.Subscription)
 
@@ -139,7 +142,9 @@ namespace Domain.Services
                     Subscription = c.Subscription.Select(s => new SubscriptionViewModel
                     {
                         SubscriptionId = s.SubscriptionId,
-                        ChannelId = s.ChannelId,
+                        MenteeName = s.Mentee.User.Email,
+                        ChannelMentor = s.Channel.Mentor.User.Email,
+                        ChannelTopic = s.Channel.Topic.TopicName,
                         TimeSubscripted = s.TimeSubscripted,
                         IsDisable = s.IsDisable
                     }).ToList()

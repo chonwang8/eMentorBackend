@@ -537,7 +537,7 @@
         </member>
         <member name="M:WebApi.Controllers.SubscriptionController.GetAll">
             <summary>
-            Get list of subscriptions. GET "api/subscriptions"
+            Get list of subscriptions.
             </summary>
             <returns>
             List containing subscriptions.
@@ -550,7 +550,7 @@
         </member>
         <member name="M:WebApi.Controllers.SubscriptionController.GetById(System.String)">
             <summary>
-            Get user by Id. GET "api/subscriptions/{subscriptionId}"
+            Get user by Id.
             </summary>
             <param name="subscriptionId">
             The subscription identifier.
@@ -565,9 +565,9 @@
             <response code="404">User with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.Models.SubscriptionModels.SubscriptionModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Insert(Domain.Models.SubscriptionModels.SubscriptionInsertModel)">
             <summary>
-            Insert a subscription into database. POST "api/subscriptions"
+            Insert a subscription into database.
             </summary>
             <returns>
             Message
@@ -578,9 +578,9 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.Models.SubscriptionModels.SubscriptionModel)">
+        <member name="M:WebApi.Controllers.SubscriptionController.Update(Domain.Models.SubscriptionModels.SubscriptionUpdateModel)">
             <summary>
-            Update an existing subscription. PUT "api/subscriptions".
+            Update an existing subscription.
             </summary>
             <returns>
             Message
@@ -594,7 +594,7 @@
         </member>
         <member name="M:WebApi.Controllers.SubscriptionController.ChangeStatus(System.String,System.Boolean)">
             <summary>
-            Change status of a subscription (Disabled/Enabled). PUT "api/subscriptions/status".
+            Change status of a subscription (Disabled/Enabled).
             </summary>
             <returns>
             Message
@@ -608,7 +608,7 @@
         </member>
         <member name="M:WebApi.Controllers.SubscriptionController.Delete(System.String)">
             <summary>
-            Delete a subscription from database. DELETE "api/users/{userId}".
+            Delete a subscription from database.
             </summary>
             <param name="subscriptionId">
             The subscription's identifier.
