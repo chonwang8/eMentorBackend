@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Models.MenteeModels;
 using Domain.Models.ChannelModels;
 using Domain.Models.EnrollModels;
+using Domain.DTO.ResponseDtos;
 
 namespace Domain.Services
 {
@@ -177,42 +178,6 @@ namespace Domain.Services
 
             return result;
         }
-        public int Delete(string subscriptionId)
-        {
-            int result = 0;
-
-            if (subscriptionId.Equals(null))
-            {
-                result = 0;
-                return result;
-            }
-
-            Guid guid = new Guid(subscriptionId);
-
-            Subscription existingSubscription = _uow
-                .GetRepository<Subscription>()
-                .GetAll()
-                .FirstOrDefault(t => t.SubscriptionId == guid);
-            if (existingSubscription == null)
-            {
-                result = 1;
-                return result;
-            }
-
-            try
-            {
-                _uow.GetRepository<Subscription>().Delete(existingSubscription);
-                _uow.Commit();
-                result = 2;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-
-            return result;
-        }
 
         public int ChangeStatus(string subscriptionId, bool status)
         {
@@ -251,6 +216,103 @@ namespace Domain.Services
             return result;
         }
 
+        public int Delete(string subscriptionId)
+        {
+            int result = 0;
+
+            if (subscriptionId.Equals(null))
+            {
+                result = 0;
+                return result;
+            }
+
+            Guid guid = new Guid(subscriptionId);
+
+            Subscription existingSubscription = _uow
+                .GetRepository<Subscription>()
+                .GetAll()
+                .FirstOrDefault(t => t.SubscriptionId == guid);
+            if (existingSubscription == null)
+            {
+                result = 1;
+                return result;
+            }
+
+            try
+            {
+                _uow.GetRepository<Subscription>().Delete(existingSubscription);
+                _uow.Commit();
+                result = 2;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
+            return result;
+        }
+
+        public BaseResponseDto Delete(string menteeId, string channelId)
+        {
+            BaseResponseDto responseDto = null;
+            Guid menteeGuid = new Guid(menteeId);
+            Guid channelGuid = new Guid(menteeId);
+
+            #region Check input
+            if (menteeId.Equals(null))
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy mentee Id."
+                };
+                return responseDto;
+            }
+            if (channelId.Equals(null))
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 1,
+                    Message = "Faulthy channel Id."
+                };
+                return responseDto;
+            }
+            #endregion
+
+            Subscription existingSubscription = _uow
+                .GetRepository<Subscription>()
+                .GetAll()
+                .FirstOrDefault(s => s.ChannelId == channelGuid && s.MenteeId == menteeGuid);
+
+            if (existingSubscription == null)
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 2,
+                    Message = "Channel with specified id not found"
+                };
+                return responseDto;
+            }
+
+            try
+            {
+                _uow.GetRepository<Subscription>().Delete(existingSubscription);
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            responseDto = new BaseResponseDto
+            {
+                Status = 0,
+                Message = "Unsubscribed."
+            };
+
+            return responseDto;
+        }
         #endregion
     }
 }
