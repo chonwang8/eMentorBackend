@@ -87,6 +87,10 @@ namespace WebApi.Controllers
         /// <param name="sharingName">
         /// Name of the desired sharing(s)
         /// </param>
+        /// <param name="future">
+        /// Boolean value determining whether the sharings querying have happened or in future. If null get all
+        /// </param>
+        /// 
         /// 
         /// <returns>
         /// List containing sharings. Message if list is empty.
@@ -96,7 +100,7 @@ namespace WebApi.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="403">Forbidden</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpGet("{sharingName}")]
+        [HttpGet("search/{sharingName}")]
         #region repCode 200 400 401 403 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -104,14 +108,19 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 500
-        public IActionResult GetByName(string sharingName)
+        public IActionResult GetByName(string sharingName, bool? future)
         {
             BaseResponseDto<SharingViewModel> responseDto = null;
             ICollection<SharingViewModel> result = null;
 
+            FilterDto filterRequest = new FilterDto
+            {
+                IsFuture = future
+            };
+
             try
             {
-                responseDto = _sharing.GetByName(sharingName);
+                responseDto = _sharing.GetByName(sharingName, filterRequest);
             }
             catch (Exception e)
             {

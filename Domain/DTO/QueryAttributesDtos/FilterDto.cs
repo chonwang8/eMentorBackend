@@ -7,5 +7,6 @@ namespace Domain.DTO.QueryAttributesDtos
     public class FilterDto
     {
         public bool? IsApproved { get; set; }
+        public bool? IsFuture { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get list of subscriptions. GET "api/subscriptions"
+        /// Get list of subscriptions.
         /// </summary>
         /// <returns>
         /// List containing subscriptions.
@@ -43,7 +43,7 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll()
         {
-            List<SubscriptionModel> result = _subscription.GetAll().ToList();
+            ICollection<SubscriptionViewModel> result = _subscription.GetAll().ToList();
             if (result == null || result.Count == 0)
             {
                 return Ok("There are no subscription in the system");
@@ -55,7 +55,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get user by Id. GET "api/subscriptions/{subscriptionId}"
+        /// Get user by Id.
         /// </summary>
         /// <param name="subscriptionId">
         /// The subscription identifier.
@@ -85,7 +85,7 @@ namespace WebApi.Controllers
                 return BadRequest("Subscription ID info must not be null");
             }
 
-            List<SubscriptionModel> result = _subscription.GetById(subscriptionId).ToList();
+            ICollection<SubscriptionModel> result = _subscription.GetById(subscriptionId).ToList();
 
             if (result == null || result.Count == 0)
             {
@@ -98,7 +98,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Insert a subscription into database. POST "api/subscriptions"
+        /// Insert a subscription into database.
         /// </summary>
         /// <returns>
         /// Message
@@ -116,22 +116,18 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Insert(SubscriptionModel subscriptionViewModel)
+        public IActionResult Insert(SubscriptionInsertModel subscriptionInsertModel)
         {
-            if (subscriptionViewModel == null)
+            if (subscriptionInsertModel == null)
             {
                 return BadRequest("Subscription info must not be null");
             }
 
-            int result = _subscription.Insert(subscriptionViewModel);
+            int result = _subscription.Insert(subscriptionInsertModel);
 
             if (result == 0)
             {
                 return BadRequest("Faulthy Subscription info.");
-            }
-            if (result == 1)
-            {
-                return BadRequest("This Subscription already existed");
             }
 
             return Ok("Subscription Inserted");
@@ -140,7 +136,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Update an existing subscription. PUT "api/subscriptions".
+        /// Update an existing subscription.
         /// </summary>
         /// <returns>
         /// Message
@@ -159,14 +155,14 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(SubscriptionModel subscriptionViewModel)
+        public IActionResult Update(SubscriptionUpdateModel subscriptionUpdateModel)
         {
-            if (subscriptionViewModel == null)
+            if (subscriptionUpdateModel == null)
             {
                 return BadRequest("Subscription info must not be null");
             }
 
-            int result = _subscription.Update(subscriptionViewModel);
+            int result = _subscription.Update(subscriptionUpdateModel);
 
             if (result == 0)
             {
@@ -183,7 +179,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Change status of a subscription (Disabled/Enabled). PUT "api/subscriptions/status".
+        /// Change status of a subscription (Disabled/Enabled).
         /// </summary>
         /// <returns>
         /// Message
@@ -228,7 +224,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Delete a subscription from database. DELETE "api/users/{userId}".
+        /// Delete a subscription from database.
         /// </summary>
         /// <param name="subscriptionId">
         /// The subscription's identifier.

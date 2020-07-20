@@ -103,6 +103,9 @@ namespace Domain.Services
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
                 .ThenInclude(c => c.User)
+                .Include(c => c.Subscription)
+                .ThenInclude(c => c.Mentee)
+                .ThenInclude(c => c.User)
                 .Include(c => c.Sharing)
                 .Include(c => c.Subscription)
 
@@ -139,7 +142,9 @@ namespace Domain.Services
                     Subscription = c.Subscription.Select(s => new SubscriptionViewModel
                     {
                         SubscriptionId = s.SubscriptionId,
-                        ChannelId = s.ChannelId,
+                        MenteeName = s.Mentee.User.Email,
+                        ChannelMentor = s.Channel.Mentor.User.Email,
+                        ChannelTopic = s.Channel.Topic.TopicName,
                         TimeSubscripted = s.TimeSubscripted,
                         IsDisable = s.IsDisable
                     }).ToList()
@@ -176,7 +181,31 @@ namespace Domain.Services
                 responseDto = new BaseResponseDto
                 {
                     Status = 1,
-                    Message = "Faulthy sharing info"
+                    Message = "Faulthy channel info"
+                };
+                return responseDto;
+            }
+
+            Channel existingChannel = null;
+
+            try
+            {
+                existingChannel = _uow
+                    .GetRepository<Channel>()
+                    .GetAll()
+                    .FirstOrDefault(c => c.TopicId == channelInsertModel.TopicId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (!existingChannel.Equals(null))
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 2,
+                    Message = "Channel already exist"
                 };
                 return responseDto;
             }
