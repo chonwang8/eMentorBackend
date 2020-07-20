@@ -1,4 +1,5 @@
 ﻿using Domain.DTO;
+using Domain.DTO.ResponseDtos;
 using Domain.Models.SubscriptionModels;
 using System.Collections.Generic;
 
@@ -16,5 +17,6 @@ namespace Domain.Services.Interfaces
 
         public int ChangeStatus(string subscriptionId, bool status);
         public int Delete(string subscriptionId);
+        public BaseResponseDto Delete(string menteeId, string channelId);
     }
 }

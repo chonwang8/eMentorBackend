@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DTO.ResponseDtos;
+using System;
 
 namespace WebApi.Controllers
 {
@@ -238,7 +240,7 @@ namespace WebApi.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="404">Subscription with matching Id not found</response>
         /// <response code="500">Internal Server Error</response>
-        [HttpDelete("{subscriptionId}")]
+        [HttpDelete("admin/{subscriptionId}")]
         #region repCode 200 400 401 403 404 500
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -269,6 +271,65 @@ namespace WebApi.Controllers
         }
 
 
+
+        /// <summary>
+        /// Unsubscribe a mentee from a channel.
+        /// </summary>
+        /// 
+        /// <param name="menteeId">
+        /// The mentee's identifier.
+        /// </param>
+        /// <param name="channelId">
+        /// The channel's identifier.
+        /// </param>
+        /// 
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Subscription with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpDelete("{menteeId}/{channelId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult Delete(string menteeId, string channelId)
+        {
+            BaseResponseDto responseDto = null;
+
+            if (menteeId == null)
+            {
+                return BadRequest("Channel Id must not be null");
+            }
+            if (channelId == null)
+            {
+                return BadRequest("Channel Id must not be null");
+            }
+
+            try
+            {
+                responseDto = _subscription.Delete(menteeId, channelId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            return Ok(responseDto.Message);
+        }
 
     }
 }
