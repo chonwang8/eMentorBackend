@@ -176,7 +176,31 @@ namespace Domain.Services
                 responseDto = new BaseResponseDto
                 {
                     Status = 1,
-                    Message = "Faulthy sharing info"
+                    Message = "Faulthy channel info"
+                };
+                return responseDto;
+            }
+
+            Channel existingChannel = null;
+
+            try
+            {
+                existingChannel = _uow
+                    .GetRepository<Channel>()
+                    .GetAll()
+                    .FirstOrDefault(c => c.TopicId == channelInsertModel.TopicId);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (!existingChannel.Equals(null))
+            {
+                responseDto = new BaseResponseDto
+                {
+                    Status = 2,
+                    Message = "Channel already exist"
                 };
                 return responseDto;
             }
