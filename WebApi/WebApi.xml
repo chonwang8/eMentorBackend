@@ -438,7 +438,7 @@
             <response code="403">Forbidden</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:WebApi.Controllers.SharingController.GetByName(System.String)">
+        <member name="M:WebApi.Controllers.SharingController.GetByName(System.String,System.Nullable{System.Boolean})">
             <summary>
             Get list of sharings with similar name to sharingName parameter
             </summary>
@@ -446,6 +446,10 @@
             <param name="sharingName">
             Name of the desired sharing(s)
             </param>
+            <param name="future">
+            Boolean value determining whether the sharings querying have happened or in future. If null get all
+            </param>
+            
             
             <returns>
             List containing sharings. Message if list is empty.
