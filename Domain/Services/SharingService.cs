@@ -88,7 +88,7 @@ namespace Domain.Services
         }
 
 
-        public BaseResponseDto<SharingViewModel> GetByName(string sharingName)
+        public BaseResponseDto<SharingViewModel> GetByName(string sharingName, FilterDto filterRequest)
         {
             IEnumerable<SharingViewModel> result = null;
             BaseResponseDto<SharingViewModel> responseDto = new BaseResponseDto<SharingViewModel>
@@ -143,6 +143,33 @@ namespace Domain.Services
                     Content = null
                 };
                 return responseDto;
+            }
+
+            if (filterRequest.IsFuture != null)
+            {
+                if (filterRequest.IsFuture == true)
+                {
+                    result = result.Where(s => s.StartTime.CompareTo(DateTime.Now) > 0);
+                }
+                else if (filterRequest.IsFuture == false)
+                {
+                    result = result.Where(s => s.StartTime.CompareTo(DateTime.Now) < 0);
+                }
+                else
+                {
+                    throw new Exception("Internal server error at comparing time");
+                }
+
+
+                if (result == null || result.Count() <= 0)
+                {
+                    responseDto = new BaseResponseDto<SharingViewModel>
+                    {
+                        Status = 2,
+                        Message = "There are no channel with specified timestamp requirement"
+                    };
+                    return responseDto;
+                }
             }
 
             //  finalize

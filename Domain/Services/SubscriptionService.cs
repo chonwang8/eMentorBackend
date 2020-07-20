@@ -6,6 +6,10 @@ using Domain.Models.SubscriptionModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Domain.Models.MenteeModels;
+using Domain.Models.ChannelModels;
+using Domain.Models.EnrollModels;
 
 namespace Domain.Services
 {
@@ -23,16 +27,27 @@ namespace Domain.Services
 
         #region RESTful API methods
 
-        public IEnumerable<SubscriptionModel> GetAll()
+        public IEnumerable<SubscriptionViewModel> GetAll()
         {
-            IEnumerable<SubscriptionModel> result = _uow
+            IEnumerable<SubscriptionViewModel> result = _uow
                 .GetRepository<Subscription>()
                 .GetAll()
-                .Select(s => new SubscriptionModel
+
+                .Include(s => s.Mentee)
+                .ThenInclude(s => s.User)
+                .Include(s => s.Channel)
+                .ThenInclude(s => s.Mentor)
+                .ThenInclude(s => s.User)
+                .Include(s => s.Channel)
+                .ThenInclude(s => s.Topic)
+
+                .Select(s => new SubscriptionViewModel
                 {
-                    SubcriptionId = s.SubscriptionId,
-                    ChannelId = s.ChannelId,
-                    MenteeId = s.MenteeId,
+                    SubscriptionId = s.SubscriptionId,
+                    MenteeName = s.Mentee.User.Email,
+                    ChannelMentor = s.Channel.Mentor.User.Email,
+                    ChannelTopic = s.Channel.Topic.TopicName,
+                    TimeSubscripted = s.TimeSubscripted,
                     IsDisable = s.IsDisable
                 });
             
@@ -49,47 +64,64 @@ namespace Domain.Services
             IEnumerable<SubscriptionModel> result = _uow
                 .GetRepository<Subscription>()
                 .GetAll()
+
+                .Include(s => s.Mentee)
+                .ThenInclude(s => s.User)
+                .Include(s => s.Enroll)
+                .ThenInclude(s => s.Sharing)
+                .Include(s => s.Channel)
+                .ThenInclude(s => s.Topic)
+                
                 .Where(s => s.SubscriptionId.Equals(new Guid(subscriptionId)))
                 .Select(s => new SubscriptionModel
                 {
-                    SubcriptionId = s.SubscriptionId,
-                    ChannelId = s.ChannelId,
-                    MenteeId = s.MenteeId,
-                    IsDisable = s.IsDisable
+                    SubscriptionId = s.SubscriptionId,
+                    TimeSubscripted = s.TimeSubscripted,
+                    IsDisable = s.IsDisable,
+                    Mentee = new MenteeViewModel
+                    {
+                        MenteeId = s.Mentee.MenteeId,
+                        Email = s.Mentee.User.Email,
+                        Fullname = s.Mentee.User.Fullname,
+                        Description = s.Mentee.User.Description,
+                        AvatarUrl = s.Mentee.User.AvatarUrl
+                    },
+                    Channel = new ChannelViewModel
+                    {
+                        ChannelId = s.ChannelId,
+                        MentorName = s.Channel.Mentor.User.Email,
+                        TopicName = s.Channel.Topic.TopicName
+                    },
+                    Enroll = s.Enroll.Select(e => new EnrollViewModel 
+                    {
+                        EnrollId = e.EnrollId,
+                        SharingId = e.SharingId,
+                        SharingName = e.Sharing.SharingName,
+                        IsDisable = e.IsDisable
+                    }).ToList()
                 });
 
             return result;
         }
 
 
-        public int Insert(SubscriptionModel subscriptionViewModel)
+        public int Insert(SubscriptionInsertModel subscriptionInsertModel)
         {
             int result = 0;
 
-            if (subscriptionViewModel == null)
+            if (subscriptionInsertModel == null)
             {
                 result = 0;
                 return result;
             }
 
-
-            Subscription existingSubscription = _uow
-                .GetRepository<Subscription>()
-                .GetAll()
-                .SingleOrDefault(s => s.SubscriptionId == subscriptionViewModel.SubcriptionId);
-            if (existingSubscription != null)
-            {
-                result = 1;
-                return result;
-            }
-
-
             Subscription subscriptionInsert = new Subscription
             {
-                SubscriptionId = subscriptionViewModel.SubcriptionId,
-                ChannelId = subscriptionViewModel.ChannelId,
-                MenteeId = subscriptionViewModel.MenteeId,
-                IsDisable = subscriptionViewModel.IsDisable
+                SubscriptionId = Guid.NewGuid(),
+                ChannelId = subscriptionInsertModel.ChannelId,
+                MenteeId = subscriptionInsertModel.MenteeId,
+                IsDisable = subscriptionInsertModel.IsDisable,
+                TimeSubscripted = DateTime.Now
             };
 
             try
@@ -106,11 +138,11 @@ namespace Domain.Services
             return result;
         }
 
-        public int Update(SubscriptionModel subscriptionViewModel)
+        public int Update(SubscriptionUpdateModel subscriptionUpdateModel)
         {
             int result = 0;
 
-            if (subscriptionViewModel == null)
+            if (subscriptionUpdateModel == null)
             {
                 result = 0;
                 return result;
@@ -120,7 +152,7 @@ namespace Domain.Services
             Subscription existingSubscription = _uow
                 .GetRepository<Subscription>()
                 .GetAll()
-                .SingleOrDefault(s => s.SubscriptionId == subscriptionViewModel.SubcriptionId);
+                .SingleOrDefault(s => s.SubscriptionId == subscriptionUpdateModel.SubscriptionId);
 
             if (existingSubscription == null)
             {
@@ -128,10 +160,9 @@ namespace Domain.Services
                 return result;
             }
 
-            existingSubscription.MenteeId = subscriptionViewModel.MenteeId;
-            existingSubscription.IsDisable = subscriptionViewModel.IsDisable;
-            existingSubscription.ChannelId = subscriptionViewModel.ChannelId;
-
+            existingSubscription.MenteeId = subscriptionUpdateModel.MenteeId;
+            existingSubscription.ChannelId = subscriptionUpdateModel.ChannelId;
+            existingSubscription.IsDisable = subscriptionUpdateModel.IsDisable;
 
             try
             {
