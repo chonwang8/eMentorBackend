@@ -7,6 +7,7 @@ using Domain.Services.Interfaces;
 using Domain.Models.EnrollModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Domain.DTO.ResponseDtos;
 
 namespace WebApi.Controllers
 {
@@ -27,7 +28,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get list of enrolls. GET "api/enrolls"
+        /// Get list of enrolls.
         /// </summary>
         ///
         /// <returns>
@@ -49,28 +50,32 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetAll()
         {
+            BaseResponseDto<EnrollViewModel> responseDto = null;
             ICollection<EnrollViewModel> result = null;
 
             try
             {
-                result = _enroll.GetAll().ToList();
+                responseDto = _enroll.GetAll();
             }
             catch (Exception e)
             {
-                return StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == null || result.Count == 0)
+            if (responseDto.Status == 1 || responseDto.Status == 2)
             {
-                return Ok("There are no enrolls in the system");
+                return Ok(responseDto.Message);
             }
+
+            result = responseDto.Content.ToList();
+
             return Ok(result);
         }
 
 
 
         /// <summary>
-        /// Get enroll by Id.  GET "api/enrolls/{enrollId}"
+        /// Get enroll by Id.
         /// </summary>
         /// <param name="enrollId">
         /// The enroll's identifier.
@@ -95,26 +100,36 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 500
         public IActionResult GetById(string enrollId)
         {
+            BaseResponseDto<EnrollModel> responseDto = null;
+            ICollection<EnrollModel> result = null;
+
             if (enrollId == null)
             {
-                return BadRequest("User info must not be null");
+                return BadRequest("Enroll Id must not be null");
             }
-
-            ICollection<EnrollModel> result = null;
 
             try
             {
-                result = _enroll.GetById(enrollId).ToList();
+                responseDto = _enroll.GetById(enrollId);
             }
             catch (Exception e)
             {
-                return StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == null || result.Count == 0)
+
+            if (responseDto.Status == 1)
             {
-                return NotFound("No enroll with ID " + enrollId + " was found.");
+                return BadRequest(responseDto.Message);
             }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
 
             return Ok(result);
         }
@@ -122,7 +137,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Insert an enroll into database. POST "api/enrolls".
+        /// Insert an enroll into database.
         /// </summary>
         /// <returns>
         /// Message
@@ -142,38 +157,29 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Insert(EnrollInsertModel enrollInsertModel)
         {
+            BaseResponseDto responseDto = null;
+
             if (enrollInsertModel == null)
             {
                 return BadRequest("Enroll info must not be null");
             }
 
-            int result = -1;
-
             try
             {
-                result = _enroll.Insert(enrollInsertModel);
+                responseDto = _enroll.Insert(enrollInsertModel);
             }
             catch (Exception e)
             {
-                StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == 0)
-            {
-                return BadRequest("Faulthy enroll info.");
-            }
-            if (result == 1)
-            {
-                return BadRequest("Already enrolled.");
-            }
-
-            return Ok("Enrolled into sharing session.");
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Update an existing enroll. PUT "api/enrolls".
+        /// Update an existing enroll.
         /// </summary>
         /// <returns>
         /// Message
@@ -192,40 +198,31 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(EnrollModel enrollModel)
+        public IActionResult Update(EnrollUpdateModel enrollUpdateModel)
         {
-            if (enrollModel == null)
+            BaseResponseDto responseDto = null;
+
+            if (enrollUpdateModel == null)
             {
                 return BadRequest("Enroll info must not be null");
             }
 
-            int result = -1;
-
             try
             {
-                result = _enroll.Update(enrollModel);
+                responseDto = _enroll.Update(enrollUpdateModel);
             }
             catch (Exception e)
             {
-                return StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == 0)
-            {
-                return BadRequest("Faulthy enroll info.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Enroll not found");
-            }
-
-            return Ok("Updated enroll " + enrollModel.EnrollId);
+            return Ok(responseDto.Message);
         }
 
 
 
         /// <summary>
-        /// Change status of an enroll (Disabled/Enabled). PUT "api/enrolls/status".
+        /// Change status of an enroll (Disabled/Enabled).
         /// </summary>
         /// <returns>
         /// Message
@@ -245,41 +242,43 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult ChangeStatus(string enrollId, bool isDisable)
+        public IActionResult ChangeStatus(string enrollId, bool? isDisable)
         {
+            BaseResponseDto responseDto = null;
+
             if (enrollId == null)
             {
-                return BadRequest("EnrollId must not be null.");
+                return BadRequest("Enroll Id must not be null.");
+            }
+            if (isDisable.Equals(null))
+            {
+                return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
             }
 
-            int result = -1;
+            bool disable = isDisable.HasValue;
 
             try
             {
-                result = _enroll.ChangeStatus(enrollId, isDisable);
+                responseDto = _enroll.ChangeStatus(enrollId, disable);
             }
             catch (Exception e)
             {
-                return StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == 0)
+            if (responseDto.Status == 1 || responseDto.Status == 2)
             {
-                return BadRequest("Faulthy EnrollId.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Enroll not found");
+                return BadRequest(responseDto.Message);
             }
 
-            return isDisable ? Ok("Enroll is disabled.")
-                : Ok("Enroll is enabled.");
+            return disable ? Ok("Channel is disabled.")
+                : Ok("Channel is enabled.");
         }
 
 
 
         /// <summary>
-        /// Delete an enroll from database.. DELETE "api/enrolls/{enrollId}".
+        /// Delete an enroll from database.
         /// </summary>
         /// <param name="enrollId">
         /// The enroll's identifier.
@@ -304,32 +303,28 @@ namespace WebApi.Controllers
         #endregion repCode 200 400 401 403 500
         public IActionResult Delete(string enrollId)
         {
+            BaseResponseDto responseDto = null;
+
             if (enrollId == null)
             {
-                return BadRequest("Enroll info must not be null");
+                return BadRequest("Enroll Id must not be null");
             }
-
-            int result = -1;
 
             try
             {
-                result = _enroll.Delete(enrollId);
+                responseDto = _enroll.Delete(enrollId);
             }
             catch (Exception e)
             {
-                return StatusCode((int)500, e);
+                return StatusCode(500, e);
             }
 
-            if (result == 0)
+            if (responseDto.Status == 1 || responseDto.Status == 2)
             {
-                return BadRequest("Faulthy enrollId.");
-            }
-            if (result == 1)
-            {
-                return NotFound("Enroll not found");
+                return BadRequest(responseDto.Message);
             }
 
-            return Ok("Enroll is deleted.");
+            return Ok(responseDto.Message);
         }
     }
 }

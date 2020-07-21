@@ -1,4 +1,5 @@
 ﻿using Domain.DTO;
+using Domain.DTO.ResponseDtos;
 using Domain.Models.EnrollModels;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ namespace Domain.Services.Interfaces
 {
     public interface IEnrollService
     {
-        public IEnumerable<EnrollViewModel> GetAll();
-        public IEnumerable<EnrollModel> GetById(string enrollId);
-        public int Insert(EnrollInsertModel enrollModel);
-        public int Update(EnrollModel enrollModel);
-        public int ChangeStatus(string enrollId, bool status);
-        public int Delete(string enrollId);
+        public BaseResponseDto<EnrollViewModel> GetAll();
+        public BaseResponseDto<EnrollModel> GetById(string enrollId);
+        public BaseResponseDto Insert(EnrollInsertModel enrollInsertModel);
+        public BaseResponseDto Update(EnrollUpdateModel enrollUpdateModel);
+        public BaseResponseDto ChangeStatus(string enrollId, bool status);
+        public BaseResponseDto Delete(string enrollId);
     }
 }
