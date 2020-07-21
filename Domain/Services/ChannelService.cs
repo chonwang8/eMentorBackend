@@ -47,7 +47,8 @@ namespace Domain.Services
                 result = _uow
                 .GetRepository<Channel>()
                 .GetAll()
-                .Include(c => c.Mentor.User)
+                .Include(c => c.Mentor)
+                .ThenInclude(c => c.User)
                 .Include(c => c.Topic)
                 .Select(s => new ChannelViewModel
                 {
@@ -193,7 +194,9 @@ namespace Domain.Services
                 existingChannel = _uow
                     .GetRepository<Channel>()
                     .GetAll()
-                    .FirstOrDefault(c => c.TopicId == channelInsertModel.TopicId);
+                    .FirstOrDefault(c => 
+                    c.TopicId == channelInsertModel.TopicId && 
+                    c.MentorId == channelInsertModel.MentorId);
             }
             catch (Exception e)
             {
@@ -275,9 +278,9 @@ namespace Domain.Services
                 return responseDto;
             }
 
-            existingChannel.ChannelId = channelUpdateModel.ChannelId;
             existingChannel.MentorId = channelUpdateModel.MentorId;
             existingChannel.TopicId = channelUpdateModel.TopicId;
+            existingChannel.IsDisable = channelUpdateModel.IsDisable;
 
             try
             {
