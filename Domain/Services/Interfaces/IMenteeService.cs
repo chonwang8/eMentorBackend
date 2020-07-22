@@ -14,5 +14,8 @@ namespace Domain.Services.Interfaces
         public BaseResponseDto Update(MenteeUpdateModel menteeUpdateModel);
         public BaseResponseDto ChangeStatus(string menteeId, bool status);
         public BaseResponseDto Delete(string menteeId);
+
+
+        public BaseResponseDto<MenteeSubbedChannelModel> GetSubbedChannels(string menteeId);
     }
 }

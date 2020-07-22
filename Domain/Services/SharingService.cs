@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Models.EnrollModels;
 
 namespace Domain.Services
 {
@@ -204,6 +205,15 @@ namespace Domain.Services
                 result = _uow
                 .GetRepository<Sharing>()
                 .GetAll()
+
+                .Include(s => s.Channel)
+                .ThenInclude(s => s.Mentor)
+                .ThenInclude(s => s.User)
+                .Include(s => s.Enroll)
+                .ThenInclude(s => s.Subscription)
+                .ThenInclude(s => s.Mentee)
+                .ThenInclude(s => s.User)
+
                 .Where(s => s.SharingId.Equals(new Guid(sharingId)))
                 .Select(s => new SharingModel
                 {
@@ -224,8 +234,18 @@ namespace Domain.Services
                         ChannelId = s.Channel.ChannelId,
                         MentorName = s.Channel.Mentor.User.Email,
                         TopicName = s.Channel.Topic.TopicName
-                    }
-                });
+                    },
+                    Enroll = s.Enroll.Select(e => new EnrollViewModel
+                    {
+                        EnrollId = e.EnrollId,
+                        SharingId = e.Sharing.SharingId,
+                        SharingName = e.Sharing.SharingName,
+                        MenteeName = e.Subscription.Mentee.User.Email,
+                        MentorName = e.Sharing.Channel.Mentor.User.Email,
+                        IsDisable = e.IsDisable,
+                        SubscriptionId = e.SubscriptionId
+                    }).ToList()
+                }); ;
             }
             catch (Exception e)
             {
