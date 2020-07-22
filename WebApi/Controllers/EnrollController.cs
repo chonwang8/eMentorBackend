@@ -255,7 +255,7 @@ namespace WebApi.Controllers
                 return BadRequest("Must specify isDisable parameter in order to allow this function works correctly");
             }
 
-            bool disable = isDisable.HasValue;
+            bool disable = isDisable.Value;
 
             try
             {
