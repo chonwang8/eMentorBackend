@@ -55,6 +55,7 @@ namespace Domain.Services
             return result;
         }
 
+
         public IEnumerable<SubscriptionModel> GetById(string subscriptionId)
         {
             if (subscriptionId == null)
@@ -139,6 +140,7 @@ namespace Domain.Services
             return result;
         }
 
+
         public int Update(SubscriptionUpdateModel subscriptionUpdateModel)
         {
             int result = 0;
@@ -179,6 +181,7 @@ namespace Domain.Services
             return result;
         }
 
+
         public int ChangeStatus(string subscriptionId, bool status)
         {
             int result = 0;
@@ -215,6 +218,7 @@ namespace Domain.Services
 
             return result;
         }
+
 
         public int Delete(string subscriptionId)
         {
