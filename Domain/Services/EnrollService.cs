@@ -193,7 +193,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            if (!existingEnroll.Equals(null))
+            if (existingEnroll != null)
             {
                 responseDto = new BaseResponseDto
                 {
@@ -394,7 +394,6 @@ namespace Domain.Services
 
             return responseDto;
         }
-
 
 
     }

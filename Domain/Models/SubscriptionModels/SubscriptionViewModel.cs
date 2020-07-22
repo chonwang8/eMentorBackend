@@ -8,7 +8,9 @@ namespace Domain.Models.SubscriptionModels
     {
         public Guid SubscriptionId { get; set; }
         public string MenteeName { get; set; }
+        public Guid ChannelMentorId { get; set; }
         public string ChannelMentor { get; set; }
+        public Guid ChannelTopicId { get; set; }
         public string ChannelTopic { get; set; }
         public bool IsDisable { get; set; }
         public DateTime TimeSubscripted { get; set; }
