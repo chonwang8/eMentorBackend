@@ -3,6 +3,7 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO.ResponseDtos;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
+using Domain.Models.ChannelModels;
 using Domain.Models.MenteeModels;
 using Domain.Models.SubscriptionModels;
 using Domain.Models.UserModels;
@@ -32,8 +33,7 @@ namespace Domain.Services
 
 
 
-
-        #region RESTful API Functions
+        #region RESTful API Methods
 
         public BaseResponseDto<MenteeViewModel> GetAll()
         {
@@ -470,5 +470,92 @@ namespace Domain.Services
 
         #endregion
 
+
+        #region Specialized Methods
+
+
+        public BaseResponseDto<MenteeSubbedChannelModel> GetSubbedChannels(string menteeId)
+        {
+            IEnumerable<MenteeSubbedChannelModel> result = null;
+            BaseResponseDto<MenteeSubbedChannelModel> responseDto 
+                = new BaseResponseDto<MenteeSubbedChannelModel>
+            {
+                Status = 0,
+                Message = "Success",
+                Content = null
+            };
+
+            if (menteeId == null)
+            {
+                responseDto = new BaseResponseDto<MenteeSubbedChannelModel>
+                {
+                    Status = 1,
+                    Message = "MentorId must be specified",
+                    Content = null
+                };
+                return responseDto;
+            };
+
+            try
+            {
+                result = _uow
+                .GetRepository<Mentee>()
+                .GetAll()
+
+                .Include(m => m.Subscription)
+                .ThenInclude(m => m.Channel)
+                .ThenInclude(m => m.Mentor)
+                .ThenInclude(m => m.User)
+                .Include(m => m.Subscription)
+                .ThenInclude(m => m.Channel)
+                .ThenInclude(m => m.Topic)
+
+                .Where(m => m.MenteeId == new Guid(menteeId))
+                .Select(m => new MenteeSubbedChannelModel
+                {
+                    MenteeId = m.MenteeId,
+                    User = new UserViewModel
+                    {
+                        UserId = m.User.UserId,
+                        Email = m.User.Email,
+                        Fullname = m.User.Fullname,
+                        Description = m.User.Description,
+                        Phone = m.User.Phone,
+                        AvatarUrl = m.User.AvatarUrl,
+                        Balance = m.User.Balance,
+                        YearOfBirth = m.User.YearOfBirth
+                    },
+                    Channels = m.Subscription.Select(s => new ChannelViewModel
+                    {
+                        ChannelId = s.ChannelId,
+                        MentorName = s.Channel.Mentor.User.Email,
+                        TopicName = s.Channel.Topic.TopicName
+                    }).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto = new BaseResponseDto<MenteeSubbedChannelModel>
+                {
+                    Status = 2,
+                    Message = "Mentor with id " + menteeId + " does not exist",
+                    Content = null
+                };
+                return responseDto;
+            }
+
+            responseDto.Content = result;
+
+            return responseDto;
+        }
+
+
+
+        #endregion
     }
 }
