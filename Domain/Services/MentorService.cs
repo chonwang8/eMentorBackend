@@ -73,7 +73,8 @@ namespace Domain.Services
                         MentorName = m.User.Email,
                         TopicName = c.Topic.TopicName
                     }).ToList()
-                });
+                })
+                .OrderByDescending(m => m.Rating.RatingScore);
             }
             catch (Exception e)
             {
@@ -549,6 +550,63 @@ namespace Domain.Services
 
             return responseDto;
         }
+
+        public BaseResponseDto InsertRating(string mentorId)
+        {
+            BaseResponseDto responseDto = new BaseResponseDto
+            {
+                Status = 200,
+                Message = null
+            };
+            Guid mentorGuid = new Guid(mentorId);
+
+
+            #region Check input
+            if (mentorId == null)
+            {
+                responseDto.Status = 400;
+                responseDto.Message = "Faulthy input";
+                return responseDto;
+            }
+
+            Mentor existingMentor = _uow
+                .GetRepository<Mentor>()
+                .GetAll()
+
+                .Include(m => m.Rating)
+
+                .FirstOrDefault(m => m.MentorId == mentorGuid);
+
+            if (existingMentor == null)
+            {
+                responseDto.Status = 404;
+                responseDto.Message = "Mentor Profile not found";
+                return responseDto;
+            }
+            #endregion
+
+            Rating mentorRating = new Rating
+            { 
+                MentorId = mentorGuid,
+                RatingCount = 0,
+                RatingScore = 0
+            };
+            try
+            {
+                _uow.GetRepository<Rating>().Insert(mentorRating);
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            responseDto.Status = 200;
+            responseDto.Message = "Success";
+
+            return responseDto;
+        }
+
     }
     #endregion
 }

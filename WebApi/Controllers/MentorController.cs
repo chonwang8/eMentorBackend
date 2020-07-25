@@ -427,5 +427,45 @@ namespace WebApi.Controllers
 
 
 
+        ///// <summary>
+        ///// Insert a rating feeed into database.
+        ///// </summary>
+        ///// 
+        ///// <returns>
+        ///// Message
+        ///// </returns>
+        ///// 
+        ///// <response code="200">Success</response>
+        ///// <response code="400">Bad Request</response>
+        ///// <response code="401">Unauthorized</response>
+        ///// <response code="403">Forbidden</response>
+        ///// <response code="500">Internal server error</response>
+        //[HttpPost("emptyRatingInsert")]
+        //#region repCode 200 400 401 403 500
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //#endregion repCode 200 400 401 403 500
+        //public IActionResult InsertEmptyRating(string mentorId)
+        //{
+        //    BaseResponseDto responseDto = null;
+
+        //    if (mentorId == null)
+        //    {
+        //        return BadRequest("Faulthy input must not be null");
+        //    }
+
+        //    try
+        //    {
+        //        responseDto = _mentor.InsertRating(mentorId);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(500, e);
+        //    }
+
+        //    return StatusCode(responseDto.Status, responseDto.Message);
+        //}
+
     }
 }

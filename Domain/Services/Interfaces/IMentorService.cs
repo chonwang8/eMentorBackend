@@ -18,5 +18,6 @@ namespace Domain.Services.Interfaces
 
         //  Specialized Methods
         public BaseResponseDto InsertRating(RatingInsertModel ratingInsertModel);
+        public BaseResponseDto InsertRating(string mentorId);
     }
 }
