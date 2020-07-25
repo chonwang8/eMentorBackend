@@ -21,15 +21,16 @@ namespace Domain.Services
         }
 
         #endregion Classes and Constructor
-        public List<GetCommentViewModel> GetAllComment()
+        public List<CommentViewModel> GetAllComment()
         {
-            List<GetCommentViewModel> result = new List<GetCommentViewModel>();
+            List<CommentViewModel> result = new List<CommentViewModel>();
             IEnumerable<Comment> comments = _uow.GetRepository<Comment>().GetAll();
             foreach (var comment in comments)
             {
-                result.Add(new GetCommentViewModel
+                result.Add(new CommentViewModel
                 {
                     CommentId = comment.CommentId,
+                    ParentCommendId = comment.ParentCommendId,
                     CommentContent = comment.CommentContent,
                     SharingId = comment.SharingId
                 });
@@ -37,14 +38,15 @@ namespace Domain.Services
             return result;
         }
 
-        public GetCommentViewModel GetCommentById(Guid CommentId)
+        public CommentViewModel GetCommentById(Guid CommentId)
         {
             Comment comment = _uow.GetRepository<Comment>().Get(CommentId);
             if (comment != null)
             {
-                GetCommentViewModel result = new GetCommentViewModel
+                CommentViewModel result = new CommentViewModel
                 {
                     CommentId = comment.CommentId,
+                    ParentCommendId = comment.ParentCommendId,
                     CommentContent = comment.CommentContent,
                     SharingId = comment.SharingId
                 };
