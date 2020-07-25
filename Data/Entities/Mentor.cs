@@ -8,6 +8,7 @@ namespace Data.Entities
         public Mentor()
         {
             Channel = new HashSet<Channel>();
+            Rating = new HashSet<Rating>();
         }
 
         public Guid MentorId { get; set; }
@@ -16,5 +17,6 @@ namespace Data.Entities
 
         public virtual User User { get; set; }
         public virtual ICollection<Channel> Channel { get; set; }
+        public virtual ICollection<Rating> Rating { get; set; }
     }
 }
