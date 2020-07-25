@@ -8,7 +8,6 @@ namespace Domain.Models.MenteeModels
     public class MenteeUpdateModel
     {
         public Guid MenteeId { get; set; }
-        public UserViewModel User { get; set; }
-        public bool IsDisable { get; set; }
+        public UserUpdateModel User { get; set; }
     }
 }
