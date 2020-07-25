@@ -22,6 +22,7 @@ namespace Data.Entities
         public virtual DbSet<Major> Major { get; set; }
         public virtual DbSet<Mentee> Mentee { get; set; }
         public virtual DbSet<Mentor> Mentor { get; set; }
+        public virtual DbSet<Rating> Rating { get; set; }
         public virtual DbSet<Sharing> Sharing { get; set; }
         public virtual DbSet<Subscription> Subscription { get; set; }
         public virtual DbSet<Topic> Topic { get; set; }
@@ -31,7 +32,7 @@ namespace Data.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=.\\;Database=eMentor;Trusted_Connection=True;");
             }
         }
@@ -139,7 +140,7 @@ namespace Data.Entities
             {
                 entity.Property(e => e.MajorId)
                     .HasColumnName("majorId")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
 
@@ -147,8 +148,7 @@ namespace Data.Entities
 
                 entity.Property(e => e.MajorName)
                     .IsRequired()
-                    .HasColumnName("majorName")
-                    .HasMaxLength(20);
+                    .HasColumnName("majorName");
             });
 
             modelBuilder.Entity<Mentee>(entity =>
@@ -185,11 +185,32 @@ namespace Data.Entities
                     .HasConstraintName("FK_Mentor_User");
             });
 
+            modelBuilder.Entity<Rating>(entity =>
+            {
+                entity.HasKey(e => e.MentorId);
+
+                entity.Property(e => e.MentorId)
+                    .HasColumnName("mentorId")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.RatingCount).HasColumnName("ratingCount");
+
+                entity.Property(e => e.RatingScore).HasColumnName("ratingScore");
+
+                entity.HasOne(d => d.Mentor)
+                    .WithOne(p => p.Rating)
+                    .HasForeignKey<Rating>(d => d.MentorId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Rating_Mentor");
+            });
+
             modelBuilder.Entity<Sharing>(entity =>
             {
                 entity.Property(e => e.SharingId)
                     .HasColumnName("sharingId")
                     .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ApprovedTime).HasColumnType("datetime");
 
                 entity.Property(e => e.ChannelId)
                     .HasColumnName("channelId")
@@ -201,7 +222,7 @@ namespace Data.Entities
 
                 entity.Property(e => e.EndTime)
                     .HasColumnName("endTime")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ImageUrl)
                     .HasColumnName("imageUrl")
@@ -222,11 +243,7 @@ namespace Data.Entities
 
                 entity.Property(e => e.StartTime)
                     .HasColumnName("startTime")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.ApprovedTime)
-                    .HasColumnName("approvedTime")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.HasOne(d => d.Channel)
                     .WithMany(p => p.Sharing)
@@ -268,7 +285,7 @@ namespace Data.Entities
             {
                 entity.Property(e => e.TopicId)
                     .HasColumnName("topicId")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CreatedBy).HasColumnName("createdBy");
 
@@ -294,26 +311,15 @@ namespace Data.Entities
                     .HasColumnName("userId")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.AvatarUrl)
-                    .IsRequired()
-                    .HasColumnName("avatarUrl")
-                    .HasMaxLength(50);
+                entity.Property(e => e.AvatarUrl).HasColumnName("avatarUrl");
 
                 entity.Property(e => e.Balance).HasColumnName("balance");
 
-                entity.Property(e => e.Description)
-                    .HasColumnName("description")
-                    .HasMaxLength(100);
+                entity.Property(e => e.Description).HasColumnName("description");
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(60);
+                entity.Property(e => e.Email).HasColumnName("email");
 
-                entity.Property(e => e.Fullname)
-                    .IsRequired()
-                    .HasColumnName("fullname")
-                    .HasMaxLength(60);
+                entity.Property(e => e.Fullname).HasColumnName("fullname");
 
                 entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
@@ -322,9 +328,8 @@ namespace Data.Entities
                     .HasMaxLength(80);
 
                 entity.Property(e => e.Phone)
-                    .IsRequired()
                     .HasColumnName("phone")
-                    .HasMaxLength(14);
+                    .HasMaxLength(20);
 
                 entity.Property(e => e.YearOfBirth).HasColumnName("yearOfBirth");
             });

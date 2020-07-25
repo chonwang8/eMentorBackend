@@ -15,6 +15,7 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
 
         public virtual User User { get; set; }
+        public virtual Rating Rating { get; set; }
         public virtual ICollection<Channel> Channel { get; set; }
     }
 }

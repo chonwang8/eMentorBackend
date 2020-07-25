@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Models.RatingModels;
 
 namespace Domain.Services
 {
@@ -51,15 +52,29 @@ namespace Domain.Services
                 result = _uow
                 .GetRepository<Mentor>()
                 .GetAll()
+
                 .Include(m => m.User)
+                .Include(m => m.Rating)
+
                 .Select(m => new MentorViewModel
                 {
                     MentorId = m.MentorId,
                     Email = m.User.Email,
                     Fullname = m.User.Fullname,
                     Description = m.User.Description,
-                    AvatarUrl = m.User.AvatarUrl
-                });
+                    AvatarUrl = m.User.AvatarUrl,
+                    Rating = new RatingViewModel
+                    {
+                        RatingScore = m.Rating.RatingScore
+                    },
+                    Channels = m.Channel.Select(c => new ChannelViewModel
+                    {
+                        ChannelId = c.ChannelId,
+                        MentorName = m.User.Email,
+                        TopicName = c.Topic.TopicName
+                    }).ToList()
+                })
+                .OrderByDescending(m => m.Rating.RatingScore);
             }
             catch (Exception e)
             {
@@ -122,6 +137,10 @@ namespace Domain.Services
                         AvatarUrl = m.User.AvatarUrl,
                         Balance = m.User.Balance,
                         YearOfBirth = m.User.YearOfBirth
+                    },
+                    Rating = new RatingViewModel
+                    {
+                        RatingScore = m.Rating.RatingScore
                     },
                     Channels = m.Channel.Select(c => new ChannelViewModel
                     {
@@ -241,6 +260,7 @@ namespace Domain.Services
                 Mentor newMentor = new Mentor
                 {
                     MentorId = mentorId,
+                    UserId = userId,
                     User = new User
                     {
                         UserId = userId,
@@ -252,7 +272,12 @@ namespace Domain.Services
                         Phone = mentorInsertModel.User.Phone,
                         Description = ""
                     },
-                    UserId = userId,
+                    Rating = new Rating
+                    {
+                        MentorId = mentorId,
+                        RatingCount = 0,
+                        RatingScore = 0
+                    },
                     IsDisable = false
                 };
 
@@ -460,5 +485,128 @@ namespace Domain.Services
 
         #endregion
 
+
+        #region Specialized Methods
+
+        public BaseResponseDto InsertRating(RatingInsertModel ratingInsertModel)
+        {
+            BaseResponseDto responseDto = new BaseResponseDto
+            {
+                Status = 200,
+                Message = null
+            };
+
+            #region Check input
+            if (ratingInsertModel == null)
+            {
+                responseDto.Status = 400;
+                responseDto.Message = "Faulthy input";
+                return responseDto;
+            }
+            if (ratingInsertModel.RatingScore < 0 || ratingInsertModel.RatingScore > 5)
+            {
+                responseDto.Status = 400;
+                responseDto.Message = "Rating is Base 5. Your input is not in Base 5";
+                return responseDto;
+            }
+
+            Mentor existingMentor = _uow
+                .GetRepository<Mentor>()
+                .GetAll()
+
+                .Include(m => m.Rating)
+
+                .FirstOrDefault(m => m.MentorId == ratingInsertModel.MentorId);
+
+            if (existingMentor == null)
+            {
+                responseDto.Status = 404;
+                responseDto.Message = "Mentor Profile not found";
+                return responseDto;
+            }
+            #endregion
+
+            Rating mentorRating = existingMentor.Rating;
+            double currentScore = mentorRating.RatingScore.Value;
+            int currentCount = mentorRating.RatingCount.Value;
+            int newCount = currentCount + 1;
+            double calCurrentCount = (double) currentCount;
+            double calNewCount = (double) newCount;
+            try
+            {
+                mentorRating.RatingScore = 
+                    ((currentScore * calCurrentCount) + ratingInsertModel.RatingScore) / calNewCount;
+                mentorRating.RatingCount = newCount;
+                _uow.GetRepository<Rating>().Update(mentorRating);
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            responseDto.Status = 200;
+            responseDto.Message = "Success";
+
+            return responseDto;
+        }
+
+        public BaseResponseDto InsertRating(string mentorId)
+        {
+            BaseResponseDto responseDto = new BaseResponseDto
+            {
+                Status = 200,
+                Message = null
+            };
+            Guid mentorGuid = new Guid(mentorId);
+
+
+            #region Check input
+            if (mentorId == null)
+            {
+                responseDto.Status = 400;
+                responseDto.Message = "Faulthy input";
+                return responseDto;
+            }
+
+            Mentor existingMentor = _uow
+                .GetRepository<Mentor>()
+                .GetAll()
+
+                .Include(m => m.Rating)
+
+                .FirstOrDefault(m => m.MentorId == mentorGuid);
+
+            if (existingMentor == null)
+            {
+                responseDto.Status = 404;
+                responseDto.Message = "Mentor Profile not found";
+                return responseDto;
+            }
+            #endregion
+
+            Rating mentorRating = new Rating
+            { 
+                MentorId = mentorGuid,
+                RatingCount = 0,
+                RatingScore = 0
+            };
+            try
+            {
+                _uow.GetRepository<Rating>().Insert(mentorRating);
+                _uow.Commit();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            responseDto.Status = 200;
+            responseDto.Message = "Success";
+
+            return responseDto;
+        }
+
     }
+    #endregion
 }
