@@ -3,6 +3,7 @@ using Data.UnitOfWork.Interfaces;
 using Domain.DTO.ResponseDtos;
 using Domain.Models.ChannelModels;
 using Domain.Models.MentorModels;
+using Domain.Models.RatingModels;
 using Domain.Models.SharingModels;
 using Domain.Models.SubscriptionModels;
 using Domain.Models.TopicModels;
@@ -104,6 +105,8 @@ namespace Domain.Services
                 .Include(c => c.Topic)
                 .Include(c => c.Mentor)
                 .ThenInclude(c => c.User)
+                .Include(c => c.Mentor)
+                .ThenInclude(c => c.Rating)
                 .Include(c => c.Subscription)
                 .ThenInclude(c => c.Mentee)
                 .ThenInclude(c => c.User)
@@ -120,7 +123,12 @@ namespace Domain.Services
                         Email = c.Mentor.User.Email,
                         Fullname = c.Mentor.User.Fullname,
                         AvatarUrl = c.Mentor.User.AvatarUrl,
-                        Description = c.Mentor.User.Description
+                        Description = c.Mentor.User.Description,
+                        Rating = new RatingViewModel
+                        {
+                            RatingScore = c.Mentor.Rating.RatingScore
+                        },
+                        Channels = new List<ChannelViewModel>() //  its supposed to be empty
                     },
                     Topic = new TopicViewModel
                     {
