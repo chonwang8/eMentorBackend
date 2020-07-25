@@ -380,6 +380,19 @@ namespace WebApi.Controllers
         }
 
 
+        public IActionResult CountMenteeEnrollSharing()
+        {
+            if (_mentor.CountMenteeEnrollSharing() == null)
+                return BadRequest();
+            return Ok(_mentor.CountMenteeEnrollSharing());
+        }
+
+        public IActionResult CountSharingByMentor()
+        {
+            if (_mentor.CountSharingByMentor() == null)
+                return BadRequest();
+            return Ok(_mentor.CountSharingByMentor());
+        }
 
     }
 }

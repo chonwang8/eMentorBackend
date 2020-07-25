@@ -6,6 +6,7 @@ using Domain.Models.TopicModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Services
 {
@@ -214,6 +215,31 @@ namespace Domain.Services
                 throw e;
             }
 
+
+            return result;
+        }
+
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeSubcribeTopic()
+        {
+            List<CountMenteeSubcribeTopicModel> result = null;
+
+            List<Topic> topicList = _uow.GetRepository<Topic>().GetAll().ToList();
+
+            foreach (var topic in topicList)
+            {
+                int counter = _uow.GetRepository<Topic>().GetAll()
+                    .Include(t => t.Channel)
+                    .ThenInclude(c => c.Subscription)
+                    .Where(t => t.TopicId == topic.TopicId)
+                    .Count();
+                 
+
+                result.Add(new CountMenteeSubcribeTopicModel
+                {
+                    TopicId = topic.TopicId,
+                    Counter = counter
+                });
+            }
 
             return result;
         }

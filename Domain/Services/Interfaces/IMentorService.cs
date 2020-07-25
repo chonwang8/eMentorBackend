@@ -1,6 +1,9 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Models.MentorModels;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace Domain.Services.Interfaces
 {
@@ -13,5 +16,9 @@ namespace Domain.Services.Interfaces
         public BaseResponseDto Update(MentorUpdateModel mentorUpdateModel);
         public BaseResponseDto ChangeStatus(string mentorId, bool status);
         public BaseResponseDto Delete(string mentorId);
+
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeEnrollSharing();
+
+        public IEnumerable<CountSharingByMentorModel> CountSharingByMentor();
     }
 }

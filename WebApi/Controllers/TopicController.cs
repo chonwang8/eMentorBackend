@@ -273,5 +273,14 @@ namespace WebApi.Controllers
 
             return Ok("Topic is deleted.");
         }
+
+
+        public IActionResult CountMenteeSubcribeTopic()
+        {
+            if (_topic.CountMenteeSubcribeTopic() == null)
+                return BadRequest();
+            return Ok(_topic.CountMenteeSubcribeTopic());
+        }
+
     }
 }
