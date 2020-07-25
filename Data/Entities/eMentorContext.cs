@@ -32,7 +32,7 @@ namespace Data.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-// #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=.\\;Database=eMentor;Trusted_Connection=True;");
             }
         }
@@ -187,19 +187,19 @@ namespace Data.Entities
 
             modelBuilder.Entity<Rating>(entity =>
             {
-                entity.Property(e => e.RatingId)
-                    .HasColumnName("ratingId")
-                    .ValueGeneratedNever();
+                entity.HasKey(e => e.MentorId);
 
-                entity.Property(e => e.MentorId).HasColumnName("mentorId");
+                entity.Property(e => e.MentorId)
+                    .HasColumnName("mentorId")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.RatingCount).HasColumnName("ratingCount");
 
                 entity.Property(e => e.RatingScore).HasColumnName("ratingScore");
 
                 entity.HasOne(d => d.Mentor)
-                    .WithMany(p => p.Rating)
-                    .HasForeignKey(d => d.MentorId)
+                    .WithOne(p => p.Rating)
+                    .HasForeignKey<Rating>(d => d.MentorId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Rating_Mentor");
             });

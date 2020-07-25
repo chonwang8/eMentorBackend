@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.Models.RatingModels;
 
 namespace WebApi.Controllers
 {
@@ -135,7 +136,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Generate a JWT for mentor.
+        /// Get Mentor Id by Email
         /// </summary>
         /// <param name="email">
         /// The mentor's identifier.
@@ -377,6 +378,51 @@ namespace WebApi.Controllers
             }
 
             return Ok(responseDto.Message);
+        }
+
+
+        //  Specialized APIs
+
+        /// <summary>
+        /// Insert a rating feeed into database.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// Message
+        /// </returns>
+        /// 
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="500">Internal server error</response>
+        [HttpPost("rating")]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 403 500
+        public IActionResult InsertRating(RatingInsertModel ratingInsertModel)
+        {
+            BaseResponseDto responseDto = null;
+
+            if (ratingInsertModel == null)
+            {
+                return BadRequest("Faulthy input must not be null");
+            }
+
+            try
+            {
+                responseDto = _mentor.InsertRating(ratingInsertModel);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            return StatusCode(responseDto.Status, responseDto.Message);
         }
 
 

@@ -5,10 +5,9 @@ namespace Data.Entities
 {
     public partial class Rating
     {
-        public Guid RatingId { get; set; }
         public Guid MentorId { get; set; }
-        public double? RatingScore { get; set; }
         public int? RatingCount { get; set; }
+        public double? RatingScore { get; set; }
 
         public virtual Mentor Mentor { get; set; }
     }

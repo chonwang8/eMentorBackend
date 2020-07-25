@@ -51,7 +51,6 @@ namespace eMentor
             services.AddTransient<IMajorService, MajorService>();
             services.AddTransient<IMenteeService, MenteeService>();
             services.AddTransient<IMentorService, MentorService>();
-            services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<ISharingService, SharingService>();
             services.AddTransient<ISubscriptionService, SubscriptionService>();
             services.AddTransient<ITopicService, TopicService>();

@@ -1,4 +1,5 @@
 ﻿using Domain.Models.ChannelModels;
+using Domain.Models.RatingModels;
 using Domain.Models.UserModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace Domain.Models.MentorModels
     {
         public Guid MentorId { get; set; }
         public UserViewModel User { get; set; }
+        public RatingViewModel Rating { get; set; }
         public ICollection<ChannelViewModel> Channels { get; set; }
         public bool IsDisable { get; set; }
     }
