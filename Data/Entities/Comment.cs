@@ -9,11 +9,9 @@ namespace Data.Entities
         public Guid ParentCommendId { get; set; }
         public Guid SharingId { get; set; }
         public string CommentContent { get; set; }
-        public DateTime TimeStamp { get; set; }
         public Guid CreatedBy { get; set; }
         public bool IsDisable { get; set; }
 
-        public virtual User User { get; set; }
         public virtual Sharing Sharing { get; set; }
     }
 }

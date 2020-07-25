@@ -150,11 +150,11 @@ namespace Domain.Services
             {
                 if (filterRequest.IsFuture == true)
                 {
-                    result = result.Where(s => s.StartTime.CompareTo(DateTime.Now) > 0);
+                    result = result.Where(s => s.StartTime.Value.CompareTo(DateTime.Now) > 0);
                 }
                 else if (filterRequest.IsFuture == false)
                 {
-                    result = result.Where(s => s.StartTime.CompareTo(DateTime.Now) < 0);
+                    result = result.Where(s => s.StartTime.Value.CompareTo(DateTime.Now) < 0);
                 }
                 else
                 {
