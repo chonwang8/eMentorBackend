@@ -354,7 +354,6 @@ namespace Domain.Services
             existingMentor.User.AvatarUrl = mentorUpdateModel.User.AvatarUrl;
             existingMentor.User.Balance = mentorUpdateModel.User.Balance;
             existingMentor.User.Description = mentorUpdateModel.User.Description;
-            existingMentor.IsDisable = mentorUpdateModel.IsDisable;
 
             try
             {

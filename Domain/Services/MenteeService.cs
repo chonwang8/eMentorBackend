@@ -339,7 +339,6 @@ namespace Domain.Services
             existingMentee.User.AvatarUrl = menteeUpdateModel.User.AvatarUrl;
             existingMentee.User.Balance = menteeUpdateModel.User.Balance;
             existingMentee.User.Description = menteeUpdateModel.User.Description;
-            existingMentee.IsDisable = menteeUpdateModel.IsDisable;
 
             try
             {
