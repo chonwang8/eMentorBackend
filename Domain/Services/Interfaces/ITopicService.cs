@@ -14,5 +14,7 @@ namespace Domain.Services.Interfaces
 
         public int ChangeStatus(string subscriptionId, bool status);
         public int Delete(string topicId);
+
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeSubcribeTopic();
     }
 }
