@@ -211,7 +211,7 @@ namespace Domain.Services
                 throw e;
             }
 
-            if (!existingChannel.Equals(null))
+            if (existingChannel != null)
             {
                 responseDto = new BaseResponseDto
                 {
