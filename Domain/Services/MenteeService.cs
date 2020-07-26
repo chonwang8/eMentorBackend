@@ -564,15 +564,20 @@ namespace Domain.Services
                 Content = null
             };
 
-            ICollection<MenteeEnrollCountModel> result = null;
-            IEnumerable<Mentee> menteeList = null;
+            List<MenteeEnrollCountModel> result = new List<MenteeEnrollCountModel>();
+            List<Mentee> menteeList = new List<Mentee>();
 
             try
             {
                 menteeList = _uow
                     .GetRepository<Mentee>()
                     .GetAll()
-                    .Include(m => m.User);
+
+                    .Include(m => m.User)
+                    .Include(m => m.Subscription)
+                    .ThenInclude(m => m.Enroll)
+
+                    .ToList();
 
                 foreach (Mentee mentee in menteeList)
                 {
