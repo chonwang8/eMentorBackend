@@ -2,6 +2,7 @@
 using Domain.DTO.ResponseDtos;
 using Domain.Models.MentorModels;
 using Domain.Models.RatingModels;
+using System.Collections.Generic;
 
 namespace Domain.Services.Interfaces
 {
@@ -16,8 +17,14 @@ namespace Domain.Services.Interfaces
         public BaseResponseDto Delete(string mentorId);
 
 
+
         //  Specialized Methods
         public BaseResponseDto InsertRating(RatingInsertModel ratingInsertModel);
+        
         public BaseResponseDto InsertRating(string mentorId);
+        
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeEnrollSharing();
+
+        public IEnumerable<CountSharingByMentorModel> CountSharingByMentor();
     }
 }

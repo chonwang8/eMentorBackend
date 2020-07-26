@@ -444,6 +444,69 @@ namespace WebApi.Controllers
 
 
 
+        /// <summary>
+        /// Get a mentee's list of enrolled sharings grouped by subscription
+        /// </summary>
+        /// <param name="menteeId">
+        /// The user's identifier.
+        /// </param>
+        /// <returns>
+        /// User with matching Id
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Mentee with matching Id not found</response>
+        /// <response code="500">Internal Server Error</response>
+        [HttpGet("sharings/{menteeId}")]
+        #region repCode 200 400 401 403 404 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GetEnrolledSharing(string menteeId)
+        {
+            BaseResponseDto<MenteeEnrolledSharingModel> responseDto = null;
+            ICollection<MenteeEnrolledSharingModel> result = null;
+
+            if (menteeId == null)
+            {
+                return BadRequest("Mentee Id must not be null");
+            }
+
+            try
+            {
+                responseDto = _mentee.GetEnrolledSharings(menteeId);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+
+            if (responseDto.Status == 1)
+            {
+                return BadRequest(responseDto.Message);
+            }
+
+            if (responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            //  finalize
+            result = responseDto.Content.ToList();
+            return Ok(result);
+        }
+
+
+
+
+
 
         /// <summary>
         /// Get number of enroll per mentee
