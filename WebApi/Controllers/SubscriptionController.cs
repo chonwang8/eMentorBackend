@@ -57,7 +57,7 @@ namespace WebApi.Controllers
 
 
         /// <summary>
-        /// Get user by Id.
+        /// Get subscription by Id.
         /// </summary>
         /// <param name="subscriptionId">
         /// The subscription identifier.

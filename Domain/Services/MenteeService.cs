@@ -4,7 +4,9 @@ using Domain.DTO.ResponseDtos;
 using Domain.Helper.DataObjects;
 using Domain.Helper.HelperFunctions;
 using Domain.Models.ChannelModels;
+using Domain.Models.EnrollModels;
 using Domain.Models.MenteeModels;
+using Domain.Models.SharingModels;
 using Domain.Models.SubscriptionModels;
 using Domain.Models.UserModels;
 using Domain.Services.Interfaces;
@@ -552,6 +554,92 @@ namespace Domain.Services
 
             return responseDto;
         }
+
+
+        public BaseResponseDto<MenteeEnrolledSharingModel> GetEnrolledSharings(string menteeId)
+        {
+            IEnumerable<MenteeEnrolledSharingModel> result = null;
+            BaseResponseDto<MenteeEnrolledSharingModel> responseDto = new BaseResponseDto<MenteeEnrolledSharingModel>
+                {
+                    Status = 0,
+                    Message = "Success",
+                    Content = null
+                };
+
+            if (menteeId == null)
+            {
+                responseDto = new BaseResponseDto<MenteeEnrolledSharingModel>
+                {
+                    Status = 1,
+                    Message = "MentorId must be specified",
+                    Content = null
+                };
+                return responseDto;
+            };
+
+            try
+            {
+                result = _uow
+                .GetRepository<Mentee>()
+                .GetAll()
+
+                .Include(m => m.Subscription)
+                .ThenInclude(m => m.Enroll)
+                .ThenInclude(m => m.Sharing)
+
+                .Where(m => m.MenteeId == new Guid(menteeId))
+                .Select(m => new MenteeEnrolledSharingModel
+                {
+                    MenteeId = m.MenteeId,
+                    User = new UserViewModel
+                    {
+                        UserId = m.User.UserId,
+                        Email = m.User.Email,
+                        Fullname = m.User.Fullname,
+                        Description = m.User.Description,
+                        Phone = m.User.Phone,
+                        AvatarUrl = m.User.AvatarUrl,
+                        Balance = m.User.Balance,
+                        YearOfBirth = m.User.YearOfBirth
+                    },
+                    Subscriptions = m.Subscription.Select(m => new SubscriptionSharingListModel
+                    {
+                        SubscriptionId = m.SubscriptionId,
+                        Sharings = m.Enroll.Select(m => new SharingViewModel 
+                        {
+                            SharingId = m.Sharing.SharingId,
+                            SharingName = m.Sharing.SharingName,
+                            Price = m.Sharing.Price,
+                            MentorName = m.Sharing.Channel.Mentor.User.Fullname,
+                            StartTime = m.Sharing.StartTime,
+                            EndTime = m.Sharing.EndTime,
+                            ImageUrl = m.Sharing.ImageUrl,
+                            IsApproved = m.Sharing.IsApproved
+                        }).ToList()
+                    }).ToList()
+                });
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto = new BaseResponseDto<MenteeEnrolledSharingModel>
+                {
+                    Status = 2,
+                    Message = "Mentor with id " + menteeId + " does not exist",
+                    Content = null
+                };
+                return responseDto;
+            }
+
+            responseDto.Content = result;
+
+            return responseDto;
+        }
+
 
 
         public BaseResponseDto<MenteeEnrollCountModel> CountEnroll()
