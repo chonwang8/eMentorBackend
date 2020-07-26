@@ -16,5 +16,6 @@ namespace Domain.ViewModels.CommentModels
 
         public virtual UserViewModel User { get; set; }
         public virtual SharingViewModel Sharing { get; set; }
+
     }
 }

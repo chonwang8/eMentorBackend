@@ -330,6 +330,20 @@
             <response code="404">Mentee with matching Id not found</response>
             <response code="500">Internal Server Error</response>
         </member>
+        <member name="M:WebApi.Controllers.MenteeController.GetEnroll">
+             <summary>
+             Get number of enroll per mentee
+             </summary>
+            
+             <returns>
+             A list of mentees, each contain the number of enrolls
+             </returns>
+             <response code="200">Success</response>
+             <response code="400">Not have enough infomation</response>
+             <response code="401">Unauthorize</response>
+             <response code="403">Forbidden from resource</response>
+             <response code="500">Internal Error</response>
+        </member>
         <member name="M:WebApi.Controllers.MentorController.GetAll">
             <summary>
             Get list of mentors.
@@ -765,6 +779,20 @@
             <response code="403">Forbidden</response>
             <response code="404">Topic with matching Id not found</response>
             <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:WebApi.Controllers.TopicController.GetEnroll">
+             <summary>
+             Get number of enrolls per topic
+             </summary>
+            
+             <returns>
+             A list of topics, each contain the number of enrolls
+             </returns>
+             <response code="200">Success</response>
+             <response code="400">Not have enough infomation</response>
+             <response code="401">Unauthorize</response>
+             <response code="403">Forbidden from resource</response>
+             <response code="500">Internal Error</response>
         </member>
         <member name="M:WebApi.Controllers.UserController.GetAll">
             <summary>

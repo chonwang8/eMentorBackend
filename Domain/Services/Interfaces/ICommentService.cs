@@ -7,8 +7,8 @@ namespace Domain.Services.Interfaces
 {
     public interface ICommentService
     {
-        public List<GetCommentViewModel> GetAllComment();
+        public List<CommentViewModel> GetAllComment();
 
-        public GetCommentViewModel GetCommentById(Guid CommentId);
+        public CommentViewModel GetCommentById(Guid CommentId);
     }
 }

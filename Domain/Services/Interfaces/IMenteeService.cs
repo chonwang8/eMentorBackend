@@ -17,5 +17,6 @@ namespace Domain.Services.Interfaces
 
 
         public BaseResponseDto<MenteeSubbedChannelModel> GetSubbedChannels(string menteeId);
+        public BaseResponseDto<MenteeEnrollCountModel> CountEnroll();
     }
 }
