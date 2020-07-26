@@ -6,17 +6,22 @@ using Domain.Models.TopicModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DTO.ResponseDtos;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Services
 {
     public class TopicService : ITopicService
     {
+        #region Classes and Constructor
         protected readonly IUnitOfWork _uow;
 
         public TopicService(IUnitOfWork uow)
         {
             _uow = uow;
         }
+        #endregion
+
 
         #region CRUD Methods
         public IEnumerable<TopicViewModel> GetAll()
@@ -217,6 +222,75 @@ namespace Domain.Services
 
             return result;
         }
+        #endregion
+
+
+        #region Specialized Methods
+
+
+        public BaseResponseDto<TopicEnrollCountModel> CountEnroll()
+        {
+            BaseResponseDto<TopicEnrollCountModel> responseDto = new BaseResponseDto<TopicEnrollCountModel>
+            {
+                Status = 200,
+                Message = "Success",
+                Content = null
+            };
+
+            List<TopicEnrollCountModel> result = new List<TopicEnrollCountModel>();
+            List<Topic> topicList = null;
+
+            try
+            {
+                topicList = _uow
+                    .GetRepository<Topic>()
+                    .GetAll()
+                    .Include(t => t.Channel)
+                    .ThenInclude(t => t.Sharing)
+                    .ThenInclude(t => t.Enroll)
+                    .ToList();
+
+                foreach (Topic topic in topicList)
+                {
+                    int count = 0;
+
+                    foreach (Channel channel in topic.Channel)
+                    {
+                        foreach (Sharing sharing in channel.Sharing)
+                        {
+                            foreach (Enroll enroll in sharing.Enroll)
+                            {
+                                count++;
+                            }
+                        }
+                    }
+
+                    TopicEnrollCountModel model = new TopicEnrollCountModel
+                    {
+                        TopicId = topic.TopicId,
+                        TopicName = topic.TopicName,
+                        EnrollCount = count
+                    };
+                    result.Add(model);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto.Status = 404;
+                responseDto.Message = "There are no topic in the system";
+            };
+
+            //finalize
+            responseDto.Content = result;
+            return responseDto;
+        }
+
+
         #endregion
 
     }

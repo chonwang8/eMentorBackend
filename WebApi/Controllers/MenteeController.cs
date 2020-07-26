@@ -380,6 +380,7 @@ namespace WebApi.Controllers
 
 
 
+        //  Specialized APIs
 
         /// <summary>
         /// Get a mentee's list of subscribed channels
@@ -440,5 +441,52 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+
+
+
+        /// <summary>
+        /// Get number of enroll per mentee
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of mentees, each contain the number of enrolls
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Not have enough infomation</response>
+        /// <response code="401">Unauthorize</response>
+        /// <response code="403">Forbidden from resource</response>
+        /// <response code="500">Internal Error</response>
+        [HttpGet("enroll")]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GetEnroll()
+        {
+
+            BaseResponseDto<MenteeEnrollCountModel> responseDto = null;
+            ICollection<MenteeEnrollCountModel> result = null;
+
+            try
+            {
+                responseDto = _mentee.CountEnroll();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+
+            if (responseDto.Status == 1 || responseDto.Status == 2)
+            {
+                return Ok(responseDto.Message);
+            }
+
+            result = responseDto.Content.ToList();
+
+            return Ok(result);
+        }
     }
 }
