@@ -463,9 +463,26 @@ namespace WebApi.Controllers
         //    {
         //        return StatusCode(500, e);
         //    }
-
         //    return StatusCode(responseDto.Status, responseDto.Message);
         //}
+
+
+        [Http]
+        public IActionResult CountMenteeEnrollSharing()
+        {
+            if (_mentor.CountMenteeEnrollSharing() == null)
+                return BadRequest();
+            return Ok(_mentor.CountMenteeEnrollSharing());
+        }
+
+
+
+        public IActionResult CountSharingByMentor()
+        {
+            if (_mentor.CountSharingByMentor() == null)
+                return BadRequest();
+            return Ok(_mentor.CountSharingByMentor());
+        }
 
     }
 }

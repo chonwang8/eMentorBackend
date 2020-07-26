@@ -19,5 +19,7 @@ namespace Domain.Services.Interfaces
 
         //  Specialized Methods 
         public BaseResponseDto<TopicEnrollCountModel> CountEnroll();
+
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeSubcribeTopic();
     }
 }

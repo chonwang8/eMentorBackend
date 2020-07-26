@@ -606,6 +606,56 @@ namespace Domain.Services
             return responseDto;
         }
 
+        public IEnumerable<CountMenteeSubcribeTopicModel> CountMenteeEnrollSharing()
+        {
+            List<CountMenteeSubcribeTopicModel> result = null;
+
+            List<Mentor> mentorList = _uow.GetRepository<Mentor>().GetAll().ToList();
+
+            foreach (var mentor in mentorList)
+            {
+                int counter = _uow.GetRepository<Mentor>().GetAll()
+                 .Include(m => m.Channel)
+                 .ThenInclude(c => c.Sharing)
+                 .ThenInclude(s => s.Enroll)
+                 .Where(m => m.MentorId == mentor.MentorId)
+                 .Count();
+
+                result.Add(new CountMenteeSubcribeTopicModel
+                {
+                    MentorId = mentor.MentorId,
+                    Counter = counter
+                });
+            }
+
+            return result;
+        }
+
+        public IEnumerable<CountSharingByMentorModel> CountSharingByMentor()
+        {
+            List<CountSharingByMentorModel> result = null;
+
+            List<Mentor> mentorList = _uow.GetRepository<Mentor>().GetAll().ToList();
+
+            foreach (var mentor in mentorList)
+            {
+                int counter = _uow.GetRepository<Mentor>().GetAll()
+                 .Include(m => m.Channel)
+                 .ThenInclude(c => c.Sharing)
+                 .Where(m => m.MentorId == mentor.MentorId)
+                 .Count();
+
+                result.Add(new CountSharingByMentorModel
+                {
+                    MentorId = mentor.MentorId,
+                    Counter = counter
+                });
+            }
+
+            return result;
+        }
+
+
+        #endregion
     }
-    #endregion
 }
