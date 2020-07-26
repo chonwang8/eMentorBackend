@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Domain.DTO.ResponseDtos;
 
 namespace WebApi.Controllers
 {
@@ -272,6 +273,43 @@ namespace WebApi.Controllers
             }
 
             return Ok("Topic is deleted.");
+        }
+
+
+
+
+
+        //  Specialized APIs
+
+        /// <summary>
+        /// Get number of enrolls per topic
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of topics, each contain the number of enrolls
+        /// </returns>
+        /// <response code="200">Success</response>
+        /// <response code="400">Not have enough infomation</response>
+        /// <response code="401">Unauthorize</response>
+        /// <response code="403">Forbidden from resource</response>
+        /// <response code="500">Internal Error</response>
+        [HttpGet("enroll")]
+        #region repCode 200 400 401 403 500
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        #endregion repCode 200 400 401 500
+        public IActionResult GetEnroll()
+        {
+            BaseResponseDto<TopicEnrollCountModel> result = _topic.CountEnroll();
+
+            if (result.Content == null || !result.Content.Any())
+            {
+                return Ok("There are no topics in the request");
+            }
+            return Ok(result);
         }
     }
 }

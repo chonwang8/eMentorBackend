@@ -33,7 +33,7 @@ namespace Domain.Services
 
 
 
-        #region RESTful API Methods
+        #region CRUD API Methods
 
         public BaseResponseDto<MenteeViewModel> GetAll()
         {
@@ -553,6 +553,67 @@ namespace Domain.Services
             return responseDto;
         }
 
+
+        public BaseResponseDto<MenteeEnrollCountModel> CountEnroll()
+        {
+            BaseResponseDto<MenteeEnrollCountModel> responseDto = new BaseResponseDto<MenteeEnrollCountModel>
+            {
+                Status = 0,
+                Message = "Success",
+                Content = null
+            };
+
+            List<MenteeEnrollCountModel> result = new List<MenteeEnrollCountModel>();
+            List<Mentee> menteeList = new List<Mentee>();
+
+            try
+            {
+                menteeList = _uow
+                    .GetRepository<Mentee>()
+                    .GetAll()
+
+                    .Include(m => m.User)
+                    .Include(m => m.Subscription)
+                    .ThenInclude(m => m.Enroll)
+
+                    .ToList();
+
+                foreach (Mentee mentee in menteeList)
+                {
+                    int count = 0;
+
+                    foreach (Subscription subscription in mentee.Subscription)
+                    {
+                        foreach (Enroll enroll in subscription.Enroll)
+                        {
+                            count++;
+                        }
+                    }
+
+                    MenteeEnrollCountModel model = new MenteeEnrollCountModel 
+                    {
+                        MenteeId = mentee.MenteeId,
+                        MenteeEmail = mentee.User.Email,
+                        EnrollCount = count
+                    };
+                    result.Add(model);
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            if (result == null)
+            {
+                responseDto.Status = 1;
+                responseDto.Message = "There are no topic in the system";
+            };
+
+            //finalize
+            responseDto.Content = result;
+            return responseDto;
+        }
 
 
         #endregion
