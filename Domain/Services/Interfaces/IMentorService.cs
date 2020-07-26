@@ -1,6 +1,8 @@
 ﻿using Domain.DTO.QueryAttributesDtos;
 using Domain.DTO.ResponseDtos;
 using Domain.Models.MentorModels;
+using Domain.Models.RatingModels;
+using System.Collections.Generic;
 
 namespace Domain.Services.Interfaces
 {
