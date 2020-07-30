@@ -117,6 +117,33 @@ namespace Domain.Services
                 return result;
             }
 
+
+            #region Check duplicate
+            //Subscription existingSubscription = null;
+
+            //try
+            //{
+            //    existingSubscription = _uow
+            //    .GetRepository<Subscription>()
+            //    .GetAll()
+            //    .FirstOrDefault(s =>
+            //    s.MenteeId == subscriptionInsertModel.MenteeId &&
+            //    s.ChannelId == subscriptionInsertModel.ChannelId);
+            //}
+            //catch (Exception e)
+            //{
+            //    throw e;
+            //}
+
+            //if (existingSubscription != null)
+            //{
+
+            //}
+
+
+            #endregion
+
+
             Subscription subscriptionInsert = new Subscription
             {
                 SubscriptionId = Guid.NewGuid(),

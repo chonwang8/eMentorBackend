@@ -14,5 +14,6 @@ namespace Domain.Models.ChannelModels
         public MentorViewModel Mentor { get; set; }
         public virtual ICollection<SharingViewModel> Sharing { get; set; }
         public virtual ICollection<SubscriptionViewModel> Subscription { get; set; }
+        public bool IsDisable { get; set; }
     }
 }
