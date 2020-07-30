@@ -92,7 +92,8 @@ namespace Domain.Services
                     {
                         ChannelId = s.ChannelId,
                         MentorName = s.Channel.Mentor.User.Email,
-                        TopicName = s.Channel.Topic.TopicName
+                        TopicName = s.Channel.Topic.TopicName,
+                        IsDisable = s.IsDisable
                     },
                     Enroll = s.Enroll.Select(e => new EnrollViewModel 
                     {

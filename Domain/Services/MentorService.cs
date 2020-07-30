@@ -71,7 +71,8 @@ namespace Domain.Services
                     {
                         ChannelId = c.ChannelId,
                         MentorName = m.User.Email,
-                        TopicName = c.Topic.TopicName
+                        TopicName = c.Topic.TopicName,
+                        IsDisable = c.IsDisable
                     }).ToList()
                 })
                 .OrderByDescending(m => m.Rating.RatingScore);
@@ -146,7 +147,8 @@ namespace Domain.Services
                     {
                         ChannelId = c.ChannelId,
                         MentorName = m.User.Email,
-                        TopicName = c.Topic.TopicName
+                        TopicName = c.Topic.TopicName,
+                        IsDisable = c.IsDisable
                     }).ToList(),
                     IsDisable = m.IsDisable
                 });
@@ -483,6 +485,7 @@ namespace Domain.Services
 
 
         #endregion
+
 
 
         #region Specialized Methods
