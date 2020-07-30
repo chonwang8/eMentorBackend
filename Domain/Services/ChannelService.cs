@@ -55,7 +55,8 @@ namespace Domain.Services
                 {
                     ChannelId = s.ChannelId,
                     MentorName = s.Mentor.User.Email,
-                    TopicName = s.Topic.TopicName
+                    TopicName = s.Topic.TopicName,
+                    IsDisable = s.IsDisable
                 });
             }
             catch (Exception e)
@@ -117,6 +118,7 @@ namespace Domain.Services
                 .Select(c => new ChannelModel
                 {
                     ChannelId = c.ChannelId,
+                    IsDisable = c.IsDisable,
                     Mentor = new MentorViewModel
                     {
                         MentorId = c.Mentor.MentorId,
