@@ -23,6 +23,7 @@ namespace Data.Entities
         public bool IsDisable { get; set; }
         public bool IsApproved { get; set; }
         public DateTime? ApprovedTime { get; set; }
+        public string Location { get; set; }
 
         public virtual Channel Channel { get; set; }
         public virtual ICollection<Comment> Comment { get; set; }

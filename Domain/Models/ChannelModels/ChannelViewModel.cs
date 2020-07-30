@@ -7,5 +7,6 @@ namespace Domain.Models.ChannelModels
         public Guid ChannelId { get; set; }
         public string TopicName { get; set; }
         public string MentorName { get; set; }
+        public bool IsDisable { get; set; }
     }
 }

@@ -75,13 +75,11 @@ namespace Data.Entities
                 entity.HasOne(d => d.Mentor)
                     .WithMany(p => p.Channel)
                     .HasForeignKey(d => d.MentorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Channel_Mentor");
 
                 entity.HasOne(d => d.Topic)
                     .WithMany(p => p.Channel)
                     .HasForeignKey(d => d.TopicId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Channel_Topic");
             });
 
@@ -107,7 +105,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.Sharing)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.SharingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Comment_Sharing");
             });
 
@@ -132,7 +129,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.Subscription)
                     .WithMany(p => p.Enroll)
                     .HasForeignKey(d => d.SubscriptionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Enroll_Subcription");
             });
 
@@ -164,7 +160,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Mentee)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Mentee_User");
             });
 
@@ -181,7 +176,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Mentor)
                     .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Mentor_User");
             });
 
@@ -200,7 +194,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.Mentor)
                     .WithOne(p => p.Rating)
                     .HasForeignKey<Rating>(d => d.MentorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Rating_Mentor");
             });
 
@@ -232,6 +225,8 @@ namespace Data.Entities
 
                 entity.Property(e => e.IsDisable).HasColumnName("isDisable");
 
+                entity.Property(e => e.Location).HasColumnName("location");
+
                 entity.Property(e => e.Maximum).HasColumnName("maximum");
 
                 entity.Property(e => e.Price).HasColumnName("price");
@@ -248,7 +243,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.Channel)
                     .WithMany(p => p.Sharing)
                     .HasForeignKey(d => d.ChannelId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Sharing_Channel");
             });
 
@@ -272,12 +266,11 @@ namespace Data.Entities
                     .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.ChannelId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Subcription_Channel");
+                    .HasConstraintName("FK_Subscription_Channel");
 
                 entity.HasOne(d => d.Mentee)
                     .WithMany(p => p.Subscription)
                     .HasForeignKey(d => d.MenteeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Subcription_Mentee");
             });
 
@@ -301,7 +294,6 @@ namespace Data.Entities
                 entity.HasOne(d => d.Major)
                     .WithMany(p => p.Topic)
                     .HasForeignKey(d => d.MajorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Topic_Major");
             });
 
