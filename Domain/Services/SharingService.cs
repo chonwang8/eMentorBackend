@@ -50,10 +50,12 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
+                    Location = s.Location,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     ImageUrl = s.ImageUrl,
-                    IsApproved = s.IsApproved
+                    IsApproved = s.IsApproved,
+                    IsDisable = s.IsDisable
                 })
                 .OrderBy(s => s.StartTime);
             }
@@ -124,10 +126,12 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
+                    Location = s.Location,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     ImageUrl = s.ImageUrl,
-                    IsApproved = s.IsApproved
+                    IsApproved = s.IsApproved,
+                    IsDisable = s.IsDisable
                 });
             }
             catch (Exception e)
@@ -233,7 +237,8 @@ namespace Domain.Services
                     {
                         ChannelId = s.Channel.ChannelId,
                         MentorName = s.Channel.Mentor.User.Email,
-                        TopicName = s.Channel.Topic.TopicName
+                        TopicName = s.Channel.Topic.TopicName,
+                        IsDisable = s.IsDisable
                     },
                     Enroll = s.Enroll.Select(e => new EnrollViewModel
                     {
@@ -242,8 +247,8 @@ namespace Domain.Services
                         SharingName = e.Sharing.SharingName,
                         MenteeName = e.Subscription.Mentee.User.Email,
                         MentorName = e.Sharing.Channel.Mentor.User.Email,
-                        IsDisable = e.IsDisable,
-                        SubscriptionId = e.SubscriptionId
+                        SubscriptionId = e.SubscriptionId,
+                        IsDisable = e.IsDisable
                     }).ToList()
                 }); ;
             }
