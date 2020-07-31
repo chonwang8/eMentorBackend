@@ -11,6 +11,8 @@ namespace Domain.Models.SharingModels
         public double Price { get; set; }
         public string MentorName { get; set; }
         public string Location { get; set; }
+        public string Description { get; set; }
+        public int Maximum { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public string ImageUrl { get; set; }

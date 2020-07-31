@@ -124,11 +124,15 @@ namespace Domain.Services
                         SharingId = e.SharingId,
                         SharingName = e.Sharing.SharingName,
                         MentorName = e.Sharing.Channel.Mentor.User.Email,
+                        Description = e.Sharing.Description,
+                        Maximum = e.Sharing.Maximum,
+                        Location = e.Sharing.Location,
                         StartTime = e.Sharing.StartTime,
                         EndTime = e.Sharing.EndTime,
                         Price = e.Sharing.Price,
                         ImageUrl = e.Sharing.ImageUrl,
-                        IsApproved = e.Sharing.IsApproved
+                        IsApproved = e.Sharing.IsApproved,
+                        IsDisable = e.Sharing.IsDisable
                     },
                     Subscription = new SubscriptionViewModel
                     {

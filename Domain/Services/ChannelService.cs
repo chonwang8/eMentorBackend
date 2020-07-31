@@ -144,11 +144,15 @@ namespace Domain.Services
                         SharingId = s.SharingId,
                         SharingName = s.SharingName,
                         MentorName = s.Channel.Mentor.User.Email,
+                        Description = s.Description,
+                        Maximum = s.Maximum,
+                        Location = s.Location,
                         StartTime = s.StartTime,
                         EndTime = s.EndTime,
                         ImageUrl = s.ImageUrl,
                         Price = s.Price,
-                        IsApproved = s.IsApproved
+                        IsApproved = s.IsApproved,
+                        IsDisable = s.IsDisable
                     }).ToList(),
                     Subscription = c.Subscription.Select(s => new SubscriptionViewModel
                     {

@@ -261,7 +261,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         #endregion repCode 200 400 401 403 500
-        public IActionResult Update(SharingModel sharingModel)
+        public IActionResult Update(SharingUpdateModel sharingModel)
         {
             BaseResponseDto responseDto = null;
 

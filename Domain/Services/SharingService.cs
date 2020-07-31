@@ -50,6 +50,8 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
+                    Description = s.Description,
+                    Maximum = s.Maximum,
                     Location = s.Location,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
@@ -126,6 +128,8 @@ namespace Domain.Services
                     SharingName = s.SharingName,
                     Price = s.Price,
                     MentorName = s.Channel.Mentor.User.Fullname,
+                    Description = s.Description,
+                    Maximum = s.Maximum,
                     Location = s.Location,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
@@ -224,6 +228,7 @@ namespace Domain.Services
                     SharingId = s.SharingId,
                     SharingName = s.SharingName,
                     Description = s.Description,
+                    Location = s.Location,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime,
                     Maximum = s.Maximum,
@@ -295,6 +300,7 @@ namespace Domain.Services
                     SharingId = Guid.NewGuid(),
                     SharingName = sharingInsertModel.SharingName,
                     Description = sharingInsertModel.Description,
+                    Location = sharingInsertModel.Location,
                     StartTime = sharingInsertModel.StartTime,
                     EndTime = sharingInsertModel.EndTime,
                     Maximum = sharingInsertModel.Maximum,
@@ -324,11 +330,11 @@ namespace Domain.Services
         }
 
 
-        public BaseResponseDto Update(SharingModel sharingModel)
+        public BaseResponseDto Update(SharingUpdateModel sharingUpdateModel)
         {
             BaseResponseDto responseDto = null;
 
-            if (sharingModel == null)
+            if (sharingUpdateModel == null)
             {
                 responseDto = new BaseResponseDto
                 {
@@ -344,7 +350,7 @@ namespace Domain.Services
             {
                 existingSharing = _uow.GetRepository<Sharing>()
                     .GetAll()
-                    .FirstOrDefault(s => s.SharingId == sharingModel.SharingId);
+                    .FirstOrDefault(s => s.SharingId == sharingUpdateModel.SharingId);
             }
             catch (Exception e)
             {
@@ -363,25 +369,25 @@ namespace Domain.Services
 
             DateTime? approveTime = null;
 
-            if (sharingModel.IsApproved == true)
+            if (sharingUpdateModel.IsApproved == true)
             {
                 approveTime = DateTime.Now;
             }
-            else if (sharingModel.IsApproved == false)
+            else if (sharingUpdateModel.IsApproved == false)
             {
                 approveTime = null;
             }
 
-            existingSharing.SharingName = sharingModel.SharingName;
-            existingSharing.Description = sharingModel.Description;
-            existingSharing.StartTime = sharingModel.StartTime;
-            existingSharing.EndTime = sharingModel.EndTime;
-            existingSharing.Maximum = sharingModel.Maximum;
-            existingSharing.Price = sharingModel.Price;
-            existingSharing.ChannelId = sharingModel.ChannelId;
-            existingSharing.IsDisable = sharingModel.IsDisable;
-            existingSharing.IsApproved = sharingModel.IsApproved;
-            existingSharing.ImageUrl = sharingModel.imageUrl;
+            existingSharing.SharingName = sharingUpdateModel.SharingName;
+            existingSharing.Description = sharingUpdateModel.Description;
+            existingSharing.Location = sharingUpdateModel.Location;
+            existingSharing.StartTime = sharingUpdateModel.StartTime;
+            existingSharing.EndTime = sharingUpdateModel.EndTime;
+            existingSharing.Maximum = sharingUpdateModel.Maximum;
+            existingSharing.Price = sharingUpdateModel.Price;
+            existingSharing.ChannelId = sharingUpdateModel.ChannelId;
+            existingSharing.IsApproved = sharingUpdateModel.IsApproved;
+            existingSharing.ImageUrl = sharingUpdateModel.imageUrl;
             existingSharing.ApprovedTime = approveTime;
 
             try
