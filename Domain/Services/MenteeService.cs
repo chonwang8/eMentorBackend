@@ -606,16 +606,20 @@ namespace Domain.Services
                     Subscriptions = m.Subscription.Select(m => new SubscriptionSharingListModel
                     {
                         SubscriptionId = m.SubscriptionId,
-                        Sharings = m.Enroll.Select(m => new SharingViewModel 
+                        Sharings = m.Enroll.Select(m => new SharingViewModel
                         {
                             SharingId = m.Sharing.SharingId,
                             SharingName = m.Sharing.SharingName,
                             Price = m.Sharing.Price,
                             MentorName = m.Sharing.Channel.Mentor.User.Fullname,
+                            Description = m.Sharing.Description,
+                            Maximum = m.Sharing.Maximum,
+                            Location = m.Sharing.Location,
                             StartTime = m.Sharing.StartTime,
                             EndTime = m.Sharing.EndTime,
                             ImageUrl = m.Sharing.ImageUrl,
-                            IsApproved = m.Sharing.IsApproved
+                            IsApproved = m.Sharing.IsApproved,
+                            IsDisable = m.Sharing.IsDisable
                         }).ToList()
                     }).ToList()
                 });

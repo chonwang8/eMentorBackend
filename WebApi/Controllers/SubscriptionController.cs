@@ -130,6 +130,9 @@ namespace WebApi.Controllers
             if (result == 0)
             {
                 return BadRequest("Faulthy Subscription info.");
+            } else if (result ==1)
+            {
+                return BadRequest("Already subscribed to this channel");
             }
 
             return Ok("Subscription Inserted");
